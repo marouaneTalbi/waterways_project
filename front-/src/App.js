@@ -1,6 +1,5 @@
 import logo from './logo.svg';
 import './App.css';
-import api from './api';
 
 function App() {
   return (
@@ -22,14 +21,5 @@ function App() {
     </div>
   );
 }
-
-// Utilisez l'instance Axios configurée pour effectuer une requête
-api.get('/api/message')
-.then(response => {
-  console.log(response.data);
-})
-.catch(error => {
-  console.error(error);
-});
 
 export default App;

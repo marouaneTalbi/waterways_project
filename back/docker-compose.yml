@@ -1,0 +1,29 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=postgres://waterways_user:waterways_password@db:5432/waterways
+    depends_on:
+      - db
+    networks:
+      - app-network
+  db:
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=waterways
+      - POSTGRES_USER=waterways_user
+      - POSTGRES_PASSWORD=waterways_password
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
