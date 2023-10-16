@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   app:
     build:
@@ -9,21 +10,23 @@ services:
     volumes:
       - .:/app
     environment:
-      - DATABASE_URL=postgres://waterways_user:waterways_password@db:5432/waterways
+      - DATABASE_URL=pgsql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
     depends_on:
       - db
     networks:
       - app-network
+
   db:
     image: postgres:latest
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_DB=waterways
-      - POSTGRES_USER=waterways_user
-      - POSTGRES_PASSWORD=waterways_password
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - app-network
+
 networks:
   app-network:
     driver: bridge
