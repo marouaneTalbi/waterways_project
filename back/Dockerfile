@@ -7,12 +7,15 @@ RUN apt-get update \
         unzip \
         git \
         libicu-dev \
-        libzip-dev
+        libzip-dev \
+        libpq-dev
 
 # Installez les extensions PHP nécessaires
 RUN docker-php-ext-install \
     intl \
     pdo_mysql \
+    pdo \
+    pdo_pgsql \
     zip
 
 # Activez le mod_rewrite pour Apache
