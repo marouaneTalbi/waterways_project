@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use ApiPlatform\OpenApi\Model\Response;
 use App\Entity\User;
+use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,6 @@ class RegisterController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, EntityManagerInterface $entityManager): Response
     {
         $requestData = json_decode($request->getContent(), true);
-
         $email = $requestData['email']; // Remplacez par le nom d'utilisateur
         $plainPassword = $requestData['password']; // Remplacez par le mot de passe
 
@@ -32,6 +31,6 @@ class RegisterController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return new Response('Utilisateur enregistré avec succès');
+        return new Response('Utilisateur enregistré avec succès',Response::HTTP_OK);
     }
 }
