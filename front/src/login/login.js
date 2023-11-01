@@ -15,10 +15,8 @@ const LoginForm = () => {
           password: password,
         }
       );
-      // Gérez la réponse de l'API ici, par exemple en stockant le token dans le state de votre application
       console.log(response.data); // Affiche la réponse de l'API dans la console
     } catch (error) {
-      // Gérez les erreurs potentielles ici
       console.error("Une erreur s'est produite : ", error);
     }
   };

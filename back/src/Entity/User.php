@@ -1,59 +1,26 @@
 <?php
 
 namespace App\Entity;
-use Symfony\Component\Serializer\Annotation\Groups;
 
-use ApiPlatform\Action\NotFoundAction;
 use ApiPlatform\Metadata\ApiResource;
-use App\Controller\MeController;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
-use Symfony\Component\Validator\Constraints as Assert;
-
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
-#[ApiResource(
-    security: "is_granted('ROLE_USER')",
-    operations: [
-        new Get(controller: NotFoundAction::class, read: false, output:false),
-        new Post(processor: UserPasswordHasher::class, validationContext: ['groups' => ['Default', 'User:create']]),
-        new Get(
-            controller: MeController::class,
-            read: false,
-            uriTemplate:'/me',
-            paginationEnabled: false,
-            security: "is_granted('ROLE_USER')",
-            openapiContext: ['security' => ['bearerAuth' => []]]
-        ),
-        new Post(processor: UserPasswordHasher::class),
-        new Put(processor: UserPasswordHasher::class),
-        new Patch(processor: UserPasswordHasher::class),
-    ],
-    
-    normalizationContext: ['groups' => ['read:User']],
-    denormalizationContext: ['groups' => ['User:create', 'User:update']],
-)]
+#[ORM\Table(name: '`user_`')]
+#[ApiResource()]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[Groups(['User:read'])]
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
+    #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['read:User', 'User:create', 'User:update'])]
     private ?string $email = null;
 
-    #[Groups(['read:User'])]
     #[ORM\Column]
     private array $roles = [];
 
@@ -61,8 +28,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotBlank(groups: ['User:create'])]
-    #[Groups(['User:create', 'User:update'])]
     private ?string $password = null;
 
     public function getId(): ?int
