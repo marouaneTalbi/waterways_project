@@ -19,9 +19,14 @@ class RegisterController extends AbstractController
         $requestData = json_decode($request->getContent(), true);
         $email = $requestData['email']; // Remplacez par le nom d'utilisateur
         $plainPassword = $requestData['password']; // Remplacez par le mot de passe
+        // $firstname = $requestData['firstname']; // Remplacez par le mot de passe
+        // $lastname = $requestData['lastname']; // Remplacez par le mot de passe
+        $token = $requestData['token']; // Remplacez par le mot de passe
+
 
         $user = new User();
         $user->setEmail($email);
+        $user->setToken($token);
 
         $user->setPassword($passwordEncoder->hashPassword(
             $user,

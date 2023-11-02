@@ -28,9 +28,9 @@ when@test:
             driver: 'pdo_pgsql'
             host: 'localhost'  # Adresse de votre serveur PostgreSQL
             port: 5432         # Port de PostgreSQL (par défaut : 5432)
-            dbname: 'waterways_db'
-            user: 'waterways_user'         # Nom d'utilisateur que vous avez créé
-            password: 'waterways_password'  # Mot de passe que vous avez défini
+            dbname: 'db'
+            user: 'user'         # Nom d'utilisateur que vous avez créé
+            password: 'pass'  # Mot de passe que vous avez défini
             charset: UTF8
 
 when@prod:
