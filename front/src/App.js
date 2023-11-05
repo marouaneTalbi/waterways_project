@@ -1,9 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import api from './api';
-import LoginForm from './login/login';
-import Register from './register/register';
-
+import Register from './pages/Register/register';
 
 function App() {
   return (
