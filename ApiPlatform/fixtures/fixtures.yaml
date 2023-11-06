@@ -1,0 +1,22 @@
+App\Entity\Auth\User:
+  user_{1..10}:
+    name: '<firstname()>'
+
+App\Entity\Blog\Publication:
+  publication_{@user_*}:
+    author: '<current()>'
+    title: '<sentence()>'
+    resume: '<sentences(3, true)>'
+    content: '<paragraph()>'
+
+App\Entity\Blog\Comment:
+  comment_{1..50}:
+    content: '<sentences(1, true)>'
+    post: '@publication_user_<rand(1, 10)>'
+    author: '@user_<rand(1, 10)>'
+
+App\Entity\Shop\Product:
+  product_{1..50}:
+    name: '<title()>'
+    price: '<rand(20, 5000)>'
+    documentationUrl: '<url()>'
