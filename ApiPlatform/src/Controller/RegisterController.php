@@ -19,44 +19,36 @@ class RegisterController extends AbstractController
 {
     private $mailer;
 
-    public function __construct(MailerInterface $mailer)
+    public function __construct(MailerService $mailer)
     {
          $this->mailer = $mailer;
     }
 
-
-
-
     #[Route(path: '/api/register', name: 'api_register', methods: ['POST'] )]
-    public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, EntityManagerInterface $entityManager): Response
     {
-        $email = (new Email())
-            ->from('marwane.berkani@gmail.com')
-            ->to('marwane.berkani@gmail.com')
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
+        $requestData = json_decode($request->getContent(), true);
 
-            $mailer->send($email);
-        // $requestData = json_decode($request->getContent(), true);
-        // $email = $requestData['email'];
-        // $plainPassword = $requestData['password'];
-        // $firstname = $requestData['firstname'];
-        // $lastname = $requestData['lastname'];
-        // $token = $requestData['token'];
+        $email = $requestData['email'];
+        $plainPassword = $requestData['password'];
+        $firstname = $requestData['firstname'];
+        $lastname = $requestData['lastname'];
 
+        $user = new User();
+        $user->setEmail($email);
+        $user->setFirstname($firstname);
+        $user->setLastname($lastname);
 
-        //  $user = new User();
-        //  $user->setEmail($email);
-        //  $user->setToken($token);
+        $user->setPassword($passwordEncoder->hashPassword(
+            $user,
+            $plainPassword
+        ));
 
-        //   $user->setPassword($passwordEncoder->hashPassword(
-        //       $user,
-        //       $plainPassword
-        //    ));
+        $entityManager->persist($user);
+        $entityManager->flush();
 
-        // $entityManager->persist($user);
-        // $entityManager->flush();
+        $this->mailer->sendMail($email);
+
 
         return new Response('Utilisateur enregistré avec succès',Response::HTTP_OK);
     }
