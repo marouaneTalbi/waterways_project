@@ -88,6 +88,34 @@
       <path value="$PROJECT_DIR$/back/vendor/psr/clock" />
       <path value="$PROJECT_DIR$/back/vendor/symfony/security-bundle" />
       <path value="$PROJECT_DIR$/back/vendor/symfony/validator" />
+      <path value="$PROJECT_DIR$/back/vendor/lexik/jwt-authentication-bundle" />
+      <path value="$PROJECT_DIR$/back/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/back/vendor/namshi/jose" />
+      <path value="$PROJECT_DIR$/back/vendor/egulias/email-validator" />
+      <path value="$PROJECT_DIR$/back/vendor/symfony/mailer" />
+      <path value="$PROJECT_DIR$/back/vendor/symfony/mime" />
+      <path value="$PROJECT_DIR$/back/vendor/lcobucci/clock" />
+      <path value="$PROJECT_DIR$/back/vendor/symfony/polyfill-intl-idn" />
+      <path value="$PROJECT_DIR$/back/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/back/vendor/symfony/web-profiler-bundle" />
+      <path value="$PROJECT_DIR$/back/vendor/symfony/maker-bundle" />
+      <path value="$PROJECT_DIR$/back/vendor/symfony/process" />
+      <path value="$PROJECT_DIR$/back/vendor/twig/extra-bundle" />
+      <path value="$PROJECT_DIR$/back/vendor/nelmio/alice" />
+      <path value="$PROJECT_DIR$/back/vendor/doctrine/data-fixtures" />
+      <path value="$PROJECT_DIR$/back/vendor/symfony/monolog-bundle" />
+      <path value="$PROJECT_DIR$/back/vendor/symfony/debug-bundle" />
+      <path value="$PROJECT_DIR$/back/vendor/symfony/monolog-bridge" />
+      <path value="$PROJECT_DIR$/back/vendor/fakerphp/faker" />
+      <path value="$PROJECT_DIR$/back/vendor/hautelook/alice-bundle" />
+      <path value="$PROJECT_DIR$/back/vendor/webonyx/graphql-php" />
+      <path value="$PROJECT_DIR$/back/vendor/sebastian/exporter" />
+      <path value="$PROJECT_DIR$/back/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/back/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/back/vendor/sebastian/comparator" />
+      <path value="$PROJECT_DIR$/back/vendor/theofidry/alice-data-fixtures" />
+      <path value="$PROJECT_DIR$/back/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/back/vendor/myclabs/deep-copy" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
