@@ -22,16 +22,15 @@ class MailerService extends AbstractController
     /**
      * @throws TransportExceptionInterface
      */
-    public function sendMail(): void
+    public function sendMail($email): void
     {
-        $email = (new Email())
-            ->from('hello@example.com')
-            ->to('you@example.com')
+        $currentEmail = (new Email())
+            ->from('marwane.berkani@gmail.com')
+            ->to($email)
             ->subject('Time for Symfony Mailer!')
             ->text('Sending emails is fun again!')
             ->html('<p>See Twig integration for better HTML integration!</p>');
 
-        $this->mailer->send($email);
-
+        $this->mailer->send($currentEmail);
     }
 }

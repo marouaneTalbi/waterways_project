@@ -9,10 +9,11 @@ const Register = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8001/api/register ", // Remplacez par l'URL de votre endpoint de connexion
+        "http://localhost:8888/api/register", // Remplacez par l'URL de votre endpoint de connexion
         {
           email: email,
           password: password,
+          token: 'ok'
         }
       );
       console.log(response.data); // Affiche la réponse de l'API dans la console
