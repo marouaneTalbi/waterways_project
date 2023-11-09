@@ -13,6 +13,7 @@ const setAuthToken = (token) => {
         delete instance.defaults.headers.common['Authorization'];
         localStorage.removeItem('jwtToken');
     }
+
 };
 
 const checkAuthToken = () => {

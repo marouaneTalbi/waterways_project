@@ -1,29 +1,26 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {apiCall} from "../../services/api";
+import sendRequest from "../../services/axiosRequestFunction";
 
 
 export default function Login() {
-
-    const [username, setUsername] = useState("");
+    const [email, setemail] = useState("");
     const [password, setPassword] = useState("");
     const [token, setToken] = useState(localStorage.getItem('token') || null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post(
-                "http://localhost:8888/api/login ",
-                {
-                    username: username,
-                    password: password,
-                }
-            );
-            const token = response.data.token;
-            localStorage.setItem('token', token);
-            setToken(token);
-        } catch (error) {
-            console.error("Une erreur s'est produite : ", error);
-        }
+        sendRequest(
+            '/auth',
+            'post',
+            {
+                email: email,
+                password: password,
+            },
+             false
+        )
+        localStorage.setItem('token', token);
     };
 
     return (
@@ -33,8 +30,8 @@ export default function Login() {
                 <input
                     type="text"
                     placeholder="Nom d'utilisateur"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={email}
+                    onChange={(e) => setemail(e.target.value)}
                 />
                 <label>Mot de passe</label>
                 <input
