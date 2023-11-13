@@ -1,29 +1,30 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import sendRequest from "../../services/axiosRequestFunction";
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-
-    const [username, setUsername] = useState("");
+    const [email, setemail] = useState("");
     const [password, setPassword] = useState("");
     const [token, setToken] = useState(localStorage.getItem('token') || null);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await axios.post(
-                "http://localhost:8888/api/login ",
-                {
-                    username: username,
-                    password: password,
-                }
-            );
-            const token = response.data.token;
-            localStorage.setItem('token', token);
-            setToken(token);
-        } catch (error) {
-            console.error("Une erreur s'est produite : ", error);
-        }
+        console.log(email, password)
+        sendRequest(
+            '/auth',
+            'post',
+            {
+                email: email,
+                password: password,
+            },
+             false
+        ).then((response) => {
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('refresh_token', response.refresh_token);
+            navigate('/');
+        })
     };
 
     return (
@@ -33,8 +34,8 @@ export default function Login() {
                 <input
                     type="text"
                     placeholder="Nom d'utilisateur"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={email}
+                    onChange={(e) => setemail(e.target.value)}
                 />
                 <label>Mot de passe</label>
                 <input
