@@ -27,6 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(),
         new Put(processor: UserPasswordHasher::class),
         new Patch(processor: UserPasswordHasher::class),
+
+
         new Delete(),
     ],
     normalizationContext: ['groups' => ['user:read']],
