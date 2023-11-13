@@ -20,6 +20,7 @@ security:
             pattern: ^/_(profiler|wdt)
             security: false
         main:
+            entry_point: jwt
             stateless: true
             provider: users
             json_login:
@@ -29,8 +30,13 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             jwt: ~
+            refresh_jwt:
+                check_path: /api/token/refresh
     access_control:
-        - { path: ^/$, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
-        - { path: ^/docs, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI docs
+        - { path: ^/$, roles: PUBLIC_ACCESS } # Permet d'accéder à l'interface Swagger UI
+        - { path: ^/docs, roles: PUBLIC_ACCESS } # Permet d'accéder aux documents Swagger UI
         - { path: ^/auth, roles: PUBLIC_ACCESS }
-        #  - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS, methods: [POST]  }
+        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api$, roles: PUBLIC_ACCESS }

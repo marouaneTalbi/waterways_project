@@ -15,4 +15,4 @@ class JWTBlacklistService
     {
         return in_array($token, $this->blacklistedTokens);
     }
-}
+} 
