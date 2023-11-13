@@ -21,19 +21,6 @@ const Register = () => {
         },
         false
     ).then(response => console.log(response))
- /*   try {
-      const response = await axios.post(
-        "http://localhost:8888/api/register", // Remplacez par l'URL de votre endpoint de connexion
-        {
-          email: email,
-          password: password,
-          firstname: firstname,
-          lastname: lastname
-        }
-      );
-    } catch (error) {
-      console.error("Une erreur s'est produite : ", error);
-    }*/
   };
 
   return (

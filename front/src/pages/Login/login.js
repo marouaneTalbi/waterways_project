@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
-import {apiCall} from "../../services/api";
 import sendRequest from "../../services/axiosRequestFunction";
-
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
     const [email, setemail] = useState("");
     const [password, setPassword] = useState("");
     const [token, setToken] = useState(localStorage.getItem('token') || null);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(email, password)
         sendRequest(
             '/auth',
             'post',
@@ -19,8 +20,11 @@ export default function Login() {
                 password: password,
             },
              false
-        )
-        localStorage.setItem('token', token);
+        ).then((response) => {
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('refresh_token', response.refresh_token);
+            navigate('/');
+        })
     };
 
     return (
