@@ -8,6 +8,7 @@ import Register from './pages/Register/register';
 import Search from './pages/Search/search';
 import Layout from './layouts/Layout/layout';
 import Profile from './pages/Profile/profile';
+import UserAdmin from "./pages/Admin/userAdmin";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,6 +19,7 @@ root.render(
         <Route path="register" element={<Register />} />
         <Route path="search" element={<Search />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="admin" element={<UserAdmin /> } />
       </Route>
     </Routes>
   </BrowserRouter>
