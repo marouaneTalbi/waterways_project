@@ -9,6 +9,8 @@ import Search from './pages/Search/search';
 import Layout from './layouts/Layout/layout';
 import Profile from './pages/Profile/profile';
 import UserAdmin from "./pages/Admin/userAdmin";
+import RequestProvider from './pages/requestProvider/requestProvider';
+import KabisRequests from './pages/requestProvider/KabisRequests';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -20,6 +22,8 @@ root.render(
         <Route path="search" element={<Search />} />
         <Route path="profile" element={<Profile />} />
         <Route path="admin" element={<UserAdmin /> } />
+        <Route path="requestProvider" element={<RequestProvider /> } />
+        <Route path="KabisRequests" element={<KabisRequests /> } />
       </Route>
     </Routes>
   </BrowserRouter>

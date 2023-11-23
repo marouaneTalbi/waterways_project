@@ -13,14 +13,14 @@ const axiosInstance = axios.create({
 
 
 const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true) => {
-  const token = requireAuth ? localStorage.getItem('token') : null;
-
-  if (token) {
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  } else {
-    delete axiosInstance.defaults.headers.common['Authorization'];
+  if (requireAuth) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+      delete axiosInstance.defaults.headers.common['Authorization'];
+    }
   }
-  console.log(axiosInstance.defaults.headers.common['Authorization'] )
 
   try {
     const response = await axiosInstance({
@@ -34,6 +34,7 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
     throw error;
   }
 };
+
 
 axiosInstance.interceptors.request.use(async config => {
 

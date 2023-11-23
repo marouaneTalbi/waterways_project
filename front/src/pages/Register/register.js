@@ -11,16 +11,17 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     sendRequest(
-        '/api/users',
-        'post',
-        {
-            email: email,
-            plainPassword: password,
-            firstname: firstname,
-            lastname: lastname
-        },
-        false
+      '/api/users',
+      'post',
+      {
+        email: email,
+        plainPassword: password,
+        firstname: firstname,
+        lastname: lastname
+      },
+      false // Pas besoin d'authentification pour l'inscription
     ).then(response => console.log(response))
+      .catch(error => console.error("Erreur lors de l'inscription:", error));
   };
 
   return (
