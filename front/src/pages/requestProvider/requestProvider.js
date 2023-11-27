@@ -124,7 +124,7 @@ const RequestProvider = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`bg-dark-orange text-white m-auto font-bold py-3 px-28 rounded-lg focus:outline-none focus:shadow-outline ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`bg-dark-orange text-white font-bold py-3 px-20 rounded-lg focus:outline-none focus:shadow-outline ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
             {isLoading ? 'Uploading...' : 'Envoyer'}
           </button>
