@@ -8,11 +8,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const notify = (message, type) => {
     if (type === 'success') {
-      toast.success(message);
+        toast.success(message);
     } else if (type === 'error') {
-      toast.error(message);
+        toast.error(message);
     }
-  };
+};
 
 
 const KabisRequests = () => {
