@@ -46,6 +46,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: "is_granted('ROLE_ADMIN')",
             securityMessage: "Only authenticated users can delete users."
         ),
+        new Get(
+            name: 'getUser',
+            uriTemplate: '/user',
+            processor: UserGetController::class,
+            normalizationContext: ['groups' => ['user:read']]
+        )
     ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
@@ -69,6 +75,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['user:read'])]
     private array $roles = [];
 
     /**
