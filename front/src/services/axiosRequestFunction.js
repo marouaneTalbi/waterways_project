@@ -36,9 +36,15 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
 };
 
 
+
 axiosInstance.interceptors.request.use(async config => {
 
-    if (config.url.includes('/auth') || config.url.includes('/api/token/refresh')) {
+    if (config.url.includes('/auth')
+        || config.url.includes('/api/token/refresh')
+        || (config.url.includes('/api/users') && config.method == 'post')
+        || (config.url.includes('/api/mdpresetemail') && config.method == 'post')
+        || (config.url.includes('/api/resetmdp') && config.method == 'post')
+    ) {
       return config;
     }
 

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import sendRequest from "../../services/axiosRequestFunction";
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     sendRequest(
@@ -19,8 +20,9 @@ const Register = () => {
         firstname: firstname,
         lastname: lastname
       },
-      false // Pas besoin d'authentification pour l'inscription
-    ).then(response => console.log(response))
+      false
+    ).then(response =>
+        navigate("/Login"))
       .catch(error => console.error("Erreur lors de l'inscription:", error));
   };
 

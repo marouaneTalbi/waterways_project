@@ -11,6 +11,8 @@ import Profile from './pages/Profile/profile';
 import UserAdmin from "./pages/Admin/userAdmin";
 import RequestProvider from './pages/requestProvider/requestProvider';
 import KabisRequests from './pages/requestProvider/KabisRequests';
+import MdpRestEmail from "./pages/Login/motDePasseOublier";
+import ResetMdp from "./pages/Login/restmpd";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,6 +20,8 @@ root.render(
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route path="login" element={<Login />} />
+        <Route path="mdpresetemail" element={<MdpRestEmail />} />
+        <Route path="resetmdp/:token" element={<ResetMdp />} />
         <Route path="register" element={<Register />} />
         <Route path="search" element={<Search />} />
         <Route path="profile" element={<Profile />} />

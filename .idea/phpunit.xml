@@ -4,6 +4,7 @@
     <option name="directories">
       <list>
         <option value="$PROJECT_DIR$/back/tests" />
+        <option value="$PROJECT_DIR$/ApiPlatform/tests" />
       </list>
     </option>
   </component>
