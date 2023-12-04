@@ -1,11 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import DataCard from '../../components/DataCard/DataCard'
 import { faEnvelope, faUser, faPhone, faFlask } from '@fortawesome/free-solid-svg-icons';
+import GenericModal from '../../components/GenericModal/GenericModal';
+import { TextInput, Label, Button } from 'flowbite-react';
 
 export default function Profile() {
 
   const [user, setUser] = useState(null);
   const [highestRole, SethighestRole] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Ajoutez votre logique de gestion de formulaire ici
+    handleCloseModal();
+  };
 
   async function getUser() {
     try {
@@ -52,12 +69,60 @@ export default function Profile() {
 
   return (
     <div className="grid grid-cols-12 gap-4 flex-1">
+      <GenericModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title="Modifier mes informations"
+      >
+        <form onSubmit={handleSubmit}>
+          {
+            user && (
+              <>
+                <div className="mb-2 block">
+                  <Label htmlFor="nom" value="Nom" />
+                </div>
+                <TextInput
+                  id="nom"
+                  value={user.lastname}
+                  required
+                />
+                <div className="mb-2 block">
+                  <Label htmlFor="prenom" value="Prenom" />
+                </div>
+                <TextInput
+                  id="prenom"
+                  value={user.firstname}
+                  required
+                />
+                <div className="mb-2 block">
+                  <Label htmlFor="email" value="Email" />
+                </div>
+                <TextInput
+                  id="email"
+                  value={user.email}
+                  required
+                />
+                <div className="mb-2 block">
+                  <Label htmlFor="phone" value="Telephone" />
+                </div>
+                <TextInput
+                  id="phone"
+                  value={user.phone}
+                />
+                <div className="w-full">
+                  <Button color='red'>Modifier</Button>
+                </div> 
+              </>
+            )
+          }
+        </form>
+      </GenericModal>
       <div className="col-span-12 md:col-span-8 bg-white rounded border-2 border-gray-100 p-4 relative">
         <header className="flex flex-row justify-between">
           <div className="flex flex-col gap-2">
             <h4 className="text-xl font-medium">Mes informations</h4>
           </div>
-          <button className="text-base text-dark-orange underline cursor-pointer">MODIFIER</button>
+          <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenModal}>MODIFIER</button>
         </header>
           <div className="flex flex-wrap py-6 gap-20 gap-y-10">
             <DataCard title="email" value={user?.email} icon={faEnvelope} />
