@@ -3,6 +3,7 @@ import DataCard from '../../components/DataCard/DataCard'
 import { faEnvelope, faUser, faPhone, faFlask } from '@fortawesome/free-solid-svg-icons';
 import GenericModal from '../../components/GenericModal/GenericModal';
 import { TextInput, Label, Button } from 'flowbite-react';
+import sendRequest from "../../services/axiosRequestFunction";
 
 export default function Profile() {
 
@@ -20,8 +21,19 @@ export default function Profile() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Ajoutez votre logique de gestion de formulaire ici
-    handleCloseModal();
+    sendRequest(
+      `/api/users/${user.id}`,
+      'put',
+      user,
+      true
+    ).then(response => {
+      setUser({
+        ...response,
+        fullName: `${response.lastname} ${response.firstname}`
+      });
+      SethighestRole(getHighestRole(response.roles));
+      handleCloseModal();
+    }).catch(error => console.error("Erreur lors de l'inscription:", error));
   };
 
   async function getUser() {
@@ -84,6 +96,7 @@ export default function Profile() {
                 <TextInput
                   id="nom"
                   value={user.lastname}
+                  onChange={(event) => setUser((prevUser) => ({ ...prevUser, lastname: event.target.value }))}
                   required
                 />
                 <div className="mb-2 block">
@@ -92,6 +105,7 @@ export default function Profile() {
                 <TextInput
                   id="prenom"
                   value={user.firstname}
+                  onChange={(event) => setUser((prevUser) => ({ ...prevUser, firstname: event.target.value }))}
                   required
                 />
                 <div className="mb-2 block">
@@ -100,6 +114,7 @@ export default function Profile() {
                 <TextInput
                   id="email"
                   value={user.email}
+                  onChange={(event) => setUser((prevUser) => ({ ...prevUser, email: event.target.value }))}
                   required
                 />
                 <div className="mb-2 block">
@@ -108,9 +123,10 @@ export default function Profile() {
                 <TextInput
                   id="phone"
                   value={user.phone}
+                  onChange={(event) => setUser((prevUser) => ({ ...prevUser, phone: event.target.value }))}
                 />
                 <div className="w-full">
-                  <Button color='red'>Modifier</Button>
+                  <Button type='submit' color='red'>Modifier</Button>
                 </div> 
               </>
             )

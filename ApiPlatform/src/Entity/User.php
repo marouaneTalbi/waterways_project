@@ -40,6 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Patch(
             processor: UserPasswordHasher::class,
             security: "is_granted('ROLE_ADMIN')",
+            normalizationContext: ['groups' => ['user:read']],
             securityMessage: "Only authenticated users can modify users."
         ),
         new Delete(
@@ -66,6 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[Assert\NotBlank]
