@@ -51,8 +51,8 @@ class Kabis
     #[Vich\UploadableField(mapping: 'kabis', fileNameProperty: 'name')]
     public ?File $file = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
+    //#[ORM\ManyToOne(targetEntity: User::class)]
+    //#[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
     private $user;
 
     #[Groups(['media_object:read'])]
@@ -61,7 +61,7 @@ class Kabis
 
     #[Groups(['media_object:read'])]
     #[ORM\Column]
-    private ?int $userId = null;
+    private ?int $user_id = null;
 
     #[ORM\Column]
     #[Groups(['media_object:read'])]
@@ -84,6 +84,7 @@ class Kabis
     {
         return $this->user ? $this->user->getEmail() : null;
     }
+
 
     #[Groups(['media_object:read'])]
     public function isIsVerified(): ?bool
@@ -129,12 +130,12 @@ class Kabis
 
     public function getUserId(): ?int
     {
-        return $this->userId;
+        return $this->user_id;
     }
 
-    public function setUserId(int $userId): static
+    public function setUserId(int $user_id): static
     {
-        $this->userId = $userId;
+        $this->user_id = $user_id;
         return $this;
     }
     public function getStatus(): ?int
