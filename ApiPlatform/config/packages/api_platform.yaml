@@ -1,0 +1,19 @@
+api_platform:
+    title: Hello API Platform
+    version: 1.0.0
+    formats:
+        json: ['application/json']
+        jsonld: ['application/json+ld']
+        html: ['text/html']
+        multipart: ['multipart/form-data']
+    swagger:
+        api_keys:
+            jwt:
+                name: Authorization
+                type: header
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+        extra_properties:
+            standard_put: true
