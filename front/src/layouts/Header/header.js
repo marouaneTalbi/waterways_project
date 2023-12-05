@@ -6,13 +6,15 @@ import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
+    const [userProvider, setUserProvider] = useState(null);
     const token = localStorage.getItem('token');
 
     useEffect(() => {
         if (token) {
             const decoded = jwtDecode(token);
             setUserRole(decoded.roles[0])
-            console.log(decoded.roles[0])
+            const provider =  decoded.roles.find(role => role === 'ROLE_PROVIDER')
+            setUserProvider(provider)
         }
     }, [token, userRole]);
 
@@ -133,6 +135,11 @@ export default function Header() {
                 {
                     userRole == 'ROLE_ADMIN' && (
                         <Navbar.Link href="/admin">Admin</Navbar.Link>
+                    )
+                }
+                {
+                    userProvider == 'ROLE_PROVIDER' && (
+                        <Navbar.Link href="/provider">Provider</Navbar.Link>
                     )
                 }
                 {
