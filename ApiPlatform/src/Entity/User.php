@@ -295,6 +295,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->establishments->add($establishment);
             $establishment->setUserId($this);
         }
+    }
+
 
     public function getPhone(): ?string
     {
