@@ -21,19 +21,19 @@ export default function Profile() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    sendRequest(
-      `/api/users/${user.id}`,
-      'put',
-      user,
-      true
-    ).then(response => {
-      setUser({
-        ...response,
-        fullName: `${response.lastname} ${response.firstname}`
+
+    sendRequest(`/api/users/${user.id}`, 'put', user, true)
+      .then(response => {
+        setUser({
+          ...response,
+          fullName: `${response.lastname} ${response.firstname}`
+        });
+        SethighestRole(getHighestRole(response.roles));
+        handleCloseModal();
+      })
+      .catch(error => {
+        console.log(error);
       });
-      SethighestRole(getHighestRole(response.roles));
-      handleCloseModal();
-    }).catch(error => console.error("Erreur lors de l'inscription:", error));
   };
 
   async function getUser() {
@@ -123,8 +123,9 @@ export default function Profile() {
                 <TextInput
                   id="phone"
                   value={user.phone}
+                  type='number'
                   onChange={(event) => setUser((prevUser) => ({ ...prevUser, phone: event.target.value }))}
-                />
+                  />
                 <div className="w-full">
                   <Button type='submit' color='red'>Modifier</Button>
                 </div> 

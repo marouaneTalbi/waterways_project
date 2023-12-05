@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Put(
             processor: UserPasswordHasher::class,
-            security: "is_granted('ROLE_ADMIN')",
+            normalizationContext: ['groups' => ['user:read']],
             securityMessage: "Only authenticated users can modify users."
         ),
         new Patch(
@@ -109,6 +109,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     #[Groups(['user:create', 'user:update','user:read'])]
     private ?bool $isVerified = false;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['user:read', 'user:update'])]
+    private ?string $phone = null;
 
     public function getPlainPassword(): ?string
     {
@@ -259,6 +263,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(?bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): static
+    {
+        $this->phone = $phone;
 
         return $this;
     }
