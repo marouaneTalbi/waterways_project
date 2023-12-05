@@ -36,12 +36,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Put(
             processor: UserPasswordHasher::class,
-            security: "is_granted('ROLE_ADMIN')",
+            normalizationContext: ['groups' => ['user:read']],
             securityMessage: "Only authenticated users can modify users."
         ),
         new Patch(
             processor: UserPasswordHasher::class,
             security: "is_granted('ROLE_ADMIN')",
+            normalizationContext: ['groups' => ['user:read']],
             securityMessage: "Only authenticated users can modify users."
         ),
         new Delete(
@@ -68,6 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[Assert\NotBlank]
@@ -110,6 +112,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:create', 'user:update','user:read'])]
     private ?bool $isVerified = false;
 
+
     #[ORM\OneToMany(mappedBy: 'userId', targetEntity: Establishment::class, orphanRemoval: true)]
     private Collection $establishments;
 
@@ -118,6 +121,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->establishments = new ArrayCollection();
     }
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['user:read', 'user:update'])]
+    private ?string $phone = null;
+
 
     public function getPlainPassword(): ?string
     {
@@ -272,6 +280,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
     /**
      * @return Collection<int, Establishment>
      */
@@ -287,8 +296,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $establishment->setUserId($this);
         }
 
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): static
+    {
+        $this->phone = $phone;
+
+
         return $this;
     }
+
 
     public function removeEstablishment(Establishment $establishment): static
     {
@@ -301,6 +321,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 
 
 }

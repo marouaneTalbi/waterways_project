@@ -10,7 +10,6 @@ class UserGetController extends AbstractController {
         public function __invoke(User $user): User
         {
                 $user = $this->getUser();
-                
                 return $user;
         }
 }
