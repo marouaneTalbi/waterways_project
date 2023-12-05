@@ -22,24 +22,25 @@ export default function GoogleMapComponent({ addresses }) {
     });
 
     useEffect(() => {
-        const geocoder = new window.google.maps.Geocoder();
-
-        if (isLoaded) {
-            const newMarkerPositions = [];
-
-            const processAddress = (address) => {
+        const loadMarkers = () => {
+            const geocoder = new window.google.maps.Geocoder();
+            const newMarkers = [];
+    
+            addresses.forEach((address) => {
                 geocoder.geocode({ address }, (results, status) => {
                     if (status === 'OK' && results[0]) {
                         const { lat, lng } = results[0].geometry.location;
-                        newMarkerPositions.push({ lat: lat(), lng: lng() });
-                        setMarkerPositions(newMarkerPositions);
+                        newMarkers.push({ lat: lat(), lng: lng() });
+                        setMarkerPositions(newMarkers);
                     } else {
                         console.error('Geocode was not successful for the following reason:', status);
                     }
                 });
-            };
-
-            addresses.forEach(processAddress);
+            });
+        };
+    
+        if (isLoaded) {
+            loadMarkers();
         }
     }, [isLoaded, addresses]);
     
