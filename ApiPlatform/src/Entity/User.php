@@ -11,6 +11,8 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -107,6 +109,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     #[Groups(['user:create', 'user:update','user:read'])]
     private ?bool $isVerified = false;
+
+    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: Establishment::class, orphanRemoval: true)]
+    private Collection $establishments;
+
+
+    public function __construct()
+    {
+        $this->establishments = new ArrayCollection();
+    }
 
     public function getPlainPassword(): ?string
     {
@@ -260,5 +271,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Establishment>
+     */
+    public function getEstablishments(): Collection
+    {
+        return $this->establishments;
+    }
+
+    public function addEstablishment(Establishment $establishment): static
+    {
+        if (!$this->establishments->contains($establishment)) {
+            $this->establishments->add($establishment);
+            $establishment->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEstablishment(Establishment $establishment): static
+    {
+        if ($this->establishments->removeElement($establishment)) {
+            // set the owning side to null (unless already changed)
+            if ($establishment->getUserId() === $this) {
+                $establishment->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 }

@@ -13,6 +13,7 @@ import RequestProvider from './pages/requestProvider/requestProvider';
 import KabisRequests from './pages/requestProvider/KabisRequests';
 import MdpRestEmail from "./pages/Login/motDePasseOublier";
 import ResetMdp from "./pages/Login/restmpd";
+import UserProvider from "./pages/Provider/userProvider";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -26,6 +27,7 @@ root.render(
         <Route path="search" element={<Search />} />
         <Route path="profile" element={<Profile />} />
         <Route path="admin" element={<UserAdmin /> } />
+        <Route path="provider" element={<UserProvider /> } />
         <Route path="requestProvider" element={<RequestProvider /> } />
         <Route path="KabisRequests" element={<KabisRequests /> } />
       </Route>

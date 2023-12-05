@@ -10,6 +10,11 @@ const axiosInstance = axios.create({
   },
 });
 
+export function getUserRole() {
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  return decodedToken;
+}
 
 
 const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true) => {

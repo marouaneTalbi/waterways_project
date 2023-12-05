@@ -60,6 +60,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getOneOrNullResult();
     }
 
+    public function findOneById(string $userId): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.id = :id')
+            ->setParameter('id', $userId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
