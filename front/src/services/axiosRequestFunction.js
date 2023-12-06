@@ -17,6 +17,9 @@ export function getUserRole() {
   return decodedToken;
 }
 
+export const currentUser = getUserRole();
+export const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
+export const isAdmin = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
 const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true) => {
   if (requireAuth) {
