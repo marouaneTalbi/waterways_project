@@ -11,11 +11,8 @@ on:
 
 jobs:
   frontend-test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node-version: [12, 14, 16]
-        os: [windows-latest, macOS-latest, ubuntu-latest]
+    runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: ./front
@@ -27,10 +24,42 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 17
+          # cache: 'npm'
             
       - name: Install Dependencies
         run: npm install
             
       - name: Launch Tests
         run: npm test
+
+  notifty-success-on-discord:
+    needs: frontend-test
+    runs-on: ubuntu-latest
+    if: success()
+      
+    steps:
+      - name: Notify on Discord
+        uses: Ilshidur/action-discord@v2
+        with:
+          args: |
+            --env
+              DISCORD_TOKEN=https://discord.com/api/webhooks/1181944209901621279/bEcTDI9BOiv7M3DW0NTINe64TSHfN1gVkG-pEXczAKsRrC2AYEkIe7k6WOKbUzJezIy8
+            --description
+              Workflow **${{ github.workflow }}** succeeded on commit ${{ github.sha }}.
+
+  notify-error-on-discord:
+    needs: frontend-test
+    runs-on: ubuntu-latest
+    if: failure()
+      
+    steps:
+      - name: Notify on Discord
+        uses: tsickert/discord-webhook@v5.3.0
+        with:
+          args: |
+            --env
+              DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
+            --description
+              Workflow **${{ github.workflow }}** failed on commit ${{ github.sha }}.
+        
