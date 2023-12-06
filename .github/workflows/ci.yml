@@ -63,8 +63,7 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_TOKEN }}
           status: ${{ job.status }}
-          content: "Hey <@316911818725392384>"
-          title: "deploy"
+          title: "Github Actions CI"
           description: "Build and deploy to GitHub Pages"
           image: ${{ secrets.EMBED_IMAGE }}
           color: 0x0000ff
