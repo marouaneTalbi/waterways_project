@@ -40,7 +40,7 @@ jobs:
       
     steps:
       - name: Notify on Discord
-        uses: Ilshidur/action-discord@v2
+        uses: tsickert/discord-webhook@v5.3.0
         with:
           args: |
             --env
