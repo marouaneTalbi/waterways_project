@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import sendRequest from "../../services/axiosRequestFunction";
 import { useNavigate } from 'react-router-dom';
 
@@ -51,7 +50,7 @@ export default function Login() {
                         className="p-2 border rounded"
                     />
                 </div>
-                <a onClick={() => navigate(('/mdpResetEmail'))}>Mot de passe oublié</a>
+                <a href="/mdpResetEmail" onClick={() => navigate(('/mdpResetEmail'))}>Mot de passe oublié</a>
                 <button  type="submit" className="bg-red-500 text-black p-2 rounded hover:bg-red-600">
                     Se connecter
                 </button>

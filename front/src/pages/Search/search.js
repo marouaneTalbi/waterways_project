@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import GoogleMap from '../../components/GoogleMap/GoogleMap'
 import { Button } from 'flowbite-react';
-import { Label, TextInput } from 'flowbite-react';
+import { TextInput } from 'flowbite-react';
 import { HiSearch, HiLocationMarker, HiUser } from 'react-icons/hi';
 
 export default function Search() {
