@@ -37,16 +37,12 @@ jobs:
     needs: frontend-test
     runs-on: ubuntu-latest
     if: success()
-      
     steps:
       - name: Notify on Discord
         uses: tsickert/discord-webhook@v5.3.0
         with:
-          args: |
-            --env
-              DISCORD_TOKEN=$DISCORD_TOKEN
-            --description
-              Workflow **${{ github.workflow }}** succeeded on commit ${{ github.sha }}.
+          webhook-url: ${{ secrets.DISCORD_TOKEN }}
+          content: "Workflow **${{ github.workflow }}** succeeded on commit ${{ github.sha }}."
 
   notify-error-on-discord:
     needs: frontend-test
@@ -57,8 +53,5 @@ jobs:
       - name: Notify on Discord
         uses: tsickert/discord-webhook@v5.3.0
         with:
-          args: |
-            --env
-              DISCORD_TOKEN=$DISCORD_TOKEN
-            --description
-              Workflow **${{ github.workflow }}** failed on commit ${{ github.sha }}.
+          webhook-url: ${{ secrets.DISCORD_TOKEN }}
+          content: "Workflow **${{ github.workflow }}** succeeded on commit ${{ github.sha }}."
