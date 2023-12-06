@@ -41,7 +41,7 @@ jobs:
       - name: Notify on Discord
         uses: tsickert/discord-webhook@v5.3.0
         with:
-          webhook-url: https://discord.com/api/webhooks/1181944209901621279/bEcTDI9BOiv7M3DW0NTINe64TSHfN1gVkG-pEXczAKsRrC2AYEkIe7k6WOKbUzJezIy8
+          webhook-url: ${{ secrets.DISCORD_TOKEN }}
           content: "Workflow **${{ github.workflow }}** succeeded on commit ${{ github.sha }}."
 
   notify-error-on-discord:
