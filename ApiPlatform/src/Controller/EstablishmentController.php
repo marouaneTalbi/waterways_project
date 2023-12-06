@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Establishment;
@@ -8,8 +7,6 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\UserRepository;
 use App\Repository\EstablishmentRepository;
-
-
 
 #[AsController]
 class EstablishmentController extends AbstractController
@@ -27,7 +24,6 @@ class EstablishmentController extends AbstractController
 
     public function __invoke(Request $request)
     {
-
         $data = json_decode($request->getContent(), true);
         $user = $this->userRepository->findOneByEmail($data['user']);
         $establishment = new Establishment();
@@ -38,7 +34,6 @@ class EstablishmentController extends AbstractController
         $establishment->setEndDate(new \DateTimeImmutable($data['endDate']));
 
         $this->establishmentRepository->save($establishment, true);
-
 
         return $establishment;
     }
