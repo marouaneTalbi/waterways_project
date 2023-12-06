@@ -33,7 +33,22 @@ jobs:
       - name: Launch Tests
         run: npm test
 
-  notify-on-discord:
+  notifty-success-on-discord:
+    needs: frontend-test
+    runs-on: ubuntu-latest
+    if: success()
+      
+    steps:
+      - name: Notify on Discord
+        uses: Ilshidur/action-discord@v2
+        with:
+          args: |
+            --env
+              DISCORD_TOKEN=https://discord.com/api/webhooks/1181944209901621279/bEcTDI9BOiv7M3DW0NTINe64TSHfN1gVkG-pEXczAKsRrC2AYEkIe7k6WOKbUzJezIy8
+            --description
+              Workflow **${{ github.workflow }}** succeeded on commit ${{ github.sha }}.
+
+  notify-error-on-discord:
     needs: frontend-test
     runs-on: ubuntu-latest
     if: failure()
@@ -44,7 +59,7 @@ jobs:
         with:
           args: |
             --env
-            DISCORD_TOKEN=https://discord.com/api/webhooks/1181944209901621279/bEcTDI9BOiv7M3DW0NTINe64TSHfN1gVkG-pEXczAKsRrC2AYEkIe7k6WOKbUzJezIy8
+              DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
             --description
-            Workflow **${{ github.workflow }}** failed on commit ${{ github.sha }}.
+              Workflow **${{ github.workflow }}** failed on commit ${{ github.sha }}.
         
