@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import sendRequest from "../../services/axiosRequestFunction";
-import { useNavigate } from 'react-router-dom';
 
 export default function MdpRestEmail() {
     const [email, setemail] = useState("");
     const [showResetPasswordMessage, setShowResetPasswordMessage] = useState(false);
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,7 +22,7 @@ export default function MdpRestEmail() {
 
     return (
         <div>
-            {showResetPasswordMessage == false ? (
+            {showResetPasswordMessage === false ? (
                 <div className="bg-light-blue-100 p-4 rounded-lg shadow-md">
                     <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                         <div className="flex flex-col">

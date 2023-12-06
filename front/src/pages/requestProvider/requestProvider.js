@@ -56,7 +56,6 @@ const RequestProvider = () => {
       setIsLoading(false); 
       if (response.ok) {
         notify('File successfully uploaded', 'success');
-        const responseData = await response.json();
       } else {
         notify('Upload failed with status: ' + response.status, 'error');
       }
@@ -111,7 +110,7 @@ const RequestProvider = () => {
               selectedFileName && (
                 <div className='flex flex-col gap-1 bg-white rounded-md p-3 border border-gray-300 mt-8'>
                   <div className='flex flex-row gap-1'>
-                    <img className='h-12' src={PdfIcon} />
+                    <img className='h-12' src={PdfIcon} alt='pdf-icon' />
                     <div className='flex flex-col gap-1'>
                       <span className='text-black text-base font-medium'>{file.name}</span>
                       <span className='text-gray-400 text-sm font-medium'>{file.size} KO</span>

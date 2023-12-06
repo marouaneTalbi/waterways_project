@@ -57,8 +57,6 @@ axiosInstance.interceptors.request.use(async config => {
       return config;
     }
 
-    console.log('refresh')
-
     const token = localStorage.getItem('token');
     const isValidToken = !isTokenExpired(token);
 
