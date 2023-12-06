@@ -74,3 +74,4 @@ jobs:
         with:
           webhook-url: ${{ secrets.DISCORD_TOKEN }}
           content: "Workflow **${{ github.workflow }}** succeeded on commit ${{ github.sha }}."
+          
