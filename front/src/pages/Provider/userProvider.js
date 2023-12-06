@@ -1,11 +1,6 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
-import sendRequest from "../../services/axiosRequestFunction";
-import GenericModal from '../../components/GenericModal/GenericModal';
-import {Button, Label, TextInput} from "flowbite-react";
-import {getUserRole} from "../../services/axiosRequestFunction";
-import Boats from "../Components/Boat/boats";
-import Establishments from "../Components/Establishment/establishments";
+import Boats from "../../components/Boat/boats";
+import Establishments from "../../components/Establishment/establishments";
 
 export default function UserProvider() {
 
