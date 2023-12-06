@@ -10,6 +10,8 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\EstablishmentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -58,6 +60,7 @@ class Establishment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['establishment:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -80,6 +83,14 @@ class Establishment
     #[Groups(['establishment:read', 'establishment:create', 'establishment:update'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $userId;
+
+    #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Boat::class)]
+    private Collection $boats;
+
+    public function __construct()
+    {
+        $this->boats = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -142,6 +153,36 @@ class Establishment
     public function setUser(?User $userId): static
     {
         $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Boat>
+     */
+    public function getBoats(): Collection
+    {
+        return $this->boats;
+    }
+
+    public function addBoat(Boat $boat): static
+    {
+        if (!$this->boats->contains($boat)) {
+            $this->boats->add($boat);
+            $boat->setEstablishment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBoat(Boat $boat): static
+    {
+        if ($this->boats->removeElement($boat)) {
+            // set the owning side to null (unless already changed)
+            if ($boat->getEstablishment() === $this) {
+                $boat->setEstablishment(null);
+            }
+        }
 
         return $this;
     }
