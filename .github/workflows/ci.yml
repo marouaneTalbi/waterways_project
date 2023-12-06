@@ -62,4 +62,3 @@ jobs:
               DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}
             --description
               Workflow **${{ github.workflow }}** failed on commit ${{ github.sha }}.
-        
