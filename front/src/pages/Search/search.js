@@ -12,8 +12,8 @@ export default function Search() {
   };
 
   const addressesArray = [
-    '1 rue de la paix, 75000 Paris',
-    '11 rue du Lunain, 77380 Combs la Ville',
+    // '1 rue de la paix, 75000 Paris',
+    // '11 rue du Lunain, 77380 Combs la Ville',
   ]
 
   return (

@@ -1,0 +1,34 @@
+name: Integration continue
+
+on: 
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches: 
+      - main
+      - dev
+
+jobs:
+  frontend-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./front
+            
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+            
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+            
+      - name: Install Dependencies
+        run: |
+          npm ci
+            
+      - name: Build React App
+        run: |
+          npm run build
