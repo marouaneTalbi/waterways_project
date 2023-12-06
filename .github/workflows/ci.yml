@@ -58,11 +58,20 @@ jobs:
     if: success()
     steps:
       - name: Notify on Discord
-        uses: tsickert/discord-webhook@v5.3.0
+        uses: SebastiaanZ/github-status-embed-for-discord@main
         with:
-          webhook-url: ${{ secrets.DISCORD_TOKEN }}
-          content: "Workflow ${{ github.workflow }} **succeeded** on commit ${{ github.sha }}."
-          embeds: '[{"color": 16711680, "description": "This is a red error message."}]'
+          webhook_id: '1234567890'  # Has to be provided as a string
+          webhook_token: ${{ secrets.DISCORD_TOKEN }}
+
+          # Optional arguments for PR-related events
+          # Note: There's no harm in including these lines for non-PR
+          # events, as non-existing paths in objects will evaluate to
+          # `null` silently and the github status embed action will
+          # treat them as absent.
+          pr_author_login: ${{ github.event.pull_request.user.login }}
+          pr_number: ${{ github.event.pull_request.number }}
+          pr_title: ${{ github.event.pull_request.title }}
+          pr_source: ${{ github.event.pull_request.head.label }}
 
   notify-error-on-discord:
     needs: frontend-test
@@ -75,4 +84,4 @@ jobs:
         with:
           webhook-url: ${{ secrets.DISCORD_TOKEN }}
           content: "Workflow ${{ github.workflow }} **failed** on commit ${{ github.sha }}."
-          
+
