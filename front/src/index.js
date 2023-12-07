@@ -12,7 +12,7 @@ import RequestProvider from './pages/requestProvider/requestProvider';
 import KabisRequests from './pages/requestProvider/KabisRequests';
 import MdpRestEmail from "./pages/Login/motDePasseOublier";
 import ResetMdp from "./pages/Login/restmpd";
-// import UserProvider from "./pages/Provider/userProvider";
+import UserProviderARefacto from "./pages/Provider/userProvider";
 import UserProvider from './contexts/userContext';
 import Profile from './pages/profile';
 
@@ -32,7 +32,7 @@ root.render(
           <Route path="profile" element={<Profile />} />
 
           <Route path="admin" element={<UserAdmin /> } />
-          {/* <Route path="provider" element={<UserProvider /> } /> */}
+          <Route path="provider" element={<UserProviderARefacto /> } />
           <Route path="requestProvider" element={<RequestProvider /> } />
           <Route path="KabisRequests" element={<KabisRequests /> } />
         </Route>

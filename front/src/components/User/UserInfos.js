@@ -8,7 +8,7 @@ export default function UserInfos() {
 
     useEffect(() => {
         getUser();
-    }, [getUser]);
+    }, []);
 
     return (
         <>
