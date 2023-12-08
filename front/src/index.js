@@ -15,30 +15,33 @@ import ResetMdp from "./pages/Login/restmpd";
 import UserProviderARefacto from "./pages/Provider/userProvider";
 import UserProvider from './contexts/userContext';
 import Profile from './pages/profile';
+import EstablishmentProvider from './contexts/establishmentContext';
+import EstablishmentPage from './pages/Provider/establishmentPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
-  <UserProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="login" element={<Login />} />
-          <Route path="mdpresetemail" element={<MdpRestEmail />} />
-          <Route path="resetmdp/:token" element={<ResetMdp />} />
-          <Route path="register" element={<Register />} />
-          <Route path="search" element={<Search />} />
-
-          <Route path="profile" element={<Profile />} />
-
-          <Route path="admin" element={<UserAdmin /> } />
-          <Route path="provider" element={<UserProviderARefacto /> } />
-          <Route path="requestProvider" element={<RequestProvider /> } />
-          <Route path="KabisRequests" element={<KabisRequests /> } />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </UserProvider>
+  //  <EstablishmentProvider>
+    <UserProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="login" element={<Login />} />
+            <Route path="mdpresetemail" element={<MdpRestEmail />} />
+            <Route path="resetmdp/:token" element={<ResetMdp />} />
+            <Route path="register" element={<Register />} />
+            <Route path="search" element={<Search />} />
+            <Route path="establishment-page/:id" element={<EstablishmentPage />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="admin" element={<UserAdmin /> } />
+            <Route path="provider" element={<UserProviderARefacto /> } />
+            <Route path="requestProvider" element={<RequestProvider /> } />
+            <Route path="KabisRequests" element={<KabisRequests /> } />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
+  //  </EstablishmentProvider>
 
 );
 
