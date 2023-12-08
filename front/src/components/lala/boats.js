@@ -123,7 +123,7 @@ export default function Boats(props) {
                         value={establishment}
                         onChange={(e) => setEstablishment(e.target.value)}
                         required
-                    >
+                    >   
                         {allEstablishments.map(establishment => (
                             <option key={establishment.id} value={establishment.id}>
                                 {establishment.name}

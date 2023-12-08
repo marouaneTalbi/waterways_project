@@ -55,6 +55,7 @@ class Boat
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['boat:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

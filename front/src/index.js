@@ -15,6 +15,7 @@ import ResetMdp from "./pages/Login/restmpd";
 import UserProviderARefacto from "./pages/Provider/userProvider";
 import UserProvider from './contexts/userContext';
 import Profile from './pages/profile';
+import ProviderDashboard from './pages/providerDashboard';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -32,7 +33,7 @@ root.render(
           <Route path="profile" element={<Profile />} />
 
           <Route path="admin" element={<UserAdmin /> } />
-          <Route path="provider" element={<UserProviderARefacto /> } />
+          <Route path="provider" element={<ProviderDashboard /> } />
           <Route path="requestProvider" element={<RequestProvider /> } />
           <Route path="KabisRequests" element={<KabisRequests /> } />
         </Route>
