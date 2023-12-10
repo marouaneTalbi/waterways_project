@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\Kabis;
+use App\Entity\Kbis;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Kabis>
+ * @extends ServiceEntityRepository<Kbis>
  *
- * @method Kabis|null find($id, $lockMode = null, $lockVersion = null)
- * @method Kabis|null findOneBy(array $criteria, array $orderBy = null)
- * @method Kabis[]    findAll()
- * @method Kabis[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Kbis|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Kbis|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Kbis[]    findAll()
+ * @method Kbis[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class KabisRepository extends ServiceEntityRepository
+class KbisRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Kabis::class);
+        parent::__construct($registry, Kbis::class);
     }
 
 //    /**
-//     * @return Kabis[] Returns an array of Kabis objects
+//     * @return Kbis[] Returns an array of Kbis objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class KabisRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Kabis
+//    public function findOneBySomeField($value): ?Kbis
 //    {
 //        return $this->createQueryBuilder('k')
 //            ->andWhere('k.exampleField = :val')
