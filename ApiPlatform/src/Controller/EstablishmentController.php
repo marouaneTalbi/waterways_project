@@ -7,27 +7,32 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\UserRepository;
 use App\Repository\EstablishmentRepository;
+use Symfony\Component\Security\Core\Security;
+
 
 #[AsController]
 class EstablishmentController extends AbstractController
 {
     private  $userRepository;
     private  $establishmentRepository;
+    private $security;
 
     public function __construct(
         UserRepository $userRepository,
-        EstablishmentRepository $establishmentRepository
+        EstablishmentRepository $establishmentRepository,
+        Security $security
     ) {
         $this->userRepository = $userRepository;
         $this->establishmentRepository = $establishmentRepository;
+        $this->security = $security;
     }
 
     public function __invoke(Request $request)
     {
+        $user = $this->security->getUser();
         $data = json_decode($request->getContent(), true);
-        $user = $this->userRepository->findOneByEmail($data['user']);
         $establishment = new Establishment();
-        $establishment->setName($data['name']);
+        $establishment->setName($data['name']); 
         $establishment->setAddress($data['address']);
         $establishment->setUser($user);
         $establishment->setStartDate(new \DateTimeImmutable($data['startDate']));

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import sendRequest from "../../services/axiosRequestFunction";
 
-
 export default function UserAdmin() {
     const [users, setUsers] = useState([]);
 

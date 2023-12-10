@@ -33,6 +33,11 @@ use App\Controller\EstablishmentController;
             normalizationContext: ['groups' => ['establishment:create']],
 
          ),
+         new Get(
+            uriTemplate: '/establishments/{id}',
+            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
+            normalizationContext: ['groups' => ['establishment:read']],
+        ),
      /*   new Get(
             security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['establishment:read']],

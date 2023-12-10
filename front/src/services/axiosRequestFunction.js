@@ -1,6 +1,7 @@
 
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
+import { useNavigate, Params } from 'react-router';
 const API_BASE_URL = 'http://localhost:8888';
 
 const axiosInstance = axios.create({
@@ -12,14 +13,23 @@ const axiosInstance = axios.create({
 });
 
 export function getUserRole() {
-  const token = localStorage.getItem('token');
-  const decodedToken = jwtDecode(token);
-  return decodedToken;
+  if(!localStorage.getItem('token')) {
+    return null;
+  } else {
+    const token = localStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
+    return decodedToken;
+  }
+
 }
 
-export const currentUser = getUserRole();
-export const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
-export const isAdmin = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
+// if(localStorage.getItem('token')) {
+//   export const currentUser = getUserRole();
+//   export const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
+//   export const isAdmin = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
+// } e
+
+
 
 const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true) => {
   if (requireAuth) {
@@ -44,6 +54,14 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
   }
 };
 
+if(!localStorage.getItem('token')) {
+  console.log('test')
+}
+
+if(window.location.pathname === "/Login") {
+  console.log('ok', localStorage.getItem('token'))
+
+}
 
 
 axiosInstance.interceptors.request.use(async config => {
@@ -58,10 +76,11 @@ axiosInstance.interceptors.request.use(async config => {
     }
 
     const token = localStorage.getItem('token');
-    const isValidToken = !isTokenExpired(token);
+    const isValidToken = !isTokenExpired();
 
     if (!isValidToken) {
       const newToken = await refreshToken();
+      console.log('newToken', newToken)
       config.headers['Authorization'] = `Bearer ${newToken}`;
     } else {
       config.headers['Authorization'] = `Bearer ${token}`;
@@ -72,11 +91,17 @@ axiosInstance.interceptors.request.use(async config => {
     return Promise.reject(error);
   });
 
-function isTokenExpired(token) {
-  const decodedToken = jwtDecode(token);
-  const expirationDate = new Date(decodedToken.exp * 1000);
-  const now = new Date();
-  return now > expirationDate;
+export  function isTokenExpired() {
+  if(!localStorage.getItem('token')) {
+    return null;
+  } else {
+    const token = localStorage.getItem('token');
+
+    const decodedToken = jwtDecode(token);
+    const expirationDate = new Date(decodedToken.exp * 1000);
+    const now = new Date();
+    return now > expirationDate;
+  }
 }
 
 async function refreshToken() {
