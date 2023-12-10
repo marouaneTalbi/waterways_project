@@ -5,11 +5,7 @@ import { useNavigate, Params } from 'react-router';
 const API_BASE_URL = 'http://localhost:8888';
 
 const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    // 'Content-Type': 'application/merge-patch+json'
-  },
+  baseURL: API_BASE_URL
 });
 
 export function getUserRole() {

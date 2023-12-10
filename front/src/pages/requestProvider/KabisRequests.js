@@ -6,25 +6,28 @@ import { faFilePdf, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const notify = (message, type) => {
     if (type === 'success') {
-        toast.success(message);
+      toast.success(message);
     } else if (type === 'error') {
-        toast.error(message);
+      toast.error(message);
     }
-};
+  };
 
 
 const KabisRequests = () => {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState('0');
+    const [usersInfo, setUsersInfo] = useState({});
 
     useEffect(() => {
         const fetchRequests = async () => {
             try {
-                const response = await axios.get('http://localhost:8888/api/kabis');
+                const response = await axios.get('http://localhost:8888/api/kbis');
                 setRequests(response.data);
+                console.log(response.data);
             } catch (error) {
                 console.error("Erreur lors de la récupération des demandes :", error);
             } finally {
@@ -53,7 +56,7 @@ const KabisRequests = () => {
     };
     const handleStatusChange = async (id, newStatus) => {
         try {
-            const response = await axios.put(`http://localhost:8888/api/kabis/${id}`, { status: newStatus });
+            const response = await axios.put(`http://localhost:8888/api/kbis/${id}`, { status: newStatus });
             setRequests(requests.map(request => 
                 request.id === id ? { ...request, status: newStatus } : request
             ));
@@ -63,19 +66,20 @@ const KabisRequests = () => {
             notify('updaate failed', 'error');
         }
     };
+    const sendEmailToUser = (email) => {
+        const subject = encodeURIComponent("Demande de complément pour votre demande");
+        const body = encodeURIComponent("Bonjour,\n\nNous avons besoin de compléments d'information concernant votre demande. Veuillez nous fournir les informations suivantes :\n\n...");
+        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    };
     
-     
 
     if (loading) {
         return <div className="flex justify-center items-center h-screen">
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
         </div>;
     }
-
+    
     return (
-        <><div className="container mx-auto p-4">
-            <ToastContainer />
-        </div>
         <div className="container mx-auto p-4">
                 <h1 className="text-2xl font-bold mb-4">Liste des demandes pour devenir prestataire</h1>
                 <div className="mb-4">
@@ -95,32 +99,39 @@ const KabisRequests = () => {
                 </div>
                 <ul>
                  {filteredRequests.map(request => (
-                   // {requests.map(request => (
                         <li key={request.id} className="mb-3 p-3 border rounded shadow-sm hover:shadow-md transition duration-300">
-                            <p className="font-medium">
+                            <label className="font-medium">
                                 <p className="text-white bg-blue-500 hover:bg-blue-700 transition duration-200 rounded px-4 py-2 mr-2">Staut : {mapStatusToText(request.status)}</p>
-                                <a href={`http://localhost:8888/public/uploads/kabis/${request.name}`} download>
+                                <a href={`http://localhost:8888/uploads/kbis/${request.name}`} download>
                                     <FontAwesomeIcon icon={faFilePdf} /> Télécharger Kbis
                                 </a>
                                 <p>
-                                {request.userFirstname} {request.userLastname} 
-                                  {request.isVerified ? 
+                                {request.createdby.firstname} {request.createdby.lastname}
+                                  {request.createdby.isVerified ? 
                                    <FontAwesomeIcon icon={faCheckCircle} className="text-green-500" /> : 
                                    <FontAwesomeIcon icon={faTimesCircle} className="text-red-500" />
                                   }
-                                </p></p>
-                            {request.status === 0 && (
+                                </p></label>
+                            {request.status === 0  && (
                                 <div className="mt-2">
                                     <button onClick={() => handleStatusChange(request.id, 1)} className="text-white bg-green-500 hover:bg-green-700 transition duration-200 rounded px-4 py-2 mr-2">Valider</button>
-                                    <button onClick={() => handleStatusChange(request.id, 2)} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2">Demander un complément</button>
+                                    <button onClick={async () => {
+                                      await handleStatusChange(request.id, 2);
+                                      sendEmailToUser(request.createdby.email);
+                                    }} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2">Demander un complément</button>                                    
+                                    <button onClick={() => handleStatusChange(request.id, 3)} className="text-white bg-red-500 hover:bg-red-700 transition duration-200 rounded px-4 py-2">Refuser</button>
+                                </div>
+                            )}
+                            {request.status === 2 && (
+                                <div className="mt-2">
+                                    <button onClick={() => handleStatusChange(request.id, 1)} className="text-white bg-green-500 hover:bg-green-700 transition duration-200 rounded px-4 py-2 mr-2">Valider</button>
                                     <button onClick={() => handleStatusChange(request.id, 3)} className="text-white bg-red-500 hover:bg-red-700 transition duration-200 rounded px-4 py-2">Refuser</button>
                                 </div>
                             )}
                         </li>
-                   // ))}
                     ))}
                 </ul>
-            </div></>
+            </div>
     );
 };
 
