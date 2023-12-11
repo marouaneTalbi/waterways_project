@@ -39,7 +39,7 @@ use App\Controller\EstablishmentController;
             normalizationContext: ['groups' => ['establishment:read', 'user:read']],
         ),
         new Put(
-            denormalizationContext: ['groups' => ['establishment:update']],
+            denormalizationContext: ['groups' => ['establishment:update']], 
             controller: EstablishmentController::class,
             security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
             securityMessage: "Only authenticated users can modify users."
