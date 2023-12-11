@@ -29,12 +29,14 @@ class EstablishmentController extends AbstractController
 
     public function __invoke(Request $request)
     {
+
+        dd($request);
         $user = $this->security->getUser();
         $data = json_decode($request->getContent(), true);
         $establishment = new Establishment();
         $establishment->setName($data['name']); 
         $establishment->setAddress($data['address']);
-        $establishment->setUser($user);
+        $establishment->setCreatedby($user);
         $establishment->setStartDate(new \DateTimeImmutable($data['startDate']));
         $establishment->setEndDate(new \DateTimeImmutable($data['endDate']));
 

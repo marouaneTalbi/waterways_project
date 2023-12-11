@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(
             security: "is_granted('ROLE_ADMIN')",
-            normalizationContext: ['groups' => ['user:read']],
+            normalizationContext: ['groups' => ['user:read', 'establishment:read']],
         ),
         new Post(
             processor: UserPasswordHasher::class,
@@ -56,7 +56,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: ['groups' => ['user:read']]
         )
     ],
-    normalizationContext: ['groups' => ['user:read']],
+    normalizationContext: ['groups' => ['user:read', 'establishment:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
 
 )]
@@ -74,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank]
     #[Assert\Email]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+    #[Groups(['user:read', 'user:create', 'user:update', 'establishment:read'])]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -93,11 +93,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $token = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+    #[Groups(['user:read', 'user:create', 'user:update','media_object:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:create', 'user:update','user:read'])]
+    #[Groups(['user:create', 'user:update','user:read','media_object:read'])]
     private ?string $lastname = null;
 
     #[ORM\Column(nullable: true)]
@@ -113,10 +113,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $isVerified = false;
 
 
-    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: Establishment::class, orphanRemoval: true)]
-    private Collection $establishments;
-
-
     public function __construct()
     {
         $this->establishments = new ArrayCollection();
@@ -126,6 +122,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read', 'user:update'])]
     private ?string $phone = null;
 
+    #[ORM\OneToMany(mappedBy: 'createdby', targetEntity: Establishment::class)]
+    private Collection $establishments;
 
     public function getPlainPassword(): ?string
     {
@@ -281,23 +279,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    /**
-     * @return Collection<int, Establishment>
-     */
-    public function getEstablishments(): Collection
-    {
-        return $this->establishments;
-    }
-
-    public function addEstablishment(Establishment $establishment): static
-    {
-        if (!$this->establishments->contains($establishment)) {
-            $this->establishments->add($establishment);
-            $establishment->setUserId($this);
-        }
-    }
-
-
     public function getPhone(): ?string
     {
         return $this->phone;
@@ -311,19 +292,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-
-    public function removeEstablishment(Establishment $establishment): static
+    /**
+     * @return Collection<int, Establishment>
+     */
+    public function getEstablishments(): Collection
     {
-        if ($this->establishments->removeElement($establishment)) {
-            // set the owning side to null (unless already changed)
-            if ($establishment->getUserId() === $this) {
-                $establishment->setUserId(null);
-            }
+        return $this->establishments;
+    }
+
+    public function addEstablishment(Establishment $establishment): static
+    {
+        if (!$this->establishments->contains($establishment)) {
+            $this->establishments->add($establishment);
+            $establishment->setCreatedby($this);
         }
 
         return $this;
     }
 
+    public function removeEstablishment(Establishment $establishment): static
+    {
+        if ($this->establishments->removeElement($establishment)) {
+            // set the owning side to null (unless already changed)
+            if ($establishment->getCreatedby() === $this) {
+                $establishment->setCreatedby(null);
+            }
+        }
+
+        return $this;
+    }
 
 
 }

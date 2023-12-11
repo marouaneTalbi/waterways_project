@@ -24,7 +24,7 @@ use App\Controller\EstablishmentController;
     operations: [
         new GetCollection(
             security: "is_granted('ROLE_ADMIN')",
-            normalizationContext: ['groups' => ['establishment:read']],
+            normalizationContext: ['groups' => ['establishment:read', 'user:read', 'media_object:read']],
         ),
         new Post(
             name: 'Establishment', 
@@ -36,7 +36,13 @@ use App\Controller\EstablishmentController;
          new Get(
             uriTemplate: '/establishments/{id}',
             security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
-            normalizationContext: ['groups' => ['establishment:read']],
+            normalizationContext: ['groups' => ['establishment:read', 'user:read']],
+        ),
+        new Put(
+            denormalizationContext: ['groups' => ['establishment:update']],
+            controller: EstablishmentController::class,
+            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
+            securityMessage: "Only authenticated users can modify users."
         ),
      /*   new Get(
             security: "is_granted('ROLE_ADMIN')",
@@ -46,17 +52,14 @@ use App\Controller\EstablishmentController;
             security: "is_granted('ROLE_ADMIN')",
             securityMessage: "Only authenticated users can modify users."
         ),
-        new Patch(
-            security: "is_granted('ROLE_ADMIN')",
-            securityMessage: "Only authenticated users can modify users."
-        ),
+      
         new Delete(
             security: "is_granted('ROLE_ADMIN')",
             securityMessage: "Only authenticated users can delete users."
         ),*/
 
     ],
-    normalizationContext: ['groups' => ['establishment:read']],
+    normalizationContext: ['groups' => ['establishment:read', 'user:read', 'media_object:read']],
     denormalizationContext: ['groups' => ['establishment:create', 'establishment:update']],
 
 )]
@@ -84,13 +87,14 @@ class Establishment
     #[Groups(['establishment:read', 'establishment:create', 'establishment:update'])]
     private ?\DateTimeInterface $endDate = null;
 
-    #[ORM\ManyToOne(inversedBy: 'establishments')]
-    #[Groups(['establishment:read', 'establishment:create', 'establishment:update'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $userId;
 
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Boat::class)]
     private Collection $boats;
+
+    #[ORM\ManyToOne(inversedBy: 'establishments')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['media_object:read'])]
+    private ?User $createdby = null;
 
     public function __construct()
     {
@@ -150,18 +154,6 @@ class Establishment
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->userId;
-    }
-
-    public function setUser(?User $userId): static
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Boat>
      */
@@ -188,6 +180,18 @@ class Establishment
                 $boat->setEstablishment(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedby(): ?User
+    {
+        return $this->createdby;
+    }
+
+    public function setCreatedby(?User $createdby): static
+    {
+        $this->createdby = $createdby;
 
         return $this;
     }
