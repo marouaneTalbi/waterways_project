@@ -9,6 +9,9 @@ const establishmentApi = {
     },
     getOne: async function (id) {
         return sendRequest('/api/establishments/'+id,'get',{},true)
+    },
+    edit: async function ({name, address, startDate, endDate}, id) {
+        return sendRequest('/api/establishments/'+id,'put',{name, address, startDate, endDate},true)
     }
 }
 

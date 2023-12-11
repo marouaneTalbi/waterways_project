@@ -5,7 +5,14 @@ import { useNavigate, Params } from 'react-router';
 const API_BASE_URL = 'http://localhost:8888';
 
 const axiosInstance = axios.create({
+
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+
   baseURL: API_BASE_URL
+
 });
 
 export function getUserRole() {
@@ -18,14 +25,6 @@ export function getUserRole() {
   }
 
 }
-
-// if(localStorage.getItem('token')) {
-//   export const currentUser = getUserRole();
-//   export const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
-//   export const isAdmin = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
-// } e
-
-
 
 const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true) => {
   if (requireAuth) {
@@ -50,18 +49,7 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
   }
 };
 
-if(!localStorage.getItem('token')) {
-  console.log('test')
-}
-
-if(window.location.pathname === "/Login") {
-  console.log('ok', localStorage.getItem('token'))
-
-}
-
-
 axiosInstance.interceptors.request.use(async config => {
-
     if (config.url.includes('/auth')
         || config.url.includes('/api/token/refresh')
         || (config.url.includes('/api/users') && config.method === 'post')
@@ -101,14 +89,15 @@ export  function isTokenExpired() {
 }
 
 async function refreshToken() {
-  try {
+  // try {
     const refresh_token = localStorage.getItem('refresh_token');
-    const response = await sendRequest('/api/token/refresh ','post', { refresh_token });
-    localStorage.setItem('token', response.data.token);
-    return response.data.token;
-  } catch (error) {
-    console.log(error)
-  }
+    const response = await sendRequest('/api/token/refresh ','post', { refresh_token }, false);
+    localStorage.setItem('token', response.token);
+    console.lor(response)
+    return response.token;
+  // } catch (error) {
+  //   console.log(error)
+  // }
 }
 
 export default sendRequest;

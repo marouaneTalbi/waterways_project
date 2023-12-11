@@ -20,6 +20,14 @@ const EstablishmentProvider = ({ children }) => {
         EstablishmentApi.getList().then(setEstablishments)
     }, []);
 
+    const getEstablishmentItem = (establishment) => {
+        setEstablishment(establishment);
+        setName(establishment.name);
+        setAddress(establishment.address);
+        setStartDate(establishment.startDate);
+        setEndDate(establishment.endDate);
+    }
+
     const getEstablishmentList = async () => {
         return establishmentModel.getList().then(response => {
             setEstablishmentList(response);
@@ -53,8 +61,17 @@ const EstablishmentProvider = ({ children }) => {
         }
     }
 
+    const editEstablishment = async ({name, address, startDate, endDate}, id) => {
+        if (isProvider) {
+            return EstablishmentApi.edit({name, address, startDate, endDate}, id).then(response => {
+                console.log(response)
+            })
+        } else {
+            throw new Error('You are not a provider');  
+        }
+    }
+
     const getEstablishment = async (establishmentId) => {
-        console.log(isProvider, establishmentId)
         if (isProvider) {
            return EstablishmentApi.getOne(establishmentId).then(response => {
                 return response;
@@ -83,7 +100,7 @@ const EstablishmentProvider = ({ children }) => {
     }
 
     return (
-        <EstablishmentContext.Provider value={{getEstablishmentList, establishment, setEstablishment, establishmentList, getEtablismentName, name, setName, address, setAddress, endDate, setEndDate, startDate, setStartDate, establishments, setEstablishments, addEstablishment, getEstablishment, getCurrentEstablishment, formatDate}}>
+        <EstablishmentContext.Provider value={{editEstablishment, getEstablishmentItem, getEstablishmentList, establishment, setEstablishment, establishmentList, getEtablismentName, name, setName, address, setAddress, endDate, setEndDate, startDate, setStartDate, establishments, setEstablishments, addEstablishment, getEstablishment, getCurrentEstablishment, formatDate}}>
             {children}
         </EstablishmentContext.Provider>
     );
