@@ -10,6 +10,7 @@ import Layout from './layouts/Layout/layout';
 import UserAdmin from "./pages/Admin/userAdmin";
 import RequestProvider from './pages/requestProvider/requestProvider';
 import KabisRequests from './pages/requestProvider/KabisRequests';
+import MyRequest from './pages/requestProvider/myRequest';
 import MdpRestEmail from "./pages/Login/motDePasseOublier";
 import ResetMdp from "./pages/Login/restmpd";
 import UserProvider from './contexts/userContext';
@@ -36,6 +37,7 @@ root.render(
           <Route path="provider" element={<ProviderDashboard /> } />
           <Route path="requestProvider" element={<RequestProvider /> } />
           <Route path="KabisRequests" element={<KabisRequests /> } />
+          <Route path="myRequest" element={<MyRequest /> } />
         </Route>
       </Routes>
     </BrowserRouter>

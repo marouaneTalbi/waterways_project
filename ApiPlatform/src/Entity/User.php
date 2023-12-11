@@ -74,7 +74,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank]
     #[Assert\Email]
-    #[Groups(['user:read', 'user:create', 'user:update', 'establishment:read'])]
+
+    #[Groups(['user:read', 'user:create', 'user:update','media_object:read'])]
+
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -109,7 +111,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['user:create', 'user:update','user:read'])]
+    #[Groups(['user:create', 'user:update','user:read','media_object:read'])]
     private ?bool $isVerified = false;
 
 
