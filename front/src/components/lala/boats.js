@@ -4,9 +4,11 @@ import sendRequest, {isProvider}  from "../../services/axiosRequestFunction";
 import GenericModal from '../GenericModal/GenericModal';
 import {Button, Label, Select, TextInput} from "flowbite-react";
 import {getUserRole} from "../../services/axiosRequestFunction";
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
+import fr from 'date-fns/locale/fr';
 
-
-export default function Boats(props) {
+export default function Boats(progps) {
     const [boats, setBoats] = useState([]);
     const [allEstablishments, setEstablishments] = useState([]);
     const [isModalOpen, setModalOpen] = useState(false);
@@ -15,10 +17,13 @@ export default function Boats(props) {
     const [size, setSize] = useState('');
     const [capacity, setCapacity] = useState('');
     const [establishment, setEstablishment] = useState('');
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    const [minTime, setMinTime] = useState('');
     const currentUser = getUserRole();
     const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
-   useEffect(() => {
+    useEffect(() => {
         sendRequest('/api/boats','get',{},true).then(setBoats)
         sendRequest('/api/establishments','get',{},true).then(setEstablishments)
     }, []);
@@ -47,7 +52,8 @@ export default function Boats(props) {
                     name,
                     modele,
                     size: Number(size),
-                    capacity :Number(capacity),
+                    capacity : Number(capacity),
+                    minTime: Number(minTime),
                     establishment: `/api/establishments/${establishment}`
                 },
                 true
@@ -66,7 +72,7 @@ export default function Boats(props) {
     };
 
     const handleSubmit = (event) => {
-        addBoat()
+        addBoat();
         event.preventDefault();
         handleCloseModal();
     };
@@ -76,11 +82,11 @@ export default function Boats(props) {
             <GenericModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
-                title="Modifier mes informations"
+                title="Ajouter un nouveau bateau"
             >
                 <>
                     <div className="mb-2 block">
-                        <Label htmlFor="name" value="Name" />
+                        <Label htmlFor="name" value="Nom" />
                     </div>
                     <TextInput
                         id="name"
@@ -89,7 +95,7 @@ export default function Boats(props) {
                         required
                     />
                     <div className="mb-2 block">
-                        <Label htmlFor="modele" value="Modele" />
+                        <Label htmlFor="modele" value="Modèle" />
                     </div>
                     <TextInput
                         id="modele"
@@ -98,7 +104,7 @@ export default function Boats(props) {
                         required
                     />
                     <div className="mb-2 block">
-                        <Label htmlFor="size" value="Size" />
+                        <Label htmlFor="size" value="Taille" />
                     </div>
                     <TextInput
                         id="size"
@@ -108,7 +114,7 @@ export default function Boats(props) {
                         required
                     />
                     <div className="mb-2 block">
-                        <Label htmlFor="capacity" value="Capacity" />
+                        <Label htmlFor="capacity" value="Capacité" />
                     </div>
                     <TextInput
                         id="capacity"
@@ -117,15 +123,66 @@ export default function Boats(props) {
                         type="integer"
                         required
                     />
-                    <div className="mb-2 block">
+
+                    <div className="mt-5 block">
+                        <Label htmlFor="timeNumber" value="Temps minimum de réservation" />
+                    </div>
+
+                    <TextInput
+                        id="minTime"
+                        value={minTime}
+                        onChange={(e) => setMinTime(e.target.value)}
+                        type="integer"
+                        required
+                    />
+
+                    <h3 className="flex items-center justify-center mt-10">Date de disponibilité</h3>
+
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="dateAvailable" value="date de début" />
+                        </div>
+                        <DatePicker
+                            showTimeSelect
+                            minTime={new Date(0, 0, 0, 5, 0)}
+                            maxTime={new Date(0, 0, 0, 23, 0)}
+                            timeFormat="HH:mm"  // Définissez le format de l'heure
+                            dateFormat="dd/MM/yyyy HH:mm"  // Définissez le format de la date et de l'heure complet
+                            locale={fr}
+                            selectsStart
+                            selected={startDate}
+                            onChange={date => setStartDate(date)}
+                            startDate={startDate}
+                        />
+
+                        <div className="mb-2 block">
+                            <Label htmlFor="dateAvailable" value="date de fin" />
+                        </div>
+                        <DatePicker
+                            showTimeSelect
+                            minTime={new Date(0, 0, 0, 5, 0)}
+                            maxTime={new Date(0, 0, 0, 23, 0)}
+                            timeFormat="HH:mm"  // Définissez le format de l'heure
+                            dateFormat="dd/MM/yyyy HH:mm"
+                            selectsEnd
+                            selected={endDate}
+                            onChange={date => setEndDate(date)}
+                            endDate={endDate}
+                            startDate={startDate}
+                            minDate={startDate}
+                        />
+                    </div>
+
+                    <div className="mt-10 block">
                         <Label htmlFor="Establishment" value="establishment" />
                     </div>
+
                     <Select
                         id="establishment"
                         value={establishment}
                         onChange={(e) => setEstablishment(e.target.value)}
                         required
-                    >   
+                    >
                         {allEstablishments.map(establishment => (
                             <option key={establishment.id} value={establishment.id}>
                                 {establishment.name}
@@ -147,19 +204,22 @@ export default function Boats(props) {
                     <thead>
                         <tr>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Name
+                                Nom
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Modele
+                                Modèle
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Size
+                                taille
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Capacity
+                                Capacité
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Establishment
+                                Temps de réservation minimum
+                            </th>
+                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                établissement
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                                 Action
@@ -191,6 +251,13 @@ export default function Boats(props) {
                                     {boat.capacity}
                                 </p>
                             </td>
+
+                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <p className="text-gray-900 whitespace-no-wrap">
+                                    {(boat.minTime)}
+                                </p>
+                            </td>
+
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                 <p className="text-gray-900 whitespace-no-wrap">
                                     {getEtablismentName(boat.establishment)}

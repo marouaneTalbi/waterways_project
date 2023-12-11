@@ -15,7 +15,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Controller\BoatController;
 
 #[ORM\Entity(repositoryClass: BoatRepository::class)]
 #[ApiResource(
@@ -25,8 +24,8 @@ use App\Controller\BoatController;
             normalizationContext: ['groups' => ['boat:read']],
         ),
         new Post(
-            name: 'boat', 
-            uriTemplate: '/addboat', 
+            name: 'boat',
+            uriTemplate: '/addboat',
             normalizationContext: ['groups' => ['boat:create']],
          ),
      /*   new Get(
@@ -78,6 +77,18 @@ class Boat
     #[Groups(['boat:read', 'boat:create', 'boat:update'])]
     private ?Establishment $establishment = null;
 
+    #[ORM\Column]
+    #[Groups(['boat:read', 'boat:create', 'boat:update'])]
+    private ?int $minTime = 0;
+
+    #[ORM\OneToMany(mappedBy: 'idBoat', targetEntity: Slot::class, orphanRemoval: true)]
+    private Collection $slots;
+
+    public function __construct()
+    {
+        $this->slots = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +96,7 @@ class Boat
 
     public function getName(): ?string
     {
+        xdebug_break();
         return $this->name;
     }
 
@@ -142,4 +154,47 @@ class Boat
 
         return $this;
     }
+
+    public function getMinTime(): ?int
+    {
+        return $this->minTime;
+    }
+
+    public function setMinTime(int $minTime): static
+    {
+        $this->minTime = $minTime;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Slot>
+     */
+    public function getSlots(): Collection
+    {
+        return $this->slots;
+    }
+
+    public function addSlot(Slot $slot): static
+    {
+        if (!$this->slots->contains($slot)) {
+            $this->slots->add($slot);
+            $slot->setIdBoat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSlot(Slot $slot): static
+    {
+        if ($this->slots->removeElement($slot)) {
+            // set the owning side to null (unless already changed)
+            if ($slot->getIdBoat() === $this) {
+                $slot->setIdBoat(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
