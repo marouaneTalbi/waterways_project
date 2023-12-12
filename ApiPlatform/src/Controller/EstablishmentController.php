@@ -47,31 +47,5 @@ class EstablishmentController extends AbstractController
         $this->establishmentRepository->save($establishment, true);
 
         return $establishment;
-
-        // if ($request->getMethod() == 'PUT') {
-        //     $establishment = $this->establishmentRepository->findOneById($id);
-        //     $data = json_decode($request->getContent(), true);
-        //     $establishment->setName($data['name']); 
-        //     $establishment->setAddress($data['address']);
-        //     $establishment->setStartDate(new \DateTimeImmutable($data['startDate']));
-        //     $establishment->setEndDate(new \DateTimeImmutable($data['endDate']));
-    
-        //     $this->establishmentRepository->save($establishment, true);
-    
-        //     return $establishment;
-        // }
-
-        // $user = $this->security->getUser();
-        // $data = json_decode($request->getContent(), true);
-        // $establishment = new Establishment();
-        // $establishment->setName($data['name']); 
-        // $establishment->setAddress($data['address']);
-        // $establishment->setCreatedby($user);
-        // $establishment->setStartDate(new \DateTimeImmutable($data['startDate']));
-        // $establishment->setEndDate(new \DateTimeImmutable($data['endDate']));
-
-        // $this->establishmentRepository->save($establishment, true);
-
-        // return $establishment;
     }
 }
