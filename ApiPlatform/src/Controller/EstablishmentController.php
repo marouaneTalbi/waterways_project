@@ -27,13 +27,17 @@ class EstablishmentController extends AbstractController
         $this->security = $security;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, $id=null)
     {
 
-        dd($request);
+        if ($request->getMethod() == 'PUT') {
+            $establishment = $this->establishmentRepository->findOneById($id);
+        } else {
+            $establishment = new Establishment();
+        }
+
         $user = $this->security->getUser();
         $data = json_decode($request->getContent(), true);
-        $establishment = new Establishment();
         $establishment->setName($data['name']); 
         $establishment->setAddress($data['address']);
         $establishment->setCreatedby($user);
@@ -43,5 +47,31 @@ class EstablishmentController extends AbstractController
         $this->establishmentRepository->save($establishment, true);
 
         return $establishment;
+
+        // if ($request->getMethod() == 'PUT') {
+        //     $establishment = $this->establishmentRepository->findOneById($id);
+        //     $data = json_decode($request->getContent(), true);
+        //     $establishment->setName($data['name']); 
+        //     $establishment->setAddress($data['address']);
+        //     $establishment->setStartDate(new \DateTimeImmutable($data['startDate']));
+        //     $establishment->setEndDate(new \DateTimeImmutable($data['endDate']));
+    
+        //     $this->establishmentRepository->save($establishment, true);
+    
+        //     return $establishment;
+        // }
+
+        // $user = $this->security->getUser();
+        // $data = json_decode($request->getContent(), true);
+        // $establishment = new Establishment();
+        // $establishment->setName($data['name']); 
+        // $establishment->setAddress($data['address']);
+        // $establishment->setCreatedby($user);
+        // $establishment->setStartDate(new \DateTimeImmutable($data['startDate']));
+        // $establishment->setEndDate(new \DateTimeImmutable($data['endDate']));
+
+        // $this->establishmentRepository->save($establishment, true);
+
+        // return $establishment;
     }
 }
