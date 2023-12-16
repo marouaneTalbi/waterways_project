@@ -118,6 +118,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->establishments = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     #[ORM\Column(nullable: true)]
@@ -126,6 +127,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'createdby', targetEntity: Establishment::class)]
     private Collection $establishments;
+
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Notification::class)]
+    private Collection $notifications;
 
     public function getPlainPassword(): ?string
     {
@@ -318,6 +322,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($establishment->getCreatedby() === $this) {
                 $establishment->setCreatedby(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): static
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): static
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getUserId() === $this) {
+                $notification->setUserId(null);
             }
         }
 

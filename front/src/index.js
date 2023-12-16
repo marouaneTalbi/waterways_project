@@ -18,6 +18,7 @@ import Profile from './pages/profile';
 import ProviderDashboard from './pages/providerDashboard';
 import EstablishmentItem from './components/Establishment/establishmentItem';
 import EstablishmentPage from './pages/Provider/establishmentPage';
+import Notifications from './pages/notifications/notifications';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -38,6 +39,7 @@ root.render(
           <Route path="requestProvider" element={<RequestProvider /> } />
           <Route path="KabisRequests" element={<KabisRequests /> } />
           <Route path="myRequest" element={<MyRequest /> } />
+          <Route path="notifications" element={<Notifications /> } />
         </Route>
       </Routes>
     </BrowserRouter>
