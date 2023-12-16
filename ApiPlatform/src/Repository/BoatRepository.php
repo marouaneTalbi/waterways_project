@@ -28,6 +28,7 @@ class BoatRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
 //    /**
 //     * @return Boat[] Returns an array of Boat objects
 //     */

@@ -26,43 +26,64 @@ export function getUserRole() {
 
 }
 
-const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true) => {
-  const isValidToken = !isTokenExpired();
+export const currentUser = getUserRole();
+export const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
+export const isAdmin = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
-  if (requireAuth && isValidToken) {
-    const token = localStorage.getItem('token');
-    if (token) {
-      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true, params = {}) => {
+  if (requireAuth) {
+    const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true) => {
+    const isValidToken = !isTokenExpired();
+
+    if (requireAuth && isValidToken) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      } else {
+        delete axiosInstance.defaults.headers.common['Authorization'];
+      }
+      try {
+        const response = await axiosInstance({
+          url: endpoint,
+          method,
+          data,
+        });
+        return response.data;
+      } catch (error) {
+        console.error('Error with the request:', error.response?.data || error.message);
+        throw error;
+      }
     } else {
-      delete axiosInstance.defaults.headers.common['Authorization'];
-    }
-    try {
-      const response = await axiosInstance({
-        url: endpoint,
-        method,
-        data,
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error with the request:', error.response?.data || error.message);
-      throw error;
-    }
-  } else {
-    try {
-      const response = await axiosInstance({
-        url: endpoint,
-        method,
-        data,
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error with the request:', error.response?.data || error.message);
-      throw error;
+      try {
+        const response = await axiosInstance({
+          url: endpoint,
+          method,
+          data,
+        });
+        return response.data;
+      } catch (error) {
+        console.error('Error with the request:', error.response?.data || error.message);
+        throw error;
+      }
     }
   }
-}
 
- 
+  try {
+    const response = await axiosInstance({
+      url: endpoint,
+      method,
+      data,
+      params: params,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error with the request:', error.response?.data || error.message);
+    throw error;
+  }}
+};
+
+
+
 axiosInstance.interceptors.request.use(async config => {
 
   const token = localStorage.getItem('token');

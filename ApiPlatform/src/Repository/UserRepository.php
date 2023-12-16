@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Boat;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -67,6 +68,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setParameter('id', $userId)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function findUsersByNameAndRole(string $userName): ?User
+    {
+        $users = $this->createQueryBuilder('u')
+            ->select('u')
+            ->andWhere('u.firstname = :firstname')
+            ->andWhere('JSON_GET_TEXT(u.roles, 0) LIKE :role')
+            ->setParameter('firstname', $userName)
+            ->setParameter('role', '%ROLE_PROVIDER%')
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $users;
     }
 
     /**
