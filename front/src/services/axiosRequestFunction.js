@@ -21,7 +21,7 @@ export const currentUser = getUserRole();
 export const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 export const isAdmin = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
-const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true) => {
+const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true, params = {}) => {
   if (requireAuth) {
     const token = localStorage.getItem('token');
     if (token) {
@@ -36,6 +36,7 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
       url: endpoint,
       method,
       data,
+      params: params,
     });
     return response.data;
   } catch (error) {

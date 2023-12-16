@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
 use App\Repository\BoatRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\Delete;
@@ -16,6 +17,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\BoatController;
+use App\Controller\BoatSearchController;
+use App\State\SearchStateProvider;
 
 #[ORM\Entity(repositoryClass: BoatRepository::class)]
 #[ApiResource(
@@ -23,12 +26,39 @@ use App\Controller\BoatController;
         new GetCollection(
             security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['boat:read']],
+            paginationEnabled: false
         ),
         new Post(
             name: 'boat', 
             uriTemplate: '/addboat', 
             normalizationContext: ['groups' => ['boat:create']],
-         ),
+        ),
+        new GetCollection(
+            name: 'search',
+            uriTemplate: '/search',
+            controller: BoatSearchController::class,
+        )
+        // new Post(
+        //     name: 'search',
+        //     uriTemplate: '/search',
+        //     processor: SearchStateProvider::class,
+        //     openapiContext: [
+        //         'requestBody' => [
+        //             'content' => [
+        //                 'application/json' => [
+        //                     'schema' => [
+        //                         'type' => 'object',
+        //                         'properties' => [
+        //                             'search' => ['type' => 'string'],
+        //                             'search' => ['type' => 'string'],
+        //                             'location' => ['type' => 'string'],
+        //                         ],
+        //                     ],
+        //                 ],
+        //             ],
+        //         ],
+        //     ],
+        // )
      /*   new Get(
             security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['boat:read']],
@@ -59,7 +89,7 @@ class Boat
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['boat:read', 'boat:create', 'boat:update'])]
+    #[Groups(['boat:read', 'boat:create', 'boat:update'], 'search')]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
