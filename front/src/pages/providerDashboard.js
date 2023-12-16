@@ -4,6 +4,7 @@ import EstablishmentProvider from '../contexts/establishmentContext'
 import BoatList from '../components/Boat/BoatList'
 import BoatForm from '../components/Boat/BoatForm'
 import GenericModal from '../components/GenericModal/GenericModal'
+import Establishments from '../components/Establishment/establishments'
 
 export default function ProviderDashboard() {
     const [isBoatModalOpen, setBoatModalOpen] = useState(false);
@@ -29,8 +30,10 @@ export default function ProviderDashboard() {
             <div className='bg-white rounded border-2 border-gray-100 p-4'>
                 {/* STAT 4 */}
             </div>
-            <div className="md:col-span-2 row-span-2 bg-white rounded border-2 border-gray-100 p-4">
-                {/* ESTABLISHMENT LIST */}
+            {/**/} <div className="md:col-span-2 row-span-2 bg-white rounded border-2 border-gray-100 p-4">
+                <EstablishmentProvider>
+                    <Establishments/>
+                </EstablishmentProvider>
             </div>
             <div className="md:col-span-2 row-span-2 md:col-start-3 bg-white rounded border-2 border-gray-100 p-4">
                 <GenericModal title="Ajouter un bateau" onClose={handleCloseModal} isOpen={isBoatModalOpen}>
@@ -49,7 +52,7 @@ export default function ProviderDashboard() {
                 <BoatProvider>
                     <BoatList />
                 </BoatProvider>
-            </div>
+            </div> 
             <div className="md:col-span-2 row-span-2 md:row-start-4 bg-white rounded border-2 border-gray-100 p-4">
                 {/* RESERVATION LIST */}
             </div>

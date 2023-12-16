@@ -17,7 +17,7 @@ export default function BoatForm({ onCloseModal }) {
         addBoat();
         onCloseModal();
     }
-    console.log(boat)
+
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-2 block">

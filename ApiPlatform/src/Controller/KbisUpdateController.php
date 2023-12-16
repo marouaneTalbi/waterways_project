@@ -1,16 +1,16 @@
 <?php
 namespace App\Controller;
 
-use App\Entity\Kabis;
+use App\Entity\Kbis;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Doctrine\ORM\EntityManagerInterface;
 
 #[AsController]
-final class KabisUpdateController extends AbstractController
+final class KbisUpdateController extends AbstractController
 {
-    public function __invoke(Request $request, Kabis $data, EntityManagerInterface $entityManager): Kabis
+    public function __invoke(Request $request, Kbis $data, EntityManagerInterface $entityManager): Kbis
     {
         $requestData = json_decode($request->getContent(), true);
         if (isset($requestData['status'])) {

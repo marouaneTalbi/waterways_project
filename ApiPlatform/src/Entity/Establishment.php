@@ -16,6 +16,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\EstablishmentController;
+use App\Entity\Boat;
 
 
 
@@ -24,7 +25,7 @@ use App\Controller\EstablishmentController;
     operations: [
         new GetCollection(
             security: "is_granted('ROLE_ADMIN')",
-            normalizationContext: ['groups' => ['establishment:read']],
+            normalizationContext: ['groups' => ['establishment:read', 'user:read', 'media_object:read']],
         ),
         new Post(
             name: 'Establishment', 
@@ -33,6 +34,17 @@ use App\Controller\EstablishmentController;
             normalizationContext: ['groups' => ['establishment:create']],
 
          ),
+         new Get(
+            uriTemplate: '/establishments/{id}',
+            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
+            normalizationContext: ['groups' => ['establishment:read', 'user:read']],
+        ),
+        new Put(
+            denormalizationContext: ['groups' => ['establishment:update']], 
+            controller: EstablishmentController::class, 
+            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
+            securityMessage: "Only authenticated users can modify users."
+        ),
      /*   new Get(
             security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['establishment:read']],
@@ -41,17 +53,14 @@ use App\Controller\EstablishmentController;
             security: "is_granted('ROLE_ADMIN')",
             securityMessage: "Only authenticated users can modify users."
         ),
-        new Patch(
-            security: "is_granted('ROLE_ADMIN')",
-            securityMessage: "Only authenticated users can modify users."
-        ),
+      
         new Delete(
             security: "is_granted('ROLE_ADMIN')",
             securityMessage: "Only authenticated users can delete users."
         ),*/
 
     ],
-    normalizationContext: ['groups' => ['establishment:read']],
+    normalizationContext: ['groups' => ['establishment:read', 'user:read', 'media_object:read']],
     denormalizationContext: ['groups' => ['establishment:create', 'establishment:update']],
 )]
 class Establishment
@@ -78,10 +87,6 @@ class Establishment
     #[Groups(['establishment:read', 'establishment:create', 'establishment:update'])]
     private ?\DateTimeInterface $endDate = null;
 
-    #[ORM\ManyToOne(inversedBy: 'establishments')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['establishment:read', 'establishment:create', 'establishment:update'])]
-    private ?User $userId;
 
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Boat::class)]
     private Collection $boats;
@@ -89,6 +94,11 @@ class Establishment
     #[ORM\Column(length: 100)]
     #[Groups(['establishment:read', 'establishment:create', 'establishment:update', 'boat:read', 'boat:create'])]
     private ?string $city = null;
+    
+    #[ORM\ManyToOne(inversedBy: 'establishments')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['media_object:read'])]
+    private ?User $createdby = null;
 
     public function __construct()
     {
@@ -148,18 +158,6 @@ class Establishment
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->userId;
-    }
-
-    public function setUser(?User $userId): static
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Boat>
      */
@@ -195,9 +193,19 @@ class Establishment
         return $this->city;
     }
 
-    public function setCity(string $city): static
+    public function setCity(string $city)
     {
         $this->city = $city;
+    }
+
+    public function getCreatedby(): ?User
+    {
+        return $this->createdby;
+    }
+
+    public function setCreatedby(?User $createdby): static
+    {
+        $this->createdby = $createdby;
 
         return $this;
     }

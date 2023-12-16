@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import WaterWaysLogo from '../../assets/svg/logo.svg'
 import { jwtDecode } from "jwt-decode";
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
+import { isTokenExpired } from '../../services/axiosRequestFunction';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
     const [userProvider, setUserProvider] = useState(null);
     const token = localStorage.getItem('token');
+    const [isValidToken, setIsValidToken] = useState(isTokenExpired());
 
     useEffect(() => {
         if (token) {
@@ -44,7 +46,7 @@ export default function Header() {
             </div>
             <Navbar.Collapse>
             {
-                    !userRole && (
+                    !userRole || isValidToken && (
                         <>
                             <Navbar.Link href="/Login">Login</Navbar.Link>
                             <Navbar.Link href="/Register">Register</Navbar.Link>
@@ -52,17 +54,17 @@ export default function Header() {
                     )
                 }
                 {
-                    userRole === 'ROLE_ADMIN' && (
+                    userRole === 'ROLE_ADMIN' && !isValidToken && (
                         <Navbar.Link href="/admin">Admin</Navbar.Link>
                     )
                 }
                 {
-                    userProvider === 'ROLE_PROVIDER' && (
+                    userProvider === 'ROLE_PROVIDER' && !isValidToken && (
                         <Navbar.Link href="/provider">Provider</Navbar.Link>
                     )
                 }
                 {
-                    userRole && (
+                    userRole && !isValidToken && (
                         <>
                             <Navbar.Link href="/">Accueil</Navbar.Link>
                             <Navbar.Link href="/search">Rechercher</Navbar.Link>

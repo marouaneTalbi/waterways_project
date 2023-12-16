@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FileInput, Label } from 'flowbite-react';
-import PdfIcon from '../../assets/png/pdf-icon.png'
+import PdfIcon from '../../assets/png/pdf-icon.png';
+import sendRequest from "../../services/axiosRequestFunction";
+
 
 const notify = (message, type) => {
   if (type === 'success') {
@@ -25,7 +27,6 @@ const RequestProvider = () => {
         notify('File is too large. Maximum size is 10MB.', 'error');
         return;
       }
-      console.log(selectedFile);
       setFile(selectedFile);
       setSelectedFileName(selectedFile);
     }
@@ -43,22 +44,9 @@ const RequestProvider = () => {
     formData.append('file', file);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      const response = await fetch('http://localhost:8888/api/kabis', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          //'Accept': 'application/ld+json',
-          // Inclure d'autres en-têtes au besoin
-        },
-      });
-
+      const response = await sendRequest('/api/kbis', 'POST', formData);
       setIsLoading(false); 
-      if (response.ok) {
-        notify('File successfully uploaded', 'success');
-      } else {
-        notify('Upload failed with status: ' + response.status, 'error');
-      }
+      notify('File successfully uploaded', 'success');
     } catch (error) {
       notify('Upload error: ' + error.message, 'error');
       setIsLoading(false); 
@@ -103,7 +91,7 @@ const RequestProvider = () => {
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">Format supporté : PDF</p>
                 </div>
-                <FileInput id="file" className="hidden" onChange={handleFileChange} />
+                <FileInput id="file" name="file" className="hidden" onChange={handleFileChange} />
               </Label>
             </div>
             {
