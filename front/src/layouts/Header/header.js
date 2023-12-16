@@ -3,6 +3,7 @@ import WaterWaysLogo from '../../assets/svg/logo.svg'
 import { jwtDecode } from "jwt-decode";
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 import { isTokenExpired } from '../../services/axiosRequestFunction';
+import NotificationIcon from './notif';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
@@ -18,6 +19,7 @@ export default function Header() {
             setUserProvider(provider)
         }
     }, [token, userRole]);
+    
 
 
     return (
@@ -68,6 +70,7 @@ export default function Header() {
                         <>
                             <Navbar.Link href="/">Accueil</Navbar.Link>
                             <Navbar.Link href="/search">Rechercher</Navbar.Link>
+                            <NotificationIcon />
                         </>
                     )
                 }
