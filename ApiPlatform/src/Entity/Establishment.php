@@ -16,6 +16,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\EstablishmentController;
+use App\Entity\Boat;
 
 
 
@@ -40,7 +41,7 @@ use App\Controller\EstablishmentController;
         ),
         new Put(
             denormalizationContext: ['groups' => ['establishment:update']], 
-            controller: EstablishmentController::class,
+            controller: EstablishmentController::class, 
             security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
             securityMessage: "Only authenticated users can modify users."
         ),
@@ -61,22 +62,21 @@ use App\Controller\EstablishmentController;
     ],
     normalizationContext: ['groups' => ['establishment:read', 'user:read', 'media_object:read']],
     denormalizationContext: ['groups' => ['establishment:create', 'establishment:update']],
-
 )]
 class Establishment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['establishment:read'])]
+    #[Groups(['establishment:read', 'boat:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'establishment:create', 'establishment:update'])]
+    #[Groups(['establishment:read', 'establishment:create', 'establishment:update', 'boat:read', 'boat:create'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'establishment:create', 'establishment:update'])]
+    #[Groups(['establishment:read', 'establishment:create', 'establishment:update', 'boat:read', 'boat:create'])]
     private ?string $address = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -91,6 +91,10 @@ class Establishment
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Boat::class)]
     private Collection $boats;
 
+    #[ORM\Column(length: 100)]
+    #[Groups(['establishment:read', 'establishment:create', 'establishment:update', 'boat:read', 'boat:create'])]
+    private ?string $city = null;
+    
     #[ORM\ManyToOne(inversedBy: 'establishments')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['media_object:read'])]
@@ -182,6 +186,16 @@ class Establishment
         }
 
         return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city)
+    {
+        $this->city = $city;
     }
 
     public function getCreatedby(): ?User

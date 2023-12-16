@@ -14,6 +14,11 @@ doctrine:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
+        dql:
+            string_functions:
+                JSON_GET_TEXT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonGetText
+                JSON_GET: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonGet
+                
         mappings:
             App:
                 is_bundle: false

@@ -6,8 +6,10 @@ const boatApi = {
     },
     getList: async function () {
         return sendRequest(`/api/boats`, 'get', {}, true);
+    },
+    search: async function (search) {
+        return sendRequest(`/api/search`, 'get', {}, true, search);
     }
-
 }
 
 export default boatApi;

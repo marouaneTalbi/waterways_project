@@ -19,6 +19,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Controller\UserGetController;
 
 #[ApiResource(
     operations: [
@@ -58,7 +61,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['user:read', 'establishment:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
-
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -95,7 +97,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $token = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:create', 'user:update','media_object:read'])]
+    #[Groups(['user:create', 'user:update','user:read', 'boat:read', 'boat:create', 'media_object:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -114,6 +116,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:create', 'user:update','user:read','media_object:read'])]
     private ?bool $isVerified = false;
 
+    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: Establishment::class, orphanRemoval: true)]
+    #[Groups(['user:create', 'user:update', 'user:read'])]
+    private Collection $establishments;
+
 
     public function __construct()
     {
@@ -124,9 +130,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     #[Groups(['user:read', 'user:update'])]
     private ?string $phone = null;
-
-    #[ORM\OneToMany(mappedBy: 'createdby', targetEntity: Establishment::class)]
-    private Collection $establishments;
 
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Notification::class)]
     private Collection $notifications;

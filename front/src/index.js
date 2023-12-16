@@ -5,7 +5,6 @@ import reportWebVitals from './reportWebVitals'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './pages/Login/login';
 import Register from './pages/Register/register';
-import Search from './pages/Search/search';
 import Layout from './layouts/Layout/layout';
 import UserAdmin from "./pages/Admin/userAdmin";
 import RequestProvider from './pages/requestProvider/requestProvider';
@@ -16,6 +15,7 @@ import ResetMdp from "./pages/Login/restmpd";
 import UserProvider from './contexts/userContext';
 import Profile from './pages/profile';
 import ProviderDashboard from './pages/providerDashboard';
+import Search from './pages/search';
 import EstablishmentItem from './components/Establishment/establishmentItem';
 import EstablishmentPage from './pages/Provider/establishmentPage';
 import Notifications from './pages/notifications/notifications';

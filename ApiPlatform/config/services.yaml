@@ -15,6 +15,11 @@ services:
     App\Services\MailerService:
         autowire: true
 
+    App\State\SearchStateProvider: 
+        tags:
+            - { name: 'api_platform.state_processor', priority: 0 }
+
+
     App\State\UserProcessor:
         bind:
             $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'

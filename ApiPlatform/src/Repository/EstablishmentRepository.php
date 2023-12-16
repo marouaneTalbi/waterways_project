@@ -30,6 +30,15 @@ class EstablishmentRepository extends ServiceEntityRepository
         }
     }
 
+    public function findOneById(string $establishmentId): ?Establishment
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.id = :id')
+            ->setParameter('id', $establishmentId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Establishment[] Returns an array of Establishment objects
 //     */
