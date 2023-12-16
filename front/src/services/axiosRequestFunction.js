@@ -15,6 +15,8 @@ const axiosInstance = axios.create({
 
 });
 
+const  urlsWithoutAuth = ['/api/token/refresh', '/api/users', '/api/mdpresetemail', '/api/resetmdp', '/auth'];
+
 export function getUserRole() {
   if(!localStorage.getItem('token')) {
     return null;
@@ -23,7 +25,6 @@ export function getUserRole() {
     const decodedToken = jwtDecode(token);
     return decodedToken;
   }
-
 }
 
 const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true) => {
@@ -68,6 +69,10 @@ axiosInstance.interceptors.request.use(async config => {
   const token = localStorage.getItem('token');
   const isValidToken = !isTokenExpired();
 
+  if(!token && !urlsWithoutAuth.includes(config.url)) {
+    window.location.replace('/login');
+  }
+
 
   if (config.url.includes('/auth')
       || config.url.includes('/api/token/refresh')
@@ -75,6 +80,7 @@ axiosInstance.interceptors.request.use(async config => {
       || (config.url.includes('/api/mdpresetemail') && config.method === 'post')
       || (config.url.includes('/api/resetmdp') && config.method === 'post')
   ) {
+
     return config;
   }
 

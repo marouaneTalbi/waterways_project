@@ -61,22 +61,21 @@ use App\Controller\EstablishmentController;
     ],
     normalizationContext: ['groups' => ['establishment:read', 'user:read', 'media_object:read']],
     denormalizationContext: ['groups' => ['establishment:create', 'establishment:update']],
-
 )]
 class Establishment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['establishment:read'])]
+    #[Groups(['establishment:read', 'boat:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'establishment:create', 'establishment:update'])]
+    #[Groups(['establishment:read', 'establishment:create', 'establishment:update', 'boat:read', 'boat:create'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'establishment:create', 'establishment:update'])]
+    #[Groups(['establishment:read', 'establishment:create', 'establishment:update', 'boat:read', 'boat:create'])]
     private ?string $address = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -87,7 +86,6 @@ class Establishment
     #[Groups(['establishment:read', 'establishment:create', 'establishment:update'])]
     private ?\DateTimeInterface $endDate = null;
 
-
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Boat::class)]
     private Collection $boats;
 
@@ -95,6 +93,10 @@ class Establishment
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['media_object:read'])]
     private ?User $createdby = null;
+
+    #[ORM\Column(length: 100)]
+    #[Groups(['establishment:read', 'establishment:create', 'establishment:update', 'boat:read', 'boat:create'])]
+    private ?string $city = null;
 
     public function __construct()
     {
@@ -192,6 +194,16 @@ class Establishment
     public function setCreatedby(?User $createdby): static
     {
         $this->createdby = $createdby;
+    }
+  
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

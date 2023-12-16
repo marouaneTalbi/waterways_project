@@ -19,6 +19,7 @@ export default function Login() {
             },
              false
         ).then((response) => {
+            console.log(response)
             localStorage.setItem('token', response.token);
             localStorage.setItem('refresh_token', response.refresh_token);
             navigate('/');

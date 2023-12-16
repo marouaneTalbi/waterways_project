@@ -19,6 +19,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 #[ApiResource(
     operations: [
@@ -58,7 +60,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['user:read', 'establishment:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
-
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -114,13 +115,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:create', 'user:update','user:read','media_object:read'])]
     private ?bool $isVerified = false;
 
-
-    public function __construct()
-    {
-        $this->establishments = new ArrayCollection();
-        $this->notifications = new ArrayCollection();
-    }
-
     #[ORM\Column(nullable: true)]
     #[Groups(['user:read', 'user:update'])]
     private ?string $phone = null;
@@ -130,6 +124,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Notification::class)]
     private Collection $notifications;
+
+
+    public function __construct()
+    {
+        $this->establishments = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
+    }
+
+
 
     public function getPlainPassword(): ?string
     {

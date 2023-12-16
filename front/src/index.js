@@ -5,7 +5,6 @@ import reportWebVitals from './reportWebVitals'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './pages/Login/login';
 import Register from './pages/Register/register';
-import Search from './pages/Search/search';
 import Layout from './layouts/Layout/layout';
 import UserAdmin from "./pages/Admin/userAdmin";
 import RequestProvider from './pages/requestProvider/requestProvider';
@@ -19,6 +18,7 @@ import ProviderDashboard from './pages/providerDashboard';
 import EstablishmentItem from './components/Establishment/establishmentItem';
 import EstablishmentPage from './pages/Provider/establishmentPage';
 import Notifications from './pages/notifications/notifications';
+import Search from './pages/search';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
