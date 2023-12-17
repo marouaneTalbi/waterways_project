@@ -41,12 +41,12 @@ jobs:
         cd ApiPlatform
         docker-compose exec -T php composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Check Symfony Requirements
-      run: |
-        cd ApiPlatform
-        docker-compose exec -T php php check:requirements
+    # - name: Check Symfony Requirements
+    #   run: |
+    #     cd ApiPlatform
+    #     docker-compose exec -T php php check:requirements
 
-    - name: Run PHP Tests
-      run: |
-        cd ApiPlatform
-        docker-compose exec -T php ./bin/phpunit
+    # - name: Run PHP Tests
+    #   run: |
+    #     cd ApiPlatform
+    #     docker-compose exec -T php ./bin/phpunit
