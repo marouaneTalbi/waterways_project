@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventSubscriber;
+namespace App\Subscriber;
 
 use App\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
