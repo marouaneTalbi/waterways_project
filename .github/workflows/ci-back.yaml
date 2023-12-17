@@ -44,7 +44,7 @@ jobs:
     - name: Check Symfony Requirements
       run: |
         cd ApiPlatform
-        docker-compose exec -T php symfony check:requirements
+        docker-compose exec -T php php check:requirements
 
     - name: Run PHP Tests
       run: |
