@@ -28,16 +28,17 @@ jobs:
           --health-retries 5
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
     - name: Set up Docker Environment
       run: |
-        cd Apiplatform
+        cd ApiPlatform
         docker-compose up -d
 
     - name: Install Dependencies
       run: |
-        cd Apiplatform
+        cd ApiPlatform
         docker-compose exec php composer install --prefer-dist --no-progress --no-suggest
 
     - name: Check Symfony Requirements
