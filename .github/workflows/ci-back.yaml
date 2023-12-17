@@ -20,7 +20,7 @@ jobs:
           POSTGRES_PASSWORD: root
           POSTGRES_USER: root
         ports:
-          - 5432:5432
+            - "5433:5432"
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -43,11 +43,11 @@ jobs:
 
     - name: Check Symfony Requirements
       run: |
-        cd Apiplatform
+        cd ApiPlatform
         docker-compose exec php symfony check:requirements
 
     - name: Run PHP Tests
       run: |
-        cd Apiplatform
+        cd ApiPlatform
         docker-compose exec php ./bin/phpunit
 
