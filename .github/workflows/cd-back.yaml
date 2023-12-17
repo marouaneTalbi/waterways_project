@@ -13,11 +13,11 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up SSH for Deployment
-      uses: webfactory/ssh-agent@v0.5.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Set up SSH Key
+      run: |
+        echo "${{ secrets.EC2_SSH_KEY }}" > ec2_ssh_key.pem
+        chmod 600 ec2_ssh_key.pem
 
     - name: Deploy to Production Server
       run: |
-        ssh -i "waterways-backend-ec2-key.pem" ubuntu@ec2-13-51-198-220.eu-north-1.compute.amazonaws.com
+        ssh -o StrictHostKeyChecking=no -i "waterways-backend-ec2-key.pem" ubuntu@ec2-13-51-198-220.eu-north-1.compute.amazonaws.com
