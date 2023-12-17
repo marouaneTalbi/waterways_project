@@ -36,6 +36,21 @@ services:
     ports:
       - "5432:5432"
 
+  front:
+    build: 
+      context: ../front
+      dockerfile: ../front/Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - server
+      - php
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../front:/app
+      - /app/node_modules
+
   ###> symfony/mailer ###
   mailer:
     image: schickling/mailcatcher
