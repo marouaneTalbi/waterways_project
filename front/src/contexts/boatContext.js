@@ -12,10 +12,7 @@ const BoatProvider = ({ children }) => {
 
     const addBoat = async () => {
         if (isProvider) {
-            // A REFACTO
             const modifiedEstablishment = `/api/establishments/${boat.establishment}`;
-    
-            // A REFACTO
             const modifiedBoat = { ...boat, establishment: modifiedEstablishment };
     
             return boatModel.add(modifiedBoat).then(response => {
