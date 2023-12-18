@@ -14,7 +14,7 @@ const EstablishmentProvider = ({ children }) => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const currentUser = getUserRole();
-    const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
+    const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
     useEffect(() => {
         EstablishmentApi.getList().then(setEstablishments)

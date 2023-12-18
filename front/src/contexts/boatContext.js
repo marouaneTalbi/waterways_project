@@ -8,7 +8,7 @@ const BoatProvider = ({ children }) => {
     const [boatList, setBoatList] = useState([]);
     const [boat, setBoat] = useState({});
     const currentUser = getUserRole();
-    const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
+    const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
     const addBoat = async () => {
         if (isProvider) {
