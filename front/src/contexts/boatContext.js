@@ -1,6 +1,7 @@
 import React, { useState, createContext } from 'react';
 import boatModel from './models/boatModel';
-import sendRequest, {getUserRole, isProvider} from '../services/axiosRequestFunction';
+import sendRequest, {getUserRole} from '../services/axiosRequestFunction';
+
 export const BoatContext = createContext(null);
 
 const BoatProvider = ({ children }) => {
@@ -9,6 +10,7 @@ const BoatProvider = ({ children }) => {
     const currentUser = getUserRole();
     const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
     const [results, setResults] = useState([]);
+
 
     const addBoat = async () => {
         if (isProvider) {

@@ -1,7 +1,7 @@
 import React, { useState, createContext, useEffect } from 'react';
 import establishmentModel from './models/establishmentModel';
 import EstablishmentApi from './models/establishmentModel';
-import { getUserRole, isProvider } from '../services/axiosRequestFunction';
+import { getUserRole } from '../services/axiosRequestFunction';
 
 export const EstablishmentContext = createContext(null);
 
@@ -15,6 +15,7 @@ const EstablishmentProvider = ({ children }) => {
     const [endDate, setEndDate] = useState('');
     const currentUser = getUserRole();
     const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
+
 
     useEffect(() => {
         EstablishmentApi.getList().then(setEstablishments)
