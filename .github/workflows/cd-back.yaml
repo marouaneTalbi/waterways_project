@@ -26,9 +26,6 @@ jobs:
         docker tag waterways-backend ${{ secrets.DOCKER_USERNAME }}/waterways-backend:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/waterways-backend:latest
 
-    - name: Decode SSH Key
-      run: |
-        chmod 600 ec2_ssh_key.pem "${{ secrets.EC2_SSH_KEY }}"
 
     - name: Deploy to EC2 Instance
       uses: appleboy/ssh-action@master
