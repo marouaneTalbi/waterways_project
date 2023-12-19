@@ -21,6 +21,7 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
+        cd ApiPlatform
         docker build -t waterways-backend .
         docker tag waterways-backend ${{ secrets.DOCKER_USERNAME }}/waterways-backend:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/waterways-backend:latest
