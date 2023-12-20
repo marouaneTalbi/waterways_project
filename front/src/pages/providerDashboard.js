@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import BoatProvider from '../contexts/boatContext'
 import EstablishmentProvider from '../contexts/establishmentContext'
+import SlotsProvider from '../contexts/slotsContext'
 import BoatList from '../components/Boat/BoatList'
 import BoatForm from '../components/Boat/BoatForm'
 import GenericModal from '../components/GenericModal/GenericModal'
@@ -39,7 +40,9 @@ export default function ProviderDashboard() {
                 <GenericModal title="Ajouter un bateau" onClose={handleCloseModal} isOpen={isBoatModalOpen}>
                     <EstablishmentProvider>
                         <BoatProvider>
-                            <BoatForm onCloseModal={handleCloseModal} />
+                            <SlotsProvider>
+                                <BoatForm onCloseModal={handleCloseModal} />
+                            </SlotsProvider>
                         </BoatProvider>
                     </EstablishmentProvider>
                 </GenericModal>

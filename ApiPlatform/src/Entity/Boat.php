@@ -64,6 +64,7 @@ use App\State\SearchStateProvider;
             security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['boat:read']],
         ),
+        /*
         new Put(
             security: "is_granted('ROLE_ADMIN')",
             securityMessage: "Only authenticated users can modify users."
@@ -86,7 +87,7 @@ class Boat
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['boat:read'])]
+    #[Groups(['boat:read', 'boat:create'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -128,7 +129,6 @@ class Boat
 
     public function getName(): ?string
     {
-        xdebug_break();
         return $this->name;
     }
 
