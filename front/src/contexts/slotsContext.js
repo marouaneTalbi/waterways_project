@@ -30,7 +30,6 @@ const SlotsProvider = ({ children }) => {
             // A REFACTO
             const getBoat = `/api/boats/${idBoat}`;
             const modifiedSlots = { ...slots, boat: getBoat};
-            modifiedSlots.idBoat = getBoat;
             return slotsModel.add(modifiedSlots).then(response => {
                 setSlotsList(prevBoats => [...prevBoats, response]);
             }).catch(error => {
