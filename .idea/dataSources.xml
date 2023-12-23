@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/symfony</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="waterwaysdb@waterwaysdb.c7eieeuago9j.eu-north-1.rds.amazonaws.com" uuid="d1c30fae-ebd4-4154-8ab6-39cdaf13b10d">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://waterwaysdb.c7eieeuago9j.eu-north-1.rds.amazonaws.com:5432/waterwaysdb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
