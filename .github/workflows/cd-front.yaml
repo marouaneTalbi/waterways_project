@@ -42,6 +42,7 @@ jobs:
 
       - name: List directory structure
         run: |
+          cd front
           pwd
           ls -alh
           ls -alh build/
