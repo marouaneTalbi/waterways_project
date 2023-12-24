@@ -12,6 +12,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: afficher les dossier
+      run: |
+        pwd
+        ls -alh
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
