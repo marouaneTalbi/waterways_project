@@ -14,9 +14,9 @@ jobs:
       run:
         working-directory: front
 
-    # steps:
-    #   - name: Checkout Repo
-    #     uses: actions/checkout@v2
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
 
     #   - name: Install Dependencies
     #     run: npm install
