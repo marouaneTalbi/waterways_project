@@ -14,21 +14,21 @@ jobs:
       run:
         working-directory: front
 
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
+    # steps:
+    #   - name: Checkout Repo
+    #     uses: actions/checkout@v2
 
-      - name: Install Dependencies
-        run: npm install
+    #   - name: Install Dependencies
+    #     run: npm install
 
-      - name: Build
-        run: npm run build
+    #   - name: Build
+    #     run: npm run build
 
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-artifacts
-          path: build/
+    #   - name: Upload Build Artifacts
+    #     uses: actions/upload-artifact@v2
+    #     with:
+    #       name: build-artifacts
+    #       path: build/
 
   deploy:
     needs: build
@@ -45,4 +45,4 @@ jobs:
           aws-region: eu-north-1
 
       - name: Deploy to AWS S3
-        run: aws s3 sync front/build s3://waterways.challenge/ --delete
+        run: aws s3 sync ./front/build s3://waterways.challenge/ --delete
