@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: go to front
+    - name: Instal dependencies and build
       run: |
         cd front 
         npm install
@@ -22,7 +22,7 @@ jobs:
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
       with:
-        args: --acl public-read --follow-symlinks --delete
+        args: --follow-symlinks --delete
       env:
         AWS_S3_BUCKET: waterways.challenge
         AWS_ACCESS_KEY_ID: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
