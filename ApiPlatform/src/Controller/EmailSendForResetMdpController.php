@@ -15,7 +15,7 @@ class EmailSendForResetMdpController extends AbstractController
 {
     private $entityManager;
 
-    private $passwordEncoder;
+    private $passwordEncoder; 
     private $mailer;
 
     private  $userRepository;
