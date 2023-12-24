@@ -37,5 +37,5 @@ jobs:
           docker stop waterways-backend
           docker rm waterways-backend
           docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend:latest
-          docker run --dns 8.8.8.8 --dns 8.8.4.4 -d --name waterways-backend -p 80:80 ${{ secrets.DOCKER_USERNAME }}/waterways-backend:latest
+          docker run -d --name waterways-backend -p 80:80 ${{ secrets.DOCKER_USERNAME }}/waterways-backend:latest
 
