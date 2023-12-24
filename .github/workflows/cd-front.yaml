@@ -21,6 +21,11 @@ jobs:
         aws-secret-access-key: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-north-1
 
+
+
+    - name: find build folder
+      run: ls 
+
     - name: Verify AWS CLI version
       run: aws --version
 
