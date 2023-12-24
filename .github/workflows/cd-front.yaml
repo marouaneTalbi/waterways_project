@@ -1,45 +1,76 @@
-name: Build and Deploy React App to CloudFront
+name: Deploy to S3
+
 on:
   push:
-    branches: 
+    branches:
       - main
+    paths:
+      - 'front/**'
+
 jobs:
-  build-and-deploy:
-    name: Build and Deploy
+  build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: front
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout Repo
+        uses: actions/checkout@v2
 
-    - name: afficher les dossier
-      run: |
-        pwd
-        ls -alh
+      - name: afficher les dossier
+        run: |
+          pwd
+          ls -alh
 
-    - name: Install Dependencies
-      run: npm install
+      - name: Install Dependencies
+        run: npm install
 
-    - name: Build
-      run: npm run build
+      - name: Build
+        run: npm run build
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-north-1
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: build/
+          
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: afficher les dossier
+        run: |
+          cd front
+          pwd
+          ls -alh
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifacts
+          path: ./build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
 
 
-    - name: Install Dependencies
-      run: |
-        npm i --production
+      - name: Install Dependencies
+        run: |
+          npm i --production
 
-    - name: Build Static Website
-      run: npm run build
+      - name: Build Static Website
+        run: npm run build
 
-    - name: Copy files to the production website with the AWS CLI
-      run: |
-         ls 
-         aws s3 sync ./build/ s3://waterways.challenge/ 
+      - name: Copy files to the production website with the AWS CLI
+        run: |
+          ls 
+          aws s3 sync ./build/ s3://waterways.challenge/ 
 
