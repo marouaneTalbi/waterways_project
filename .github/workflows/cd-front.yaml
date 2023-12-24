@@ -1,68 +1,33 @@
-name: Deploy to S3
+name: Deploy React App to S3
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'front/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: front
 
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: afficher les dossier
-        run: |
-          pwd
-          ls -alh
+    - name: go to front
+      run: cd front
 
-      - name: Install Dependencies
-        run: npm install
+    - name: Install Dependencies
+      run: npm install
 
-      - name: Build
-        run: npm run build
+    - name: Build
+      run: npm run build
 
-
-          
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: build-artifacts
-          path: front/build/
-  
-      - name: List directory structure
-        run: |
-          cd front
-          pwd
-          ls -alh
-          ls -alh build/
-
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1
-
-      - name: Copy files to the production website with the AWS CLI
-        run: |
-          cd front
-          ls 
-          aws s3 sync build/ s3://waterways.challenge/ 
-
+    - name: Deploy to S3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl public-read --follow-symlinks --delete
+      env:
+        AWS_S3_BUCKET: waterways.challenge
+        AWS_ACCESS_KEY_ID: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: eu-north-1
+        SOURCE_DIR: 'build'
