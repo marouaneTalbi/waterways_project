@@ -48,4 +48,4 @@ jobs:
           aws-region: eu-north-1
 
       - name: Deploy to AWS S3
-        run: aws s3 sync ./build s3://waterways.challenge/ --delete
+        run: aws s3 sync build s3://waterways.challenge/ --delete
