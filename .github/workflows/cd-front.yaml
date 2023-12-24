@@ -29,6 +29,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: List directory structure
+        run: |
+          pwd
+          ls -alh
+          ls -alh build/
+
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
         with:
