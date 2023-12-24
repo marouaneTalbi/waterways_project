@@ -40,8 +40,6 @@ jobs:
           aws-access-key-id: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-north-1
-          # Add your AWS region if necessary
-          # aws-region: us-west-2
 
       - name: Deploy to AWS S3
-        run: aws s3 sync ./front/build s3://waterways.challenge/ --delete
+        run: aws s3 sync ./build s3://waterways.challenge/ --delete
