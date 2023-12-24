@@ -45,4 +45,4 @@ jobs:
           aws-region: eu-north-1
 
       - name: Deploy to AWS S3
-        run: cd front && chmod -R 777 build && pwd && aws s3 sync ./build s3://waterways.challenge/ --delete
+        run: cd front && chmod -R 777 ./build && pwd && aws s3 sync ./build s3://waterways.challenge/ --delete
