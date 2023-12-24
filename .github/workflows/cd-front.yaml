@@ -14,12 +14,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: go to front
-      run: cd front && ls && npm install
-
- 
-
-    - name: Build
-      run: npm run build
+      run: |
+        cd front 
+        npm install
+        npm run build
 
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
