@@ -37,8 +37,8 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - name: directory
-        run: pwd
+      - name: go to front directory
+        run: cd front && pwd
 
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
