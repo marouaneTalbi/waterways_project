@@ -1,4 +1,5 @@
-name: deploy-container
+name: Deploy to S3
+
 on:
   push:
     branches:
@@ -6,34 +7,59 @@ on:
     paths:
       - 'front/**'
 
-defaults:
-  run:
-    working-directory: front
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: front
+
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
 
-    - name: Set up AWS CLI v2
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-north-1
+      - name: afficher les dossier
+        run: |
+          pwd
+          ls -alh
 
+      - name: Install Dependencies
+        run: npm install
 
+      - name: Build
+        run: npm run build
 
-    - name: find build folder
-      run: ls 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: build/
+          
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
 
-    - name: Verify AWS CLI version
-      run: aws --version
+    
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
 
-      # - uses: actions/checkout@v2
-      # - run: npm install
-      # - run: npm run build
-      # - uses: chrislennon/action-aws-cli@v1.1
-      # - run: aws s3 sync build/ s3://waterways.challenge/ 
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
+      - name: afficher les dossier
+        run: |
+          cd front
+          pwd
+          ls -alh
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
+
+      - name: Copy files to the production website with the AWS CLI
+        run: |
+          cd front
+          ls 
+          aws s3 sync build/ s3://waterways.challenge/ 
+
