@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: go to front
-      run: ls && cd front
+      run: ls && cd front && ls
 
     - name: Install Dependencies
       run: npm install
