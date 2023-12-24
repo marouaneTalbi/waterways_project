@@ -28,4 +28,4 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: eu-north-1
-        SOURCE_DIR: 'build'
+        SOURCE_DIR: 'front/build'
