@@ -17,13 +17,15 @@ jobs:
         with:
           node-version: '14'  # Use the Node version compatible with your project
 
+      - name: Go to front directory
+        run: cd ../front
+
       - name: Install Dependencies
         run: npm install
-        working-directory: ./front
 
       - name: Build Project
         run: npm run build
-        working-directory: ./front
+
 
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
