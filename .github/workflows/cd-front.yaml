@@ -47,7 +47,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-artifacts
-          path: front/build
+          path: ./build
 
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
