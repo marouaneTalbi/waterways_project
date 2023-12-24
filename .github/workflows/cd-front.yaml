@@ -1,31 +1,38 @@
-name: Deploy React Application to AWS S3
+name: Deploy to S3
 
 on:
   push:
+    branches:
+      - main
     paths:
-      - 'front/**'  # Triggers the workflow on changes in the 'front' directory
+      - 'front/**'
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: front
+
     steps:
-      - name: Checkout Repository
+      - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'  # Use the Node version compatible with your project
-
-      - name: Go to front directory
+      - name: Install Dependencies
         run: cd ../front
 
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Project
+      - name: Build
         run: npm run build
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
 
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
