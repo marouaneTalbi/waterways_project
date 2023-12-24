@@ -24,7 +24,7 @@ jobs:
       with:
         args: --follow-symlinks --delete
       env:
-        AWS_S3_BUCKET: waterways.challenge
+        AWS_S3_BUCKET: ${{ secrets.BUCKE_NAME }}
         AWS_ACCESS_KEY_ID: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: eu-north-1
