@@ -29,13 +29,18 @@ jobs:
         with:
           name: build-artifacts
           path: build/
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifacts
+          path: front/build
 
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
@@ -45,4 +50,9 @@ jobs:
           aws-region: eu-north-1
 
       - name: Deploy to AWS S3
-        run: cd front && ls && chmod -R 777 ./build  && aws s3 sync ./build s3://waterways.challenge/ --delete
+        run: |
+          cd front
+          pwd
+          ls -alh
+          chmod -R 777 build
+          aws s3 sync build/ s3://waterways.challenge/ --delete
