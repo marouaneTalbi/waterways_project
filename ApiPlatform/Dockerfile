@@ -73,5 +73,7 @@ FROM httpd:2 as server
 
 COPY ./.docker/httpd/httpd.conf /usr/local/apache2/conf/httpd.conf
 
+RUN echo "ServerName localhost" >> /usr/local/apache2/conf/httpd.conf
+
 COPY --from=php /srv/app /srv/app
 #<<<<<<<<<<End: Server Image Target>>>>>>>>>>#
