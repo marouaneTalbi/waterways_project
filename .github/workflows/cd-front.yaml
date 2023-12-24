@@ -57,6 +57,7 @@ jobs:
 
       - name: Copy files to the production website with the AWS CLI
         run: |
+          cd front
           ls 
           aws s3 sync ./build/ s3://waterways.challenge/ 
 
