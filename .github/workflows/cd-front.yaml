@@ -37,9 +37,6 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - name: go to front directory
-        run: cd front && pwd
-
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -48,4 +45,4 @@ jobs:
           aws-region: eu-north-1
 
       - name: Deploy to AWS S3
-        run: pwd && aws s3 sync build s3://waterways.challenge/ --delete
+        run: cd front && pwd && aws s3 sync build s3://waterways.challenge/ --delete
