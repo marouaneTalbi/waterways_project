@@ -37,7 +37,7 @@ class EmailSendForResetMdpController extends AbstractController
     public function __invoke(Request $request): Response
     {
 
-        $data = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true); 
         $email = $data['email'] ?? null;
         if (!$email) {
             return new Response('Email is required', Response::HTTP_BAD_REQUEST);
