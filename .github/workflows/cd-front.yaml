@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build-artifacts
-          path: front/build/
+          path: build/
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
