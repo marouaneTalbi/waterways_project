@@ -55,14 +55,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-north-1
 
-
-      - name: Install Dependencies
-        run: |
-          npm i --production
-
-      - name: Build Static Website
-        run: npm run build
-
       - name: Copy files to the production website with the AWS CLI
         run: |
           ls 
