@@ -40,18 +40,18 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifacts
+          path: front/build/
+  
       - name: List directory structure
         run: |
           cd front
           pwd
           ls -alh
           ls -alh build/
-
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-artifacts
-          path: front/build/
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
