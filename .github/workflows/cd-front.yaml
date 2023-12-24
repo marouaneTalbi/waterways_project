@@ -1,46 +1,37 @@
-name: Deploy to S3
+name: Deploy React Application to AWS S3
 
 on:
   push:
-    branches:
-      - main
     paths:
-      - 'front/**'
+      - 'front/**'  # Triggers the workflow on changes in the 'front' directory
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: front
-
     steps:
-      - name: Checkout Repo
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Install Dependencies
-        run: cd ../front
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Use the Node version compatible with your project
 
       - name: Install Dependencies
         run: npm install
+        working-directory: ./front
 
-      - name: Build
+      - name: Build Project
         run: npm run build
+        working-directory: ./front
 
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          # Add your AWS region if necessary
+          # aws-region: us-west-2
 
       - name: Deploy to AWS S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --delete
-        env:
-          AWS_S3_BUCKET: waterways.challenge
-          AWS_ACCESS_KEY_ID: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
-          SOURCE_DIR: '../front/build'
+        run: aws s3 sync ./front/build s3://waterways.challenge/ --delete
