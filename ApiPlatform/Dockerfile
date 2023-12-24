@@ -69,7 +69,7 @@ RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS} && \
 #<<<<<<<<<<End: PHP-FPM Image For the Dev Environment Target>>>>>>>>>>#
 
 #<<<<<<<<<<Start: Server Image Target>>>>>>>>>>#
-# FROM httpd:2 as server
+FROM httpd:2 as server
 # FROM httpd:latest as server
 COPY ./.docker/httpd/httpd.conf /usr/local/apache2/conf/httpd.conf
 
