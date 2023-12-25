@@ -26,16 +26,33 @@ jobs:
         docker tag waterways-backend ${{ secrets.DOCKER_USERNAME }}/waterways-backend:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/waterways-backend:latest
 
+    - name: Build and Push PHP Docker Image
+      run: |
+          cd ApiPlatform
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php -f Dockerfile.php .
+          docker push ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
+   
+    - name: Build and Push Nginx Docker Image
+      run: |
+          cd ApiPlatform
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/waterways-backend-nginx -f Dockerfile.httpd .
+          docker push ${{ secrets.DOCKER_USERNAME }}/waterways-backend-nginx:latest
+   
+
 
     - name: Deploy to EC2 Instance
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.EC2_SSH_KEY }}  
+        key: ${{ secrets.EC2_SSH_KEY }} 
         script: |
-          docker stop waterways-backend
-          docker rm waterways-backend
-          docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend:latest
-          docker run -d --name waterways-backend -p 80:80 ${{ secrets.DOCKER_USERNAME }}/waterways-backend:latest
-
+          docker stop waterways-backend-php
+          docker rm waterways-backend-php
+          docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
+          docker run -d --name waterways-backend-php ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
+  
+          docker stop waterways-backend-httpd
+          docker rm waterways-backend-httpd
+          docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest
+          docker run -d --name waterways-backend-nginx -p 80:80 ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest

@@ -69,20 +69,9 @@ RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS} && \
 #<<<<<<<<<<End: PHP-FPM Image For the Dev Environment Target>>>>>>>>>>#
 
 #<<<<<<<<<<Start: Server Image Target>>>>>>>>>>#
-# FROM httpd:2 as server
+FROM httpd:2 as server
 
-# COPY ./.docker/httpd/httpd.conf /usr/local/apache2/conf/httpd.conf
-# COPY --from=php /srv/app/public /srv/app/public
+COPY ./.docker/httpd/httpd.conf /usr/local/apache2/conf/httpd.conf
 
+COPY --from=php /srv/app /srv/app
 #<<<<<<<<<<End: Server Image Target>>>>>>>>>>#
-
-FROM nginx:alpine as server
-
-# Copy Nginx configuration template
-COPY ./.docker/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY ./.docker/nginx/default.conf /etc/nginx/conf.d/default.conf
-
-
-# Copy application code
-COPY --from=php /srv/app/public /srv/app/public
-
