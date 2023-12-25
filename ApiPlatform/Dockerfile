@@ -26,7 +26,7 @@ RUN apk add libpq-dev && \
 
 # zip
 RUN apk add libzip-dev && apk add zip && \
-    docker-php-ext-install zip 
+    docker-php-ext-install zip
 
 # Installing Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -68,22 +68,10 @@ RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS} && \
 
 #<<<<<<<<<<End: PHP-FPM Image For the Dev Environment Target>>>>>>>>>>#
 
-# Install Apache2, PHP and required PHP modules
-RUN apt-get update && apt-get install -y \
-    apache2 \
-    php \
-    libapache2-mod-php \
-    php-pgsql \
-    php-zip \
-    php-amqp \
-    php-yaml \
-    && a2enmod rewrite \
-    && a2enmod php8.x # Replace with actual PHP version
-
 #<<<<<<<<<<Start: Server Image Target>>>>>>>>>>#
 FROM httpd:2 as server
-# FROM httpd:latest as server
+
 COPY ./.docker/httpd/httpd.conf /usr/local/apache2/conf/httpd.conf
 
-COPY --from=php /srv/app /srv/app
+COPY --from=php /srv/app/public /srv/app/public
 #<<<<<<<<<<End: Server Image Target>>>>>>>>>>#
