@@ -86,8 +86,3 @@ COPY ./.docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 # Copy application code
 COPY --from=php /srv/app/public /srv/app/public
 
-# Expose port 80
-EXPOSE 80
-
-# Start Nginx and keep it running in the foreground
-CMD ["nginx", "-g", "daemon off;"]
