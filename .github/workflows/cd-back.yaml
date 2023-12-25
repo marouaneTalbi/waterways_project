@@ -52,7 +52,7 @@ jobs:
           docker stop waterways-backend-php
           docker rm waterways-backend-php
           docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
-          docker run -d --name waterways-backend-php --network=mynetwork ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
+          docker run -d --name php --network=mynetwork ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
   
           docker stop waterways-backend-httpd
           docker rm waterways-backend-httpd
