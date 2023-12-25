@@ -47,11 +47,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }} 
         script: |
-          docker stop waterways-backend-php
-          docker rm waterways-backend-php
-          docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
-          docker run -d --name waterways-backend-php ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
-  
+     
           docker stop waterways-backend-httpd
           docker rm waterways-backend-httpd
           docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest
