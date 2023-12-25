@@ -66,6 +66,10 @@ RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS} && \
     pecl install xdebug && \
     docker-php-ext-enable xdebug
 
+
+COPY --from=php /srv/app /srv/app
+
+
 #<<<<<<<<<<End: PHP-FPM Image For the Dev Environment Target>>>>>>>>>>#
 
 
