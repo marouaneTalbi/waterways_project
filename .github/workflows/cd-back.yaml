@@ -49,8 +49,8 @@ jobs:
         script: |
           docker network create mynetwork 
 
-          docker stop waterways-backend-php
-          docker rm waterways-backend-php
+          docker stop php
+          docker rm php
           docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
           docker run -d --name php --network=mynetwork ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
   
