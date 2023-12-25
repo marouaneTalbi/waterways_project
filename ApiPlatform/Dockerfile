@@ -26,7 +26,7 @@ RUN apk add libpq-dev && \
 
 # zip
 RUN apk add libzip-dev && apk add zip && \
-    docker-php-ext-install zip
+    docker-php-ext-install zip 
 
 # Installing Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
