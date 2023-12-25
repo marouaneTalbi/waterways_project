@@ -1,4 +1,6 @@
 #<<<<<<<<<<Start: PHP-FPM Image Target>>>>>>>>>>#
+ARG CADDY_VERSION=2
+
 FROM php:8.2-fpm-alpine as php
 
 RUN apk update
@@ -68,10 +70,28 @@ RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS} && \
 
 #<<<<<<<<<<End: PHP-FPM Image For the Dev Environment Target>>>>>>>>>>#
 
-#<<<<<<<<<<Start: Server Image Target>>>>>>>>>>#
-FROM httpd:2 as server
+# #<<<<<<<<<<Start: Server Image Target>>>>>>>>>>#
+# FROM httpd:2 as server
 
-COPY ./.docker/httpd/httpd.conf /usr/local/apache2/conf/httpd.conf
+# COPY ./.docker/httpd/httpd.conf /usr/local/apache2/conf/httpd.conf
 
-COPY --from=php /srv/app/public /srv/app/public
-#<<<<<<<<<<End: Server Image Target>>>>>>>>>>#
+# COPY --from=php /srv/app/public /srv/app/public
+# #<<<<<<<<<<End: Server Image Target>>>>>>>>>>#
+
+# Build Caddy with the Mercure and Vulcain modules
+FROM caddy:${CADDY_VERSION}-builder-alpine AS app_caddy_builder
+
+RUN xcaddy build \
+	--with github.com/dunglas/mercure \
+	--with github.com/dunglas/mercure/caddy \
+	--with github.com/dunglas/vulcain \
+	--with github.com/dunglas/vulcain/caddy
+
+# Caddy image
+FROM caddy:${CADDY_VERSION} AS app_caddy
+
+WORKDIR /srv/app
+
+COPY --from=app_caddy_builder /usr/bin/caddy /usr/bin/caddy
+COPY --from=app_php /srv/app/public public/
+COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile
