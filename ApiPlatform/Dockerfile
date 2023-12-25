@@ -1,6 +1,4 @@
 #<<<<<<<<<<Start: PHP-FPM Image Target>>>>>>>>>>#
-ARG CADDY_VERSION=2
-
 FROM php:8.2-fpm-alpine as php
 
 RUN apk update
@@ -71,9 +69,25 @@ RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS} && \
 #<<<<<<<<<<End: PHP-FPM Image For the Dev Environment Target>>>>>>>>>>#
 
 #<<<<<<<<<<Start: Server Image Target>>>>>>>>>>#
-FROM httpd:2 as server
+# FROM httpd:2 as server
 
-COPY ./.docker/httpd/httpd.conf /usr/local/apache2/conf/httpd.conf
+# COPY ./.docker/httpd/httpd.conf /usr/local/apache2/conf/httpd.conf
+# COPY --from=php /srv/app/public /srv/app/public
 
-COPY --from=php /srv/app/public /srv/app/public
 #<<<<<<<<<<End: Server Image Target>>>>>>>>>>#
+
+FROM nginx:alpine as server
+
+# Copy Nginx configuration template
+COPY ./.docker/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./.docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+
+# Copy application code
+COPY --from=php /srv/app/public /srv/app/public
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx and keep it running in the foreground
+CMD ["nginx", "-g", "daemon off;"]
