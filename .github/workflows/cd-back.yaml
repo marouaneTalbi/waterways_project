@@ -46,8 +46,6 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }} 
         script: |
-          docker network create mynetwork 
-          docker volume create shared_data
 
         
           docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
@@ -60,4 +58,4 @@ jobs:
 
 
          
-     
+       
