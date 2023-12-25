@@ -39,7 +39,6 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest
    
 
-
     - name: Deploy to EC2 Instance
       uses: appleboy/ssh-action@master
       with:
