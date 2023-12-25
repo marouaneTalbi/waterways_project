@@ -50,13 +50,11 @@ jobs:
           docker network create mynetwork 
           docker volume create shared_data
 
-          docker stop php
-          docker rm php
+        
           docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
           docker run -d --name php --network=mynetwork -v shared_data:/srv/app/public -p 9000:9000 ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
 
-          docker stop waterways-backend-httpd
-          docker rm waterways-backend-httpd
+   
           docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest
           docker run -d --name waterways-backend-httpd --network=mynetwork -v shared_data:/srv/app/public -p 80:80 ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest
 
