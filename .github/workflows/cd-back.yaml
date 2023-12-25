@@ -51,4 +51,4 @@ jobs:
           docker stop waterways-backend-httpd
           docker rm waterways-backend-httpd
           docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest
-          docker run -d --name waterways-backend-nginx -p 80:80 ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest
+          docker run -d --name waterways-backend-httpd -p 80:80 ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest
