@@ -4,6 +4,11 @@ Makefile.local.mk
 
 ###> symfony/framework-bundle ###
 /.env.local
+
+.env
+/.env
+
+
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
