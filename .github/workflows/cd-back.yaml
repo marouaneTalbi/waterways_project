@@ -53,6 +53,5 @@ jobs:
 
           sleep 10
           
-          docker exec -it php sh
-          composer install && php bin/console lexik:jwt:generate-keypair 
-          
+          docker exec php composer install
+          docker exec php php bin/console lexik:jwt:generate-keypair 
