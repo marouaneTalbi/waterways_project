@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   baseURL: API_BASE_URL
-});
+}); 
 
 const urlsWithoutAuth = ['/api/token/refresh', '/api/users', '/api/mdpresetemail', '/api/resetmdp', '/auth'];
 
