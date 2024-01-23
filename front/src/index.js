@@ -14,6 +14,7 @@ import MdpRestEmail from "./pages/Login/motDePasseOublier";
 import ResetMdp from "./pages/Login/restmpd";
 import UserProvider from './contexts/userContext';
 import Profile from './pages/profile';
+import ReservationPage from './pages/reservationPage';
 import ProviderDashboard from './pages/providerDashboard';
 import EstablishmentItem from './components/Establishment/establishmentItem';
 import EstablishmentPage from './pages/Provider/establishmentPage';
@@ -34,6 +35,7 @@ root.render(
           <Route path="register" element={<Register />} />
           <Route path="search" element={<Search />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="reservation/:id" element={<ReservationPage />} />
           <Route path="admin" element={<UserAdmin /> } />
           <Route path="provider" element={<ProviderDashboard /> } />
           <Route path="requestProvider" element={<RequestProvider /> } />

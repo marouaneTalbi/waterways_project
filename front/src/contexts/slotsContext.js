@@ -2,7 +2,6 @@ import React, { useState, createContext, useEffect } from 'react';
 import slotsModel from './models/slotsModel';
 import { getUserRole, isProvider } from '../services/axiosRequestFunction';
 import slotsApi from "./models/slotsModel";
-import boatModel from "./models/boatModel";
 
 
 export const SlotsContext = createContext(null);
@@ -13,15 +12,6 @@ const SlotsProvider = ({ children }) => {
     const currentUser = getUserRole();
     const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
-    /*const addSlots = async ({idBoat, startBookingDate, endBookingDate}) => {
-        if (isProvider) {
-            return slotsApi.add({idBoat, startBookingDate, endBookingDate}).then(response => {
-                console.log(response)
-            })
-        } else {
-            throw new Error('You are not a provider');
-        }
-    }*/
 
     const addSlots = async (idBoat) => {
         if (isProvider) {
@@ -38,6 +28,18 @@ const SlotsProvider = ({ children }) => {
         }
     };
 
+    const getSlotsFromBoat = async (idBoat) => {
+        if (isProvider) {
+            const getBoat = `/api/boats/${idBoat}`;
+            const modifiedSlots = { ...slots, boat: getBoat};
+            return slotsModel.getOneByBoat(idBoat).then(response => {
+                console.log(response);
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+    };
+
 
     const getSlotsList = async () => {
         return slotsApi.getList().then(response => {
@@ -48,7 +50,7 @@ const SlotsProvider = ({ children }) => {
     }
 
     return (
-        <SlotsContext.Provider value={{ getSlotsList, slotsList, slots, setSlots, addSlots }}>
+        <SlotsContext.Provider value={{ getSlotsList, slotsList, slots, setSlots, addSlots, getSlotsFromBoat }}>
             {children}
         </SlotsContext.Provider>
     );

@@ -32,7 +32,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
         ),
         new Get(
-            uriTemplate: '/slots/boats/{boatId}',
+            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
+            normalizationContext: ['groups' => ['slots:read']],
+        ),
+        new Get(
+            uriTemplate: '/slots/boats/{id}',
+            requirements: ['id' => '\d+'],
             security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
             normalizationContext: ['groups' => ['slots:read']],
         ),
@@ -66,6 +71,7 @@ class Slot
     #[ORM\Column]
     #[Groups(['slots:read', 'slots:create'])]
     private ?int $id = null;
+
     #[ORM\ManyToOne(inversedBy: 'slots')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['slots:read', 'slots:create', 'slots:update'])]
