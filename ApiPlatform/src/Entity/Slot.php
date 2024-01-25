@@ -16,6 +16,7 @@ use App\Repository\SlotRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Controller\SlotController;
+use Ramsey\Uuid\Type\Time;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
@@ -85,6 +86,22 @@ class Slot
     #[Groups(['slots:read', 'slots:create', 'slots:update'])]
     private ?\DateTimeInterface $endBookingDate = null;
 
+    #[ORM\OneToMany(mappedBy: 'slots', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[Groups(['slots:read', 'slots:create', 'slots:update'])]
+    private ?\DateTimeInterface $startTime = null;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[Groups(['slots:read', 'slots:create', 'slots:update'])]
+    private ?\DateTimeInterface $endTime = null;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,6 +139,60 @@ class Slot
     public function setEndBookingDate(\DateTimeInterface $endBookingDate): static
     {
         $this->endBookingDate = $endBookingDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setSlots($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getSlots() === $this) {
+                $reservation->setSlots(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStartTime(): ?\DateTimeInterface
+    {
+        return $this->startTime;
+    }
+
+    public function setStartTime(\DateTimeInterface $startTime): static
+    {
+        $this->startTime = $startTime;
+
+        return $this;
+    }
+
+    public function getEndTime(): ?\DateTimeInterface
+    {
+        return $this->endTime;
+    }
+
+    public function setEndTime(\DateTimeInterface $endTime): static
+    {
+        $this->endTime = $endTime;
 
         return $this;
     }
