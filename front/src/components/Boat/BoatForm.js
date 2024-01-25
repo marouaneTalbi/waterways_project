@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, {useEffect, useContext, useState, useMemo} from 'react'
 import { TextInput, Label, Button, Select } from 'flowbite-react';
 import { BoatContext } from '../../contexts/boatContext';
 import { EstablishmentContext } from '../../contexts/establishmentContext';
@@ -11,23 +11,43 @@ import fr from 'date-fns/locale/fr';
 export default function BoatForm({ onCloseModal }) {
     const { boat, setBoat, addBoat, getLastBoat} = useContext(BoatContext);
     const { establishmentList, getEstablishmentList, establishment, setEstablishment, getEtablismentName } = useContext(EstablishmentContext);
-    const { addSlots, setSlots, slots} = useContext(SlotsContext);
+    const { addSlots, setSlots, slots, addMultipleSlots} = useContext(SlotsContext);
+    const [startTime, setStartTime] = useState(slots && slots.startTime ? slots.startTime : '');
+    const [endTime, setEndTime] = useState(slots && slots.endTime ? slots.endTime : '');
+    const [formErrors, setFormErrors] = useState({});
 
     useEffect(() => {
         getEstablishmentList();
     }, [])
 
+
+    const isDateValid = useMemo(() => {
+        const isStartDateValid = !slots.startBookingDate || new Date(slots.startBookingDate) > new Date();
+        const isEndDateValid = !slots.startBookingDate || !slots.endBookingDate || new Date(slots.startBookingDate) <= new Date(slots.endBookingDate);
+        const isTimeValid = !startTime || !endTime || startTime < endTime;
+        return isStartDateValid && isEndDateValid && isTimeValid;
+    }, [slots.startBookingDate, slots.endBookingDate, startTime, endTime]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!isDateValid) {
+            setFormErrors({
+                dateError: "Veuillez vérifier les dates et heures.",
+            });
+            return;
+        }
         try {
-            // Ajout du bateau et récupération de l'ID
             const idBoat = await addBoat();
-            await addSlots(idBoat);
+            const formattedStartTime = startTime ? startTime : "00:00";
+            const formattedEndTime = endTime ? endTime : "00:00";
+
+            await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate);
             onCloseModal();
         } catch (error) {
             console.error(error);
         }
     };
+
 
     return (
         <form onSubmit={handleSubmit}>
@@ -85,44 +105,51 @@ export default function BoatForm({ onCloseModal }) {
                 required
             />
 
+            <div className="mb-2 block">
+                <Label htmlFor="startBookingDate" value="Date de début" />
+            </div>
             <DatePicker
-                showTimeSelect
-                minTime={new Date(0, 0, 0, 5, 0)}
-                maxTime={new Date(0, 0, 0, 23, 0)}
-                timeFormat="HH:mm"
-                dateFormat="dd/MM/yyyy HH:mm"
                 locale={fr}
-                selectsStart
                 selected={slots && slots.startBookingDate ? slots.startBookingDate : ''}
-                onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, startBookingDate: date}))}
-                startDate={slots && slots.startBookingDate ? slots.startBookingDate : ''}
+                onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, startBookingDate: date }))}
+                dateFormat="dd/MM/yyyy"
             />
 
             <div className="mb-2 block">
-                <Label htmlFor="dateAvailable" value="date de fin" />
+                <Label htmlFor="endBookingDate" value="Date de fin" />
             </div>
             <DatePicker
-                showTimeSelect
-                minTime={new Date(0, 0, 0, 5, 0)}
-                maxTime={new Date(0, 0, 0, 23, 0)}
-                timeFormat="HH:mm"
-                dateFormat="dd/MM/yyyy HH:mm"
-                selectsEnd
+                locale={fr}
                 selected={slots && slots.endBookingDate ? slots.endBookingDate : ''}
-                onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, endBookingDate: date}))}
-                endDate={slots && slots.endBookingDate ? slots.endBookingDate : ''}
-                startDate={slots && slots.endBookingDate ? slots.endBookingDate : ''}
-                minDate={slots && slots.endBookingDate ? slots.endBookingDate : ''}
+                onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, endBookingDate: date }))}
+                dateFormat="dd/MM/yyyy"
             />
 
-            <h3 className="flex items-center justify-center mt-10">Date de disponibilité</h3>
-
-            <div>
-                <div className="mb-2 block">
-                    <Label htmlFor="dateAvailable" value="date de début" />
-                </div>
-
+            <div className="mb-2 block">
+                <Label htmlFor="startTime" value="Horaire de début" />
             </div>
+            <input
+                id="startTime"
+                type="text"
+                value={startTime}
+                onChange={(event) => setStartTime(event.target.value)}
+                pattern="[0-9]{2}:[0-9]{2}"
+                placeholder="HH:mm"
+                required
+            />
+
+            <div className="mb-2 block">
+                <Label htmlFor="endTime" value="Horaire de fin" />
+            </div>
+            <input
+                id="endTime"
+                type="text"
+                value={endTime}
+                onChange={(event) => setEndTime(event.target.value)}
+                pattern="[0-9]{2}:[0-9]{2}"
+                placeholder="HH:mm"
+                required
+            />
 
             <div className="mb-2 block">
                 <Label htmlFor="Establishment" value="establishment" />
