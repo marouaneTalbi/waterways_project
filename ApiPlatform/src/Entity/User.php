@@ -130,7 +130,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->establishments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
+
+    #[ORM\OneToMany(mappedBy: 'consumer', targetEntity: Reservation::class)]
+    private Collection $reservations;
 
 
 
@@ -355,6 +359,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($notification->getUserId() === $this) {
                 $notification->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setConsumer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getConsumer() === $this) {
+                $reservation->setConsumer(null);
             }
         }
 
