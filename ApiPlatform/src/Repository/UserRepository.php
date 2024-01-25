@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Boat;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -40,6 +41,47 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findOneByEmail(string $email): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findOneByPasswordResetToken(string $token): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.passwordResetToken = :password_reset_token')
+            ->setParameter('password_reset_token', $token)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findOneById(string $userId): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.id = :id')
+            ->setParameter('id', $userId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findUsersByNameAndRole(string $userName): ?User
+    {
+        $users = $this->createQueryBuilder('u')
+            ->select('u')
+            ->andWhere('u.firstname = :firstname')
+            ->andWhere('JSON_GET_TEXT(u.roles, 0) LIKE :role')
+            ->setParameter('firstname', $userName)
+            ->setParameter('role', '%ROLE_PROVIDER%')
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $users;
     }
 
     /**

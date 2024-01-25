@@ -12,8 +12,11 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    App\Services\MailerService:
-        autowire: true
+
+    App\State\SearchStateProvider: 
+        tags:
+            - { name: 'api_platform.state_processor', priority: 0 }
+
 
     App\State\UserProcessor:
         bind:
@@ -35,7 +38,7 @@ services:
         public: false
 
 
-    App\EventSubscriber\UserCreateSubscriber:
+    App\Subscriber\UserCreateSubscriber:
         tags:
             - { name: 'kernel.event_subscriber' }
 

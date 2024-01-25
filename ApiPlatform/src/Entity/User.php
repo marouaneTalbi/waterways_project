@@ -11,18 +11,22 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 #[ApiResource(
     operations: [
         new GetCollection(
             security: "is_granted('ROLE_ADMIN')",
-            normalizationContext: ['groups' => ['user:read']],
+            normalizationContext: ['groups' => ['user:read', 'establishment:read']],
         ),
         new Post(
             processor: UserPasswordHasher::class,
@@ -34,22 +38,28 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Put(
             processor: UserPasswordHasher::class,
-            security: "is_granted('ROLE_ADMIN')",
+            normalizationContext: ['groups' => ['user:read']],
             securityMessage: "Only authenticated users can modify users."
         ),
         new Patch(
             processor: UserPasswordHasher::class,
             security: "is_granted('ROLE_ADMIN')",
+            normalizationContext: ['groups' => ['user:read']],
             securityMessage: "Only authenticated users can modify users."
         ),
         new Delete(
             security: "is_granted('ROLE_ADMIN')",
             securityMessage: "Only authenticated users can delete users."
         ),
+        new Get(
+            name: 'getUser',
+            uriTemplate: '/user',
+            processor: UserGetController::class,
+            normalizationContext: ['groups' => ['user:read']]
+        )
     ],
-    normalizationContext: ['groups' => ['user:read']],
+    normalizationContext: ['groups' => ['user:read', 'establishment:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
-
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -60,15 +70,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[Assert\NotBlank]
     #[Assert\Email]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+
+    #[Groups(['user:read', 'user:create', 'user:update','media_object:read'])]
+
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['user:read'])]
     private array $roles = [];
 
     /**
@@ -82,11 +96,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $token = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
+    #[Groups(['user:read', 'user:create', 'user:update','media_object:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:create', 'user:update','user:read'])]
+    #[Groups(['user:create', 'user:update','user:read','media_object:read'])]
     private ?string $lastname = null;
 
     #[ORM\Column(nullable: true)]
@@ -98,8 +112,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['user:create', 'user:update','user:read'])]
+    #[Groups(['user:create', 'user:update','user:read','media_object:read'])]
     private ?bool $isVerified = false;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['user:read', 'user:update'])]
+    private ?string $phone = null;
+
+    #[ORM\OneToMany(mappedBy: 'createdby', targetEntity: Establishment::class)]
+    private Collection $establishments;
+
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Notification::class)]
+    private Collection $notifications;
+
+
+    public function __construct()
+    {
+        $this->establishments = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
+    }
+
+
 
     public function getPlainPassword(): ?string
     {
@@ -253,5 +286,80 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): static
+    {
+        $this->phone = $phone;
+
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Establishment>
+     */
+    public function getEstablishments(): Collection
+    {
+        return $this->establishments;
+    }
+
+    public function addEstablishment(Establishment $establishment): static
+    {
+        if (!$this->establishments->contains($establishment)) {
+            $this->establishments->add($establishment);
+            $establishment->setCreatedby($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEstablishment(Establishment $establishment): static
+    {
+        if ($this->establishments->removeElement($establishment)) {
+            // set the owning side to null (unless already changed)
+            if ($establishment->getCreatedby() === $this) {
+                $establishment->setCreatedby(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): static
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): static
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getUserId() === $this) {
+                $notification->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 }

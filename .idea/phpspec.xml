@@ -11,6 +11,9 @@
       <PhpSpecSuiteConfiguration>
         <option name="myPath" value="$PROJECT_DIR$/back" />
       </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="myPath" value="$PROJECT_DIR$/ApiPlatform" />
+      </PhpSpecSuiteConfiguration>
     </suites>
   </component>
 </project>

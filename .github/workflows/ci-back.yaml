@@ -1,0 +1,48 @@
+name: CI BACKEND
+
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15.4-alpine
+        env:
+          POSTGRES_DB: symfony
+          POSTGRES_PASSWORD: root
+          POSTGRES_USER: root
+        ports:
+            - "5433:5432"
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Environment
+      run: |
+        cd ApiPlatform
+        docker-compose up -d
+
+    - name: Install Dependencies
+      run: |
+        cd ApiPlatform
+        docker-compose exec -T php composer install --prefer-dist --no-progress --no-suggest
+
+    # - name: Check Symfony Requirements
+    #   run: |
+    #     cd ApiPlatform
+    #     docker-compose exec -T php php check:requirements
+
+    # - name: Run PHP Tests
+    #   run: |
+    #     cd ApiPlatform
+    #     docker-compose exec -T php ./bin/phpunit

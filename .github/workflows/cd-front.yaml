@@ -1,0 +1,31 @@
+name: CD FORNTEND
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'front/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Instal dependencies and build
+      run: |
+        cd front 
+        npm install
+        npm run build
+
+    - name: Deploy to S3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --follow-symlinks --delete
+      env:
+        AWS_S3_BUCKET: ${{ secrets.BUCKE_NAME }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: eu-north-1
+        SOURCE_DIR: 'front/build'

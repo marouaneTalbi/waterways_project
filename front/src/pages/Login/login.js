@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import sendRequest from "../../services/axiosRequestFunction";
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +10,6 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(email, password)
         sendRequest(
             '/auth',
             'post',
@@ -21,6 +19,7 @@ export default function Login() {
             },
              false
         ).then((response) => {
+            console.log(response)
             localStorage.setItem('token', response.token);
             localStorage.setItem('refresh_token', response.refresh_token);
             navigate('/');
@@ -28,26 +27,39 @@ export default function Login() {
     };
 
     return (
-        <div className="bg-red-400 flex flex-row">
-            <form onSubmit={handleSubmit} className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
-                <label>Email</label>
-                <input
-                    type="text"
-                    placeholder="Nom d'utilisateur"
-                    value={email}
-                    onChange={(e) => setemail(e.target.value)}
-                />
-                <label>Mot de passe</label>
-                <input
-                    type="password"
-                    placeholder="Mot de passe"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button type="submit">Se connecter</button>
+        <div className="bg-light-blue-100 p-4 rounded-lg shadow-md">
+            <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+                <div className="flex flex-col">
+                    <label htmlFor="email">Email</label>
+                    <input
+                        id="email"
+                        type="text"
+                        placeholder="Nom d'utilisateur"
+                        value={email}
+                        onChange={(e) => setemail(e.target.value)}
+                        className="p-2 border rounded"
+                    />
+                </div>
+                <div className="flex flex-col">
+                    <label htmlFor="password">Mot de passe</label>
+                    <input
+                        id="password"
+                        type="password"
+                        placeholder="Mot de passe"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="p-2 border rounded"
+                    />
+                </div>
+                <a href="/mdpResetEmail" onClick={() => navigate(('/mdpResetEmail'))}>Mot de passe oublié</a>
+                <button  type="submit" className="bg-red-500 text-black p-2 rounded hover:bg-red-600">
+                    Se connecter
+                </button>
+
             </form>
         </div>
     )
+
 }
 
 

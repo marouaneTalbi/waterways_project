@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import sendRequest from "../../services/axiosRequestFunction";
-
 
 export default function UserAdmin() {
     const [users, setUsers] = useState([]);
@@ -13,16 +11,13 @@ export default function UserAdmin() {
             {},
             true
         ).then((response) => {
-            setUsers(response['hydra:member']);
-            console.log(response['hydra:member'])
+            setUsers(response);
         })
-
     }, []);
 
     return (
         <div className="mt-8 mx-4">
             {
-                users &&
                 <table className="min-w-full leading-normal">
                     <thead>
                     <tr>

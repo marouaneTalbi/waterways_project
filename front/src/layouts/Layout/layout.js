@@ -6,7 +6,7 @@ export default function layout() {
   return (
     <>
         <Header />
-        <main className="pt-16">
+        <main style={{height: "calc(100vh - 60px)"}} className="p-4 bg-[#F8FAF9] min-h-0 flex overflow-y-hidden">
             <Outlet />
         </main>
     </>

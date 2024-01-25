@@ -37,6 +37,6 @@ security:
         - { path: ^/docs, roles: PUBLIC_ACCESS } # Permet d'accéder aux documents Swagger UI
         - { path: ^/auth, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
-        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS, methods: [POST]  }
-        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api$, roles: PUBLIC_ACCESS }
+       # - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS, methods: [POST]  }
+       # - { path: ^/api/, roles: PUBLIC_ACCESS }
+       # - { path: ^/api$, roles: PUBLIC_ACCESS }

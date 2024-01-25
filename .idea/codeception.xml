@@ -12,6 +12,9 @@
         <Configuration>
           <option name="path" value="$PROJECT_DIR$/back/tests" />
         </Configuration>
+        <Configuration>
+          <option name="path" value="$PROJECT_DIR$/ApiPlatform/tests" />
+        </Configuration>
       </list>
     </option>
   </component>
