@@ -19,12 +19,15 @@ use App\Controller\SlotController;
 use Ramsey\Uuid\Type\Time;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
 #[ApiResource(
     operations: [
         new GetCollection(
             security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['slots:read']],
+            paginationEnabled: false,
+            /*paginationItemsPerPage: 100,*/
         ),
         new Post(
             name: 'Slots',

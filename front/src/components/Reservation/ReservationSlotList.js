@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Scheduler,
     WeekView,
@@ -10,28 +10,35 @@ import {
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import { SlotsContext } from '../../contexts/slotsContext';
 import { useParams } from 'react-router-dom';
-
-const currentDate = new Date();
+import {
+    Modal,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+    Button,
+} from '@material-ui/core';
+import SlotsList from "../Slots/SlotsList";
 
 const ReservationSlotList = () => {
     const { slotsList, getSlotsList } = React.useContext(SlotsContext);
     const { id: idBoat } = useParams();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedReservation, setSelectedReservation] = useState(null);
 
     useEffect(() => {
-        // Appeler la fonction getSlotsList pour récupérer les données
         getSlotsList();
     }, []);
 
     const reservations = slotsList?.flatMap(function (slot) {
         const dailyReservations = [];
         const slotBoat = slot.boat;
-        console.log('laaaa')
-        console.log(slotBoat === `/api/boats/${idBoat}`);
         if (slotBoat === `/api/boats/${idBoat}`) {
             const startDate = new Date(slot.startBookingDate);
-            const endDate = new Date (slot.endBookingDate);
-            const startTime = new Date (slot.startTime);
-            const endTime = new Date (slot.endTime);
+            const endDate = new Date(slot.endBookingDate);
+            const startTime = new Date(slot.startTime);
+            const endTime = new Date(slot.endTime);
             const slotId = slot.id;
 
             dailyReservations.push({
@@ -42,24 +49,48 @@ const ReservationSlotList = () => {
                 location: 'Room 1',
             });
         }
-        console.log(dailyReservations)
         return dailyReservations;
     }) || [];
 
-    console.log(reservations)
+    const openModal = (reservation) => {
+        setSelectedReservation(reservation);
+        setIsModalOpen(true);
+    };
+
+    const handleEdit = () => {
+        console.log("Edition de la réservation", selectedReservation);
+        setIsModalOpen(false);
+    };
+
+    const handleDelete = () => {
+        console.log("Suppression de la réservation", selectedReservation);
+        setIsModalOpen(false);
+    };
+
+    let currentDate = new Date();
 
     return (
         <div>
+            <Button onClick={() => setIsModalOpen(true)}>CRENEAUX HORAIRES</Button>
+
+            {isModalOpen && (
+                <div>
+                    <SlotsList></SlotsList>
+                </div>
+            )}
             <Scheduler
                 data={reservations}
                 height={660}
+                locale={'fr-FR'}
             >
                 <ViewState
                     defaultCurrentDate={currentDate}
+                    locale={'fr-FR'}
                 />
                 <WeekView
                     startDayHour={6}
                     endDayHour={23}
+                    locale={'fr-FR'}
                 />
                 <Toolbar />
                 <DateNavigator />

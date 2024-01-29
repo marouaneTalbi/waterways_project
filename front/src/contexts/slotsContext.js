@@ -55,6 +55,15 @@ const SlotsProvider = ({ children }) => {
         }
     };
 
+    const deleteSlot = async (id) => {
+        try {
+            await slotsApi.delete(id);
+            await getSlotsList();
+        } catch (error) {
+            console.error("Error deleting slot", error);
+        }
+    };
+
 
     /*const getSlotsFromBoat = async (idBoat) => {
         if (isProvider) {
@@ -72,13 +81,14 @@ const SlotsProvider = ({ children }) => {
     const getSlotsList = async () => {
         return slotsApi.getList().then(response => {
             setSlotsList(response);
+            console.log(response);
         }).catch(error => {
             console.log(error)
         })
     }
 
     return (
-        <SlotsContext.Provider value={{ getSlotsList, slotsList, slots, setSlots, addSlots, addMultipleSlots }}>
+        <SlotsContext.Provider value={{ getSlotsList, slotsList, slots, setSlots, addSlots, addMultipleSlots, deleteSlot }}>
             {children}
         </SlotsContext.Provider>
     );

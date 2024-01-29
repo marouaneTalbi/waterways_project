@@ -9,6 +9,9 @@ const slotsApi = {
     },
     getOne: async function (id) {
         return sendRequest('/api/slots'+id,'get',{},true)
+    },
+    delete: async function (id) {
+        return sendRequest(`/api/slots/${id}`, 'delete', {}, true);
     }
 
 }
