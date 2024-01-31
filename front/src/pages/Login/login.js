@@ -30,7 +30,7 @@ export default function Login() {
         <div className="bg-light-blue-100 p-4 rounded-lg shadow-md">
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                 <div className="flex flex-col">
-                    <label htmlFor="email">Emailllll</label>
+                    <label htmlFor="email">Email</label>
                     <input
                         id="email"
                         type="text"

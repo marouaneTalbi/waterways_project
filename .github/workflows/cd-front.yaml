@@ -32,7 +32,7 @@ jobs:
 
     - name: Invalidate CloudFront Distribution
       run: |
-        aws cloudfront create-invalidation --distribution-id E1LC7R20RMYD2J --paths "/*"
+        aws cloudfront create-invalidation --distribution-id ${{secrets.CLOUDFRONT_ID}} --paths "/*"
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
