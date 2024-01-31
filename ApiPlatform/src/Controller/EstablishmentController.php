@@ -40,6 +40,7 @@ class EstablishmentController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $establishment->setName($data['name']); 
         $establishment->setAddress($data['address']);
+        $establishment->setCity($data['city']);
         $establishment->setCreatedby($user);
         $establishment->setStartDate(new \DateTimeImmutable($data['startDate']));
         $establishment->setEndDate(new \DateTimeImmutable($data['endDate']));

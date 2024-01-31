@@ -18,6 +18,7 @@ export default function EstablishmentListItem({ establishment }) {
                 {establishment.name}
             </Table.Cell>
             <Table.Cell>{establishment.address}</Table.Cell>
+            <Table.Cell>{establishment.city}</Table.Cell>
             <Table.Cell>{formatDate(establishment.startDate)}</Table.Cell>
             <Table.Cell>{formatDate(establishment.endDate)}</Table.Cell>
             <Table.Cell>

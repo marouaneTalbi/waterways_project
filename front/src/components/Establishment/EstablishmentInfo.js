@@ -10,6 +10,7 @@ export default function EstablishmentInfos(establishment) {
         <>
             <DataCard title="name" value={establishment.establishment?.name} icon={faEnvelope} />
             <DataCard title="address" value={establishment.establishment?.address} icon={faUser} />
+            <DataCard title="city" value={establishment.establishment?.city} icon={faUser} />
             <DataCard title="End Date" value={formatDate(establishment.establishment?.endDate)} icon={faPhone} />
             <DataCard title="Start Date" value={formatDate(establishment.establishment?.startDate)} icon={faPhone} />
         </>
