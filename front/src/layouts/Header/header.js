@@ -19,6 +19,8 @@ export default function Header() {
             setUserProvider(provider)
         }
     }, [token, userRole]);
+
+    console.log(userRole, isValidToken )
     
 
 
