@@ -194,6 +194,7 @@ class Establishment
     public function setCreatedby(?User $createdby): static
     {
         $this->createdby = $createdby;
+        return $this;
     }
   
     public function getCity(): ?string
