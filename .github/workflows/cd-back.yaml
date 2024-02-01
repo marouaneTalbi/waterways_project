@@ -51,7 +51,7 @@ jobs:
           docker pull ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest
           docker run -d --name waterways-backend-httpd --network=mynetwork -v shared_data:/srv/app/public -v secrets:/etc/nginx/ssl -p 80:80 -p 443:443 ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest
 
-          sleep 10
+          sleep 10 
           
           docker exec php composer install
           docker exec php php bin/console lexik:jwt:generate-keypair 
