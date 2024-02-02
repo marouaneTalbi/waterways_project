@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import WaterWaysLogo from '../../assets/svg/logo.svg'
 import { jwtDecode } from "jwt-decode";
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
-import { isTokenExpired } from '../../services/axiosRequestFunction';
+import { isTokenExpired, checkIfRequestExists } from '../../services/axiosRequestFunction';
 import NotificationIcon from './notif';
 
 export default function Header() {
@@ -10,6 +10,7 @@ export default function Header() {
     const [userProvider, setUserProvider] = useState(null);
     const token = localStorage.getItem('token');
     const [isValidToken, setIsValidToken] = useState(isTokenExpired());
+    const [hasPendingRequest, setHasPendingRequest] = useState(false);
 
     useEffect(() => {
         if (token) {
@@ -20,6 +21,16 @@ export default function Header() {
         }
     }, [token, userRole]);
     
+    useEffect(() => {
+        const checkRequestStatus = async () => {
+          const exists = await checkIfRequestExists(); 
+          setHasPendingRequest(exists);
+        };
+    
+        if (userRole && !isValidToken) {
+          checkRequestStatus();
+        }
+      }, [userRole, isValidToken]);
 
 
     return (
@@ -57,7 +68,10 @@ export default function Header() {
                 }
                 {
                     userRole === 'ROLE_ADMIN' && !isValidToken && (
+                        <>
                         <Navbar.Link href="/admin">Admin</Navbar.Link>
+                        <Navbar.Link href="/Kabisrequests">Requests</Navbar.Link>
+                        </>
                     )
                 }
                 {
@@ -70,6 +84,11 @@ export default function Header() {
                         <>
                             <Navbar.Link href="/">Accueil</Navbar.Link>
                             <Navbar.Link href="/search">Rechercher</Navbar.Link>
+                            {
+                            hasPendingRequest ?
+                            <Navbar.Link href="/myrequest">Suivre ma demande</Navbar.Link> :
+                            <Navbar.Link href="/requestProvider">Request Provider</Navbar.Link>
+                            }
                             <NotificationIcon />
                         </>
                     )
