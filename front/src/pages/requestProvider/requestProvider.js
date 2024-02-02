@@ -19,6 +19,7 @@ const RequestProvider = () => {
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false); 
   const [selectedFileName, setSelectedFileName] = useState(null);
+  const [isUploadSuccess, setIsUploadSuccess] = useState(false);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -46,10 +47,12 @@ const RequestProvider = () => {
     try {
       const response = await sendRequest('/api/kbis', 'POST', formData);
       setIsLoading(false); 
+      setIsUploadSuccess(true);
       notify('File successfully uploaded', 'success');
     } catch (error) {
       notify('Upload error: ' + error.message, 'error');
       setIsLoading(false); 
+      setIsUploadSuccess(false);
     }
   };
 
@@ -116,6 +119,13 @@ const RequestProvider = () => {
             {isLoading ? 'Uploading...' : 'Envoyer'}
           </button>
         </form>
+        {
+          isUploadSuccess && (
+            <div className="text-center mt-4">
+              <a href="/myrequest" className="text-dark-orange font-bold">Suivre votre demande</a>
+            </div>
+          )
+        }
       </div>
     </>
   );

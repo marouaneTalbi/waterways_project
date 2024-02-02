@@ -5,14 +5,7 @@ import { useNavigate, Params } from 'react-router';
 const API_BASE_URL = 'http://localhost:8888';
 
 const axiosInstance = axios.create({
-
   baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-
-  baseURL: API_BASE_URL
-
 });
 
 const  urlsWithoutAuth = ['/api/token/refresh', '/api/users', '/api/mdpresetemail', '/api/resetmdp', '/auth'];
@@ -42,6 +35,7 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
         url: endpoint,
         method,
         data,
+
       });
       return response.data;
     } catch (error) {
@@ -120,6 +114,19 @@ async function refreshToken() {
     }
   } catch (error) {
     console.log(error)
+  }
+}
+ 
+export async function checkIfRequestExists() {
+  try {
+    const response = await sendRequest('/api/kbis/me');
+    return true;
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      return false;
+    }
+    console.error('Erreur lors de la vérification de la demande Kbis:', error);
+    return null;
   }
 }
 
