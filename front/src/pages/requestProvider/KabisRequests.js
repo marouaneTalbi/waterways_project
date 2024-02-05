@@ -4,6 +4,7 @@ import 'flowbite';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
+import sendRequest from "../../services/axiosRequestFunction";
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -21,13 +22,16 @@ const KabisRequests = () => {
     const [loading, setLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState('0');
     const [usersInfo, setUsersInfo] = useState({});
+    const [showInput, setShowInput] = useState(false);
+    const [complementText, setComplementText] = useState('');
+    const [activeRequestId, setActiveRequestId] = useState(null); 
 
     useEffect(() => {
         const fetchRequests = async () => {
             try {
-                const response = await axios.get('http://localhost:8888/api/kbis');
+                //const response = await sendRequest('/api/kbis');
+                const response = await axios.get(`http://localhost:8888/api/kbis`);
                 setRequests(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error("Erreur lors de la récupération des demandes :", error);
             } finally {
@@ -78,7 +82,21 @@ const KabisRequests = () => {
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
         </div>;
     }
-    
+
+    const handleSubmitComplement = async () => {
+        try {
+          //await sendComplementEmail(activeRequestId, complementText);
+          const response = await sendRequest('/api/notifications', 'POST', {title:"Demande de complement", message:complementText});
+        } catch (error) {
+          console.error("Erreur lors de l'envoi du complément :", error);
+          notify('Erreur lors de la demande de complément.', 'error');
+        } finally {
+          setShowInput(false); 
+          setComplementText(''); 
+          setActiveRequestId(null); 
+        }
+      };
+      
     return (
         <div className="container mx-auto p-4">
                 <h1 className="text-2xl font-bold mb-4">Liste des demandes pour devenir prestataire</h1>
@@ -118,7 +136,14 @@ const KabisRequests = () => {
                                     <button onClick={async () => {
                                       await handleStatusChange(request.id, 2);
                                       sendEmailToUser(request.createdby.email);
-                                    }} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2">Demander un complément</button>                                    
+                                    }} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2">Demander un complément</button> 
+                                    
+                                    <button onClick={() => {
+                                     setShowInput(true);
+                                     setActiveRequestId(request.id);
+                                     handleStatusChange(request.id, 2);
+                                    }} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2">Demander un complément 2</button>
+                                   
                                     <button onClick={() => handleStatusChange(request.id, 3)} className="text-white bg-red-500 hover:bg-red-700 transition duration-200 rounded px-4 py-2">Refuser</button>
                                 </div>
                             )}
@@ -128,9 +153,27 @@ const KabisRequests = () => {
                                     <button onClick={() => handleStatusChange(request.id, 3)} className="text-white bg-red-500 hover:bg-red-700 transition duration-200 rounded px-4 py-2">Refuser</button>
                                 </div>
                             )}
+                            {showInput && activeRequestId === request.id && (
+                <div>
+                    <p>
+                        Message du demande de complement
+                    </p>
+                   <textarea
+                     type="text"
+                     value={complementText}
+                     onChange={(e) => setComplementText(e.target.value)}
+                     className="border rounded p-2"
+                   />
+                   <button onClick={handleSubmitComplement} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Envoyer
+                   </button>
+                </div>
+                )}
                         </li>
+                        
                     ))}
                 </ul>
+                
             </div>
     );
 };

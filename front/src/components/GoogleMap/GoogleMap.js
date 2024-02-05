@@ -20,7 +20,7 @@ export default function GoogleMapComponent() {
     const { results } = useContext(BoatContext);
 
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: 'AIzaSyBHQclG6cZIpfuZ3jLgEncTs_rRScC7aUE',
+        googleMapsApiKey: 'AIzaSyD612is2fyjpnMcXuA6XAxM1lNIFxJkgU4',
         libraries,
     });
 
