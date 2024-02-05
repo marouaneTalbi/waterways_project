@@ -1,33 +1,34 @@
-import React, { useState } from "react";
-import sendRequest from "../../services/axiosRequestFunction";
+import React, { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import { AuthContext } from "../../contexts/authContext";
 
 export default function Login() {
     const [email, setemail] = useState("");
     const [password, setPassword] = useState("");
-    const [token, setToken] = useState(localStorage.getItem('token') || null);
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        sendRequest(
-            '/auth',
-            'post',
-            {
-                email: email,
-                password: password,
-            },
-             false
-        ).then((response) => {
-            console.log(response)
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('refresh_token', response.refresh_token);
-            navigate('/');
-        })
+        try {
+            const success = await login(email, password);
+            if (success) {
+                toast.success('Vous êtes Connecté !', {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+                navigate("/");
+            }
+        } catch (error) {
+            toast.error("Username ou mot de passe incorrect", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        }
     };
 
     return (
         <div className="bg-light-blue-100 p-4 rounded-lg shadow-md">
+            <ToastContainer />
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                 <div className="flex flex-col">
                     <label htmlFor="email">Email</label>
@@ -55,7 +56,6 @@ export default function Login() {
                 <button  type="submit" className="bg-red-500 text-black p-2 rounded hover:bg-red-600">
                     Se connecter
                 </button>
-
             </form>
         </div>
     )

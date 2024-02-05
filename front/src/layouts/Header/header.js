@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import WaterWaysLogo from '../../assets/svg/logo.svg'
 import { jwtDecode } from "jwt-decode";
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 import { isTokenExpired, checkIfRequestExists } from '../../services/axiosRequestFunction';
 import NotificationIcon from './notif';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts/authContext';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
     const [userProvider, setUserProvider] = useState(null);
-    const token = localStorage.getItem('token');
     const [isValidToken, setIsValidToken] = useState(isTokenExpired());
+    const navigate = useNavigate();
+    const { token } = useContext(AuthContext);
     const [hasPendingRequest, setHasPendingRequest] = useState(false);
 
     useEffect(() => {
@@ -19,7 +22,8 @@ export default function Header() {
             const provider =  decoded.roles.find(role => role === 'ROLE_PROVIDER')
             setUserProvider(provider)
         }
-    }, [token, userRole]);
+
+    }, [token]);
     
     useEffect(() => {
         const checkRequestStatus = async () => {
@@ -32,7 +36,15 @@ export default function Header() {
         }
       }, [userRole, isValidToken]);
 
-
+    const logout = () => {
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('token');
+        navigate('/login');
+        setUserRole(null);
+        setIsValidToken(null);
+        setUserProvider(null);
+    }
+    
     return (
         <Navbar fluid rounded>
             <Navbar.Brand href="/">
@@ -53,7 +65,7 @@ export default function Header() {
                 </Dropdown.Header>
                 <Dropdown.Item href="/profile">Profile</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item>Sign out</Dropdown.Item>
+                <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
             </div>

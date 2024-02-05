@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240130193124 extends AbstractMigration
+final class Version20240205104436 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -28,8 +28,6 @@ final class Version20240130193124 extends AbstractMigration
         $this->addSql('ALTER TABLE reservation ADD CONSTRAINT FK_42C84955A1E84A29 FOREIGN KEY (boat_id) REFERENCES boat (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE reservation ADD CONSTRAINT FK_42C8495537FDBD6D FOREIGN KEY (consumer_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE reservation ADD CONSTRAINT FK_42C849551E91875B FOREIGN KEY (slots_id) REFERENCES slot (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE establishment ADD city VARCHAR(100) NOT NULL');
-        $this->addSql('ALTER INDEX idx_bf5476ca9d86650f RENAME TO IDX_BF5476CAA76ED395');
         $this->addSql('ALTER TABLE slot DROP CONSTRAINT fk_ac0e20677f75e359');
         $this->addSql('DROP INDEX idx_ac0e20677f75e359');
         $this->addSql('ALTER TABLE slot ADD start_time TIME(0) WITHOUT TIME ZONE NOT NULL');
@@ -48,8 +46,6 @@ final class Version20240130193124 extends AbstractMigration
         $this->addSql('ALTER TABLE reservation DROP CONSTRAINT FK_42C8495537FDBD6D');
         $this->addSql('ALTER TABLE reservation DROP CONSTRAINT FK_42C849551E91875B');
         $this->addSql('DROP TABLE reservation');
-        $this->addSql('ALTER INDEX idx_bf5476caa76ed395 RENAME TO idx_bf5476ca9d86650f');
-        $this->addSql('ALTER TABLE establishment DROP city');
         $this->addSql('ALTER TABLE slot DROP CONSTRAINT FK_AC0E2067A1E84A29');
         $this->addSql('DROP INDEX IDX_AC0E2067A1E84A29');
         $this->addSql('ALTER TABLE slot DROP start_time');
