@@ -16,7 +16,7 @@ jobs:
     - name: Instal dependencies and build
       run: |
         cd front 
-        npm install
+        npm install --legacy-peer-deps
         npm run build
 
     - name: Deploy to S3
