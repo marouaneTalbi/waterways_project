@@ -7,7 +7,7 @@ export default function BoatItem({ boat }) {
             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                 {boat.name}
             </Table.Cell>
-            <Table.Cell>{boat.establishment}</Table.Cell>
+            <Table.Cell>{boat.establishment.name}</Table.Cell>
             <Table.Cell>{boat.modele}</Table.Cell>
             <Table.Cell>{boat.capacity}</Table.Cell>
             <Table.Cell>
