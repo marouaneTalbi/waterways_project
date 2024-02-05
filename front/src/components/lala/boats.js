@@ -58,7 +58,25 @@ export default function Boats(progps) {
                 },
                 true
             ).then((response) => {
-                console.log(response)
+                const boatId = response.data.id;
+                console.log("passe ici");
+                console.log(startDate);
+                console.log(endDate);
+                /*sendRequest(
+                    '/api/slots',
+                    'post',
+                    {
+                        startBookingDate: startDate,
+                        endBookingDate: endDate,
+                        idBoat: Number(boatId)
+                    },
+                    true
+                ).then((response) => {
+                    const BoatId = response.data.id;
+
+                    console.log(response)
+                })
+                console.log(response)*/
             })
         }
     }
@@ -146,8 +164,8 @@ export default function Boats(progps) {
                             showTimeSelect
                             minTime={new Date(0, 0, 0, 5, 0)}
                             maxTime={new Date(0, 0, 0, 23, 0)}
-                            timeFormat="HH:mm"  // Définissez le format de l'heure
-                            dateFormat="dd/MM/yyyy HH:mm"  // Définissez le format de la date et de l'heure complet
+                            timeFormat="HH:mm"
+                            dateFormat="dd/MM/yyyy HH:mm"
                             locale={fr}
                             selectsStart
                             selected={startDate}
@@ -162,7 +180,7 @@ export default function Boats(progps) {
                             showTimeSelect
                             minTime={new Date(0, 0, 0, 5, 0)}
                             maxTime={new Date(0, 0, 0, 23, 0)}
-                            timeFormat="HH:mm"  // Définissez le format de l'heure
+                            timeFormat="HH:mm"
                             dateFormat="dd/MM/yyyy HH:mm"
                             selectsEnd
                             selected={endDate}

@@ -74,10 +74,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[Assert\NotBlank]
-    #[Assert\Email]
-
+    #[Assert\Email(
+        message: 'The email "{{ value }}" is not a valid email.',
+        mode: 'strict'
+    )]
     #[Groups(['user:read', 'user:create', 'user:update','media_object:read'])]
-
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -90,6 +91,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Groups(['user:create'])]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+        message: 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).'
+    )]
     private ?string $password = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -109,6 +114,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank(groups: ['user:create'])]
     #[Groups(['user:create', 'user:update'])]
+    #[Assert\Regex(
+        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+        message: 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).'
+    )]
     private ?string $plainPassword = null;
 
     #[ORM\Column(nullable: true)]
@@ -130,7 +139,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->establishments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
+
+    #[ORM\OneToMany(mappedBy: 'consumer', targetEntity: Reservation::class)]
+    private Collection $reservations;
 
 
 
@@ -355,6 +368,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($notification->getUserId() === $this) {
                 $notification->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setConsumer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getConsumer() === $this) {
+                $reservation->setConsumer(null);
             }
         }
 

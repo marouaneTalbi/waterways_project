@@ -30,7 +30,7 @@ use App\Controller\GetKbis;
             deserialize: false,
         ),
         new GetCollection(),
-        new Get(
+        new GetCollection(
             uriTemplate: "/kbis/me",
             controller: GetKbis::class,
             name: 'getmydemand'

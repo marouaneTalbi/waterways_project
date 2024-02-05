@@ -64,6 +64,7 @@ use App\State\SearchStateProvider;
             security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['boat:read']],
         ),
+        /*
         new Put(
             security: "is_granted('ROLE_ADMIN')",
             securityMessage: "Only authenticated users can modify users."
@@ -86,7 +87,7 @@ class Boat
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['boat:read'])]
+    #[Groups(['boat:read', 'boat:create'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -116,9 +117,13 @@ class Boat
     #[ORM\OneToMany(mappedBy: 'idBoat', targetEntity: Slot::class, orphanRemoval: true)]
     private Collection $slots;
 
+    #[ORM\OneToMany(mappedBy: 'boat', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
     public function __construct()
     {
         $this->slots = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,7 +133,6 @@ class Boat
 
     public function getName(): ?string
     {
-        xdebug_break();
         return $this->name;
     }
 
@@ -223,6 +227,36 @@ class Boat
             // set the owning side to null (unless already changed)
             if ($slot->getIdBoat() === $this) {
                 $slot->setIdBoat(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setBoat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getBoat() === $this) {
+                $reservation->setBoat(null);
             }
         }
 
