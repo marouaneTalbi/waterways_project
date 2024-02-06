@@ -16,7 +16,7 @@ jobs:
     - name: Instal dependencies and build
       run: |
         cd front 
-        npm install
+        npm install --legacy-peer-deps
         npm run build
 
     - name: Deploy to S3
@@ -29,3 +29,13 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: eu-north-1
         SOURCE_DIR: 'front/build'
+
+    - name: Invalidate CloudFront Distribution
+      run: |
+        aws cloudfront create-invalidation --distribution-id ${{secrets.CLOUDFRONT_ID}} --paths "/*"
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.S3_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: eu-north-1
+
+        

@@ -26,6 +26,7 @@ export default function EstablishmentList() {
                      <Table.Head>
                          <Table.HeadCell>Nom</Table.HeadCell>
                          <Table.HeadCell>Address</Table.HeadCell>
+                         <Table.HeadCell>City</Table.HeadCell>
                          <Table.HeadCell>Start Date</Table.HeadCell>
                          <Table.HeadCell>Start End</Table.HeadCell>
                          <Table.HeadCell>

@@ -11,6 +11,7 @@ const EstablishmentProvider = ({ children }) => {
     const [establishments, setEstablishments] = useState([]);
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const currentUser = getUserRole();
@@ -25,6 +26,7 @@ const EstablishmentProvider = ({ children }) => {
         setEstablishment(establishment);
         setName(establishment.name);
         setAddress(establishment.address);
+        setCity(establishment.city);
         setStartDate(establishment.startDate);
         setEndDate(establishment.endDate);
     }
@@ -52,9 +54,9 @@ const EstablishmentProvider = ({ children }) => {
         }
     }
 
-    const addEstablishment = async ({name, address, startDate, endDate, user}) => {
+    const addEstablishment = async ({name, address, city, startDate, endDate, user}) => {
         if (isProvider) {
-            return EstablishmentApi.add({name, address, startDate, endDate, user}).then(response => {
+            return EstablishmentApi.add({name, address, city, startDate, endDate, user}).then(response => {
                 console.log(response)
             })
         } else {
@@ -62,9 +64,9 @@ const EstablishmentProvider = ({ children }) => {
         }
     }
 
-    const editEstablishment = async ({name, address, startDate, endDate}, id) => {
+    const editEstablishment = async ({name, address, city, startDate, endDate}, id) => {
         if (isProvider) {
-            return EstablishmentApi.edit({name, address, startDate, endDate}, id).then(response => {
+            return EstablishmentApi.edit({name, address, city, startDate, endDate}, id).then(response => {
                 console.log(response)
             })
         } else {
@@ -101,7 +103,7 @@ const EstablishmentProvider = ({ children }) => {
     }
 
     return (
-        <EstablishmentContext.Provider value={{editEstablishment, getEstablishmentItem, getEstablishmentList, establishment, setEstablishment, establishmentList, getEtablismentName, name, setName, address, setAddress, endDate, setEndDate, startDate, setStartDate, establishments, setEstablishments, addEstablishment, getEstablishment, getCurrentEstablishment, formatDate}}>
+        <EstablishmentContext.Provider value={{editEstablishment, getEstablishmentItem, getEstablishmentList, establishment, setEstablishment, establishmentList, getEtablismentName, name, setName, address, setAddress, city, setCity, endDate, setEndDate, startDate, setStartDate, establishments, setEstablishments, addEstablishment, getEstablishment, getCurrentEstablishment, formatDate}}>
             {children}
         </EstablishmentContext.Provider>
     );

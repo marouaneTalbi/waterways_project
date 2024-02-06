@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import WaterWaysLogo from '../../assets/svg/logo.svg'
 import { jwtDecode } from "jwt-decode";
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
-import { isTokenExpired } from '../../services/axiosRequestFunction';
+import { isTokenExpired, checkIfRequestExists } from '../../services/axiosRequestFunction';
 import NotificationIcon from './notif';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts/authContext';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
     const [userProvider, setUserProvider] = useState(null);
-    const token = localStorage.getItem('token');
     const [isValidToken, setIsValidToken] = useState(isTokenExpired());
+    const navigate = useNavigate();
+    const { token } = useContext(AuthContext);
+    const [hasPendingRequest, setHasPendingRequest] = useState(false);
 
     useEffect(() => {
         if (token) {
@@ -18,10 +22,28 @@ export default function Header() {
             const provider =  decoded.roles.find(role => role === 'ROLE_PROVIDER')
             setUserProvider(provider)
         }
-    }, [token, userRole]);
+    }, [token]);
     
+    useEffect(() => {
+        const checkRequestStatus = async () => {
+          const exists = await checkIfRequestExists(); 
+          setHasPendingRequest(exists);
+        };
+    
+        if (userRole && !isValidToken) {
+          checkRequestStatus();
+        }
+      }, [userRole, isValidToken]);
 
-
+    const logout = () => {
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('token');
+        navigate('/login');
+        setUserRole(null);
+        setIsValidToken(null);
+        setUserProvider(null);
+    }
+    
     return (
         <Navbar fluid rounded>
             <Navbar.Brand href="/">
@@ -42,11 +64,11 @@ export default function Header() {
                 </Dropdown.Header>
                 <Dropdown.Item href="/profile">Profile</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item>Sign out</Dropdown.Item>
+                <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
             </div>
-            <Navbar.Collapse> NIKEL
+            <Navbar.Collapse> Test a oo
             {
                     !userRole || isValidToken && (
                         <>
@@ -57,7 +79,10 @@ export default function Header() {
                 }
                 {
                     userRole === 'ROLE_ADMIN' && !isValidToken && (
+                        <>
                         <Navbar.Link href="/admin">Admin</Navbar.Link>
+                        <Navbar.Link href="/Kabisrequests">Requests</Navbar.Link>
+                        </>
                     )
                 }
                 {
@@ -70,6 +95,11 @@ export default function Header() {
                         <>
                             <Navbar.Link href="/">Accueil</Navbar.Link>
                             <Navbar.Link href="/search">Rechercher</Navbar.Link>
+                            {
+                            hasPendingRequest ?
+                            <Navbar.Link href="/myrequest">Suivre ma demande</Navbar.Link> :
+                            <Navbar.Link href="/requestProvider">Request Provider</Navbar.Link>
+                            }
                             <NotificationIcon />
                         </>
                     )

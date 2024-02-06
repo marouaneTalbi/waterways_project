@@ -3,15 +3,15 @@ import { TextInput, Label, Button } from 'flowbite-react';
 import { EstablishmentContext } from '../../contexts/establishmentContext';
 
 export default function EstablishmentForm({ onCloseModal }) {
-    const {establishment, name, setName, address, setAddress, endDate, setEndDate, startDate, setStartDate, addEstablishment, editEstablishment} = useContext(EstablishmentContext);
+    const {establishment, name, setName, address, setAddress, city, setCity, endDate, setEndDate, startDate, setStartDate, addEstablishment, editEstablishment} = useContext(EstablishmentContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         if(establishment) {
-            editEstablishment({name, address, startDate, endDate}, establishment.id);
+            editEstablishment({name, address, city, startDate, endDate}, establishment.id);
             onCloseModal();
         } else {
-            addEstablishment({name, address, startDate, endDate});
+            addEstablishment({name, address, city, startDate, endDate});
             onCloseModal();
         }
     };
@@ -37,6 +37,15 @@ export default function EstablishmentForm({ onCloseModal }) {
                             id="address"
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
+                            required
+                        />
+                        <div className="mb-2 block">
+                            <Label htmlFor="city" value="City" />
+                        </div>
+                        <TextInput
+                            id="city"
+                            value={city}
+                            onChange={(e) => setCity(e.target.value)}
                             required
                         />
                         <div className="mb-2 block">

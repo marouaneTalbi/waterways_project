@@ -10,25 +10,36 @@ const BoatProvider = ({ children }) => {
     const currentUser = getUserRole();
     const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
     const [results, setResults] = useState([]);
-
+    let lastBoat = null;
 
     const addBoat = async () => {
         if (isProvider) {
             // A REFACTO
+            console.log("et de 1");
             const modifiedEstablishment = `/api/establishments/${boat.establishment}`;
-    
+            console.log(modifiedEstablishment);
             // A REFACTO
             const modifiedBoat = { ...boat, establishment: modifiedEstablishment };
-    
+
             return boatModel.add(modifiedBoat).then(response => {
                 setBoatList(prevBoats => [...prevBoats, response]);
-                console.log(boatList);
+                setLastBoat(response.id);
+                return response.id;
             }).catch(error => {
                 console.log(error);
             });
         }
     };
-    
+
+    const setLastBoat = async (idBoat) => {
+        lastBoat = idBoat;
+        console.log("setLastBoat");
+        console.log(lastBoat);
+    }
+
+    const getLastBoat = async () => {
+        return lastBoat;
+    }
 
     const getBoatList = async () => {
         return boatModel.getList().then(response => {
@@ -48,7 +59,7 @@ const BoatProvider = ({ children }) => {
     }
 
     return (
-        <BoatContext.Provider value={{ getBoatList, boatList, boat, setBoat, addBoat, searchBoat, results }}>
+        <BoatContext.Provider value={{ getBoatList, boatList, boat, setBoat, addBoat, lastBoat, getLastBoat, searchBoat, results }}>
             {children}
         </BoatContext.Provider>
     );

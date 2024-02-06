@@ -14,6 +14,7 @@ const axiosInstance = axios.create({
 
 const urlsWithoutAuth = ['/api/token/refresh', '/api/users', '/api/mdpresetemail', '/api/resetmdp', '/auth'];
 
+
 export function getUserRole() {
   if(!localStorage.getItem('token')) {
     return null;
@@ -39,6 +40,7 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
         url: endpoint,
         method,
         data,
+
       });
       return response.data;
     } catch (error) {
@@ -117,6 +119,19 @@ async function refreshToken() {
     }
   } catch (error) {
     console.log(error)
+  }
+}
+ 
+export async function checkIfRequestExists() {
+  try {
+    const response = await sendRequest('/api/kbis/me');
+    return true;
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      return false;
+    }
+    console.error('Erreur lors de la vérification de la demande Kbis:', error);
+    return null;
   }
 }
 
