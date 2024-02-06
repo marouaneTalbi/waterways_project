@@ -28,7 +28,6 @@ const BoatProvider = ({ children }) => {
             }).catch(error => {
                 console.log(error);
             });
-
         }
     };
 
@@ -49,7 +48,6 @@ const BoatProvider = ({ children }) => {
     const getLastBoat = async () => {
         return lastBoat;
     }
-
 
     const getBoatList = async () => {
         return boatModel.getList().then(response => {

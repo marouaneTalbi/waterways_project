@@ -22,32 +22,35 @@ import Notifications from './pages/notifications/notifications';
 import Search from './pages/search';
 import BoatPublic from './components/Boat/BoatPublic';
 import Boat from './pages/Public/boat';
+import { AuthProvider } from './contexts/authContext';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-
-  <UserProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="login" element={<Login />} />
-          <Route path="mdpresetemail" element={<MdpRestEmail />} />
-          <Route path="resetmdp/:token" element={<ResetMdp />} />
-          <Route path="establishment-page/:id" element={<EstablishmentPage />} />
-          <Route path="register" element={<Register />} />
-          <Route path="search" element={<Search />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="boat/:id" element={<Boat />} />
-          <Route path="reservation/:id" element={<ReservationPage />} />
-          <Route path="admin" element={<UserAdmin /> } />
-          <Route path="provider" element={<ProviderDashboard /> } />
-          <Route path="requestProvider" element={<RequestProvider /> } />
-          <Route path="KabisRequests" element={<KabisRequests /> } />
-          <Route path="myRequest" element={<MyRequest /> } />
-          <Route path="notifications" element={<Notifications /> } />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </UserProvider>
+  <AuthProvider>
+    <UserProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="login" element={<Login />} />
+            <Route path="mdpresetemail" element={<MdpRestEmail />} />
+            <Route path="resetmdp/:token" element={<ResetMdp />} />
+            <Route path="establishment-page/:id" element={<EstablishmentPage />} />
+            <Route path="register" element={<Register />} />
+            <Route path="search" element={<Search />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="boat/:id" element={<Boat />} />
+            <Route path="reservation/:id" element={<ReservationPage />} />
+            <Route path="admin" element={<UserAdmin /> } />
+            <Route path="provider" element={<ProviderDashboard /> } />
+            <Route path="requestProvider" element={<RequestProvider /> } />
+            <Route path="KabisRequests" element={<KabisRequests /> } />
+            <Route path="myRequest" element={<MyRequest /> } />
+            <Route path="notifications" element={<Notifications /> } />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
+  </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
