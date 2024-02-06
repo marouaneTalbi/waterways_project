@@ -38,7 +38,11 @@ use App\State\SearchStateProvider;
             name: 'search',
             uriTemplate: '/search',
             controller: BoatSearchController::class,
-        )
+        ),
+        new Get(
+            uriTemplate: '/boat/{id}',
+            normalizationContext: ['groups' => ['boat:read', 'user:read']],
+        ),
         // new Post(
         //     name: 'search',
         //     uriTemplate: '/search',
@@ -119,6 +123,14 @@ class Boat
 
     #[ORM\OneToMany(mappedBy: 'boat', targetEntity: Reservation::class)]
     private Collection $reservations;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['boat:read', 'boat:create', 'boat:update'])]
+    private ?string $address = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['boat:read', 'boat:create', 'boat:update'])]
+    private ?string $city = null;
 
     public function __construct()
     {
@@ -259,6 +271,30 @@ class Boat
                 $reservation->setBoat(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): static
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

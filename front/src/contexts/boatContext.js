@@ -31,6 +31,14 @@ const BoatProvider = ({ children }) => {
         }
     };
 
+    const getBoat = async (id) => {
+        return boatModel.get(id).then(response => {
+            setBoat(response);
+        }).catch(error => {
+            console.error(error);
+        })
+    }
+
     const setLastBoat = async (idBoat) => {
         lastBoat = idBoat;
         console.log("setLastBoat");
@@ -59,7 +67,7 @@ const BoatProvider = ({ children }) => {
     }
 
     return (
-        <BoatContext.Provider value={{ getBoatList, boatList, boat, setBoat, addBoat, lastBoat, getLastBoat, searchBoat, results }}>
+        <BoatContext.Provider value={{ getBoatList, boatList, boat, setBoat, addBoat, lastBoat, getLastBoat, searchBoat, results, getBoat }}>
             {children}
         </BoatContext.Provider>
     );

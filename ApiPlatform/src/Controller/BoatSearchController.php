@@ -31,15 +31,14 @@ class BoatSearchController extends AbstractController {
         {
         $result = [];
         
-        $boatSizeList = $this->boatRepository->findBy(['capacity' => intval($request->query->get('people'))]);
-        foreach ($boatSizeList as $boat) {
-            $result[] = $boat;
-        }
-
-        $establishments = $this->establishmentRepository->findBy(['city' => $request->query->get('location')]);
-        foreach ($establishments as $establishment) {
-            $boats = $establishment->getBoats();
-            foreach ($boats as $boat) {
+        if(intval($request->query->get('people'))) {
+            $boatSizeList = $this->boatRepository->findBy(['capacity' => intval($request->query->get('people')), 'city' => $request->query->get('location')]);
+            foreach ($boatSizeList as $boat) {
+                $result[] = $boat;
+            }
+        } else {
+            $boatsCity = $this->boatRepository->findBy(['city' => $request->query->get('location')]);
+            foreach ($boatsCity as $boat) {
                 $result[] = $boat;
             }
         }
@@ -48,7 +47,7 @@ class BoatSearchController extends AbstractController {
         foreach ($boatNameList as $boat) {
             $result[] = $boat;
         }
-
+        
         $boatOwner = $this->userRepository->findUsersByNameAndRole($request->query->get('search'));
         if($boatOwner) {
             $establishments = $boatOwner->getEstablishments();

@@ -20,6 +20,8 @@ import EstablishmentItem from './components/Establishment/establishmentItem';
 import EstablishmentPage from './pages/Provider/establishmentPage';
 import Notifications from './pages/notifications/notifications';
 import Search from './pages/search';
+import BoatPublic from './components/Boat/BoatPublic';
+import Boat from './pages/Public/boat';
 import { AuthProvider } from './contexts/authContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -36,6 +38,7 @@ root.render(
             <Route path="register" element={<Register />} />
             <Route path="search" element={<Search />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="boat/:id" element={<Boat />} />
             <Route path="reservation/:id" element={<ReservationPage />} />
             <Route path="admin" element={<UserAdmin /> } />
             <Route path="provider" element={<ProviderDashboard /> } />

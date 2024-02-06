@@ -20,7 +20,7 @@ export function getUserRole() {
   }
 }
 
-const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true) => {
+const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true, params = {}) => {
   const isValidToken = !isTokenExpired();
 
   if (requireAuth && isValidToken) {
@@ -35,7 +35,7 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
         url: endpoint,
         method,
         data,
-
+        params,
       });
       return response.data;
     } catch (error) {
@@ -48,6 +48,7 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
         url: endpoint,
         method,
         data,
+        params,
       });
       return response.data;
     } catch (error) {

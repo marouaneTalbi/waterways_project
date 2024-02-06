@@ -30,12 +30,12 @@ export default function BoatForm({ onCloseModal }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!isDateValid) {
-            setFormErrors({
-                dateError: "Veuillez vérifier les dates et heures.",
-            });
-            return;
-        }
+        // if (!isDateValid) {
+        //     setFormErrors({
+        //         dateError: "Veuillez vérifier les dates et heures.",
+        //     });
+        //     return;
+        // }
         try {
             const idBoat = await addBoat();
             const formattedStartTime = startTime ? startTime : "00:00";
@@ -58,6 +58,26 @@ export default function BoatForm({ onCloseModal }) {
                 id="name"
                 value={boat && boat.name ? boat.name : ''}
                 onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, name: event.target.value }))}
+                required
+            />
+
+            <div className="mb-2 block">
+                <Label htmlFor="address" value="Adresse" />
+            </div>
+            <TextInput
+                id="address"
+                value={boat && boat.address ? boat.address : ''}
+                onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, address: event.target.value }))}
+                required
+            />
+
+            <div className="mb-2 block">
+                <Label htmlFor="city" value="Ville" />
+            </div>
+            <TextInput
+                id="city"
+                value={boat && boat.city ? boat.city : ''}
+                onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, city: event.target.value }))}
                 required
             />
             
