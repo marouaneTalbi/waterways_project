@@ -29,13 +29,14 @@ export default function GoogleMapComponent() {
             const loadMarkers = () => {
                 const geocoder = new window.google.maps.Geocoder();
                 const newMarkers = [];
-
+                console.log('results : ', results)
                 results.forEach((boat) => {
-                    geocoder.geocode({ address: boat.establishment.address + ' ' + boat.establishment.city }, (results, status) => {
+                    geocoder.geocode({ address: boat.address + ' ' + boat.city }, (results, status) => {
                         if (status === 'OK' && results[0]) {
+                            console.log('ok')
                             const { lat, lng } = results[0].geometry.location;
                             newMarkers.push({ lat: lat(), lng: lng(), boat }); // Inclure l'objet bateau dans les données du marqueur
-                            setMarkerPositions(newMarkers);
+                            setMarkerPositions((prevMarkerPositions) => [...prevMarkerPositions, ...newMarkers]);
                         } else {
                             console.error('Geocode was not successful for the following reason:', status);
                         }

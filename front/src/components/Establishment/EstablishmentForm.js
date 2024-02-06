@@ -19,7 +19,7 @@ export default function EstablishmentForm({ onCloseModal }) {
     return (
         <form onSubmit={handleSubmit}>
             {
-                 (
+                (
                     <>
                         <div className="mb-2 block">
                             <Label htmlFor="name" value="Name" />

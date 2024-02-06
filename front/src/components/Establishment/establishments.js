@@ -15,7 +15,7 @@ export default function Establishments() {
     };
 
     return (
-        <div className="mx-4">
+        <div>
             <GenericModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
