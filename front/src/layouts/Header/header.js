@@ -23,6 +23,8 @@ export default function Header() {
             setUserProvider(provider)
         }
 
+        console.log(userRole)
+
     }, [token]);
     
     useEffect(() => {
@@ -71,7 +73,7 @@ export default function Header() {
             </div>
             <Navbar.Collapse>
             {
-                    !userRole || isValidToken && (
+                    (!token || !isValidToken) && (
                         <>
                             <Navbar.Link href="/Login">Login</Navbar.Link>
                             <Navbar.Link href="/Register">Register</Navbar.Link>

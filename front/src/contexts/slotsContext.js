@@ -16,7 +16,7 @@ const SlotsProvider = ({ children }) => {
 
     const addSlots = async (idBoat, startTime, endTime) => {
         if (isProvider) {
-            const getBoat = `/api/boats/${idBoat}`;
+            const getBoat = `/api/boat/${idBoat}`;
             const modifiedSlots = { ...slots, boat: getBoat, startTime, endTime };
 
             return slotsModel.add(modifiedSlots).then(response => {
