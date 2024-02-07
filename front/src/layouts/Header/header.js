@@ -68,9 +68,9 @@ export default function Header() {
                 </Dropdown>
                 <Navbar.Toggle />
             </div>
-            <Navbar.Collapse> Test a oo
+            <Navbar.Collapse> Test a ooddd
             {
-                    (!token && !isValidToken) && (
+                    (!token ) && (
                         <>
                             <Navbar.Link href="/Login">Login</Navbar.Link>
                             <Navbar.Link href="/Register">Register</Navbar.Link>
