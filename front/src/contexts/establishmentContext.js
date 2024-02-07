@@ -1,7 +1,10 @@
+'use client';
 import React, { useState, createContext, useEffect } from 'react';
 import establishmentModel from './models/establishmentModel';
 import EstablishmentApi from './models/establishmentModel';
 import { getUserRole } from '../services/axiosRequestFunction';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const EstablishmentContext = createContext(null);
 
@@ -14,6 +17,7 @@ const EstablishmentProvider = ({ children }) => {
     const [city, setCity] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [showToast, setShowToast] = useState(false);
     const currentUser = getUserRole();
     const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
@@ -57,9 +61,13 @@ const EstablishmentProvider = ({ children }) => {
     const addEstablishment = async ({name, address, city, startDate, endDate, user}) => {
         if (isProvider) {
             return EstablishmentApi.add({name, address, city, startDate, endDate, user}).then(response => {
-                console.log(response)
+                setShowToast(true);
+                setEstablishments(prevEstablishments => [...prevEstablishments, response]);
+                toast.success('Etablissement ajouté');
             })
         } else {
+            setShowToast(true);
+            toast.error('Erreur lors de l\'ajout de l\'établissement')
             throw new Error('You are not a provider');  
         }
     }
@@ -104,6 +112,9 @@ const EstablishmentProvider = ({ children }) => {
 
     return (
         <EstablishmentContext.Provider value={{editEstablishment, getEstablishmentItem, getEstablishmentList, establishment, setEstablishment, establishmentList, getEtablismentName, name, setName, address, setAddress, city, setCity, endDate, setEndDate, startDate, setStartDate, establishments, setEstablishments, addEstablishment, getEstablishment, getCurrentEstablishment, formatDate}}>
+            {showToast && (
+                <ToastContainer />
+            )}
             {children}
         </EstablishmentContext.Provider>
     );

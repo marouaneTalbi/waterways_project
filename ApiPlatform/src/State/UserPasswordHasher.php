@@ -44,7 +44,6 @@ final class UserPasswordHasher implements ProcessorInterface
         return $this->processor->process($data, $operation, $uriVariables, $context);
     }
 
-
     private function sendWelcomeEmail(User $user)
     {
         $verificationUrl = $this->router->generate(
@@ -52,9 +51,8 @@ final class UserPasswordHasher implements ProcessorInterface
             ['token' =>  $user->getToken()],
             UrlGeneratorInterface::ABSOLUTE_URL);
 
-
         $currentEmail = (new Email())
-            ->from('marwane.berkani@gmail.com')
+            ->from('challenge.noreply@gmail.com')
             ->to($user->getEmail())
             ->subject('Time for Symfony Mailer!')
             ->text('Sending emails is fun again!')
@@ -71,7 +69,7 @@ final class UserPasswordHasher implements ProcessorInterface
             UrlGeneratorInterface::ABSOLUTE_URL);
 
         $currentEmail = (new Email())
-            ->from('marwane.berkani@gmail.com')
+            ->from('challenge.noreply@gmail.com')
             ->to($user->getEmail())
             ->subject('Email verification')
             ->text('')

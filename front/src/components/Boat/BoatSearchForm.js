@@ -18,13 +18,13 @@ export default function BoatSearchForm({ initialValues = { search: '', location:
     return (
         <form onSubmit={handleSubmit} className='w-full flex flex-row gap-2'>
             <div>
-                <TextInput defaultValue={initialValues.search} name='search' size="sm" id="search" type="text" icon={HiSearch} placeholder="Recherche par prestataire ou prestation..." required />
-            </div>
-            <div>
-                <TextInput defaultValue={initialValues.location} name='location' size="lg"  id="location" type="text" icon={HiLocationMarker} placeholder="Localisation" />
+                <TextInput defaultValue={initialValues.location} name='location' size="lg"  id="location" type="text" icon={HiLocationMarker} placeholder="Localisation*" required />
             </div>
             <div>
                 <TextInput defaultValue={initialValues.people} name='people' size="lg"  id="people" type="number" icon={HiUser} placeholder="Nombre de personne" />
+            </div>
+            <div>
+                <TextInput defaultValue={initialValues.search} name='search' size="sm" id="search" type="text" icon={HiSearch} placeholder="Recherche par prestataire ou prestation..." />
             </div>
             <div>
                 <Button type='submit' color='blue' size="sm">

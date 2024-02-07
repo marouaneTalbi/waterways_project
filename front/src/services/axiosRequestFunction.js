@@ -20,8 +20,8 @@ export function getUserRole() {
     return decodedToken;
   }
 }
-const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true) => {
 
+const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = true, params = {}) => {
   const isValidToken = !isTokenExpired();
 
   if (requireAuth && isValidToken) {
@@ -36,7 +36,7 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
         url: endpoint,
         method,
         data,
-
+        params,
       });
       return response.data;
     } catch (error) {
@@ -49,6 +49,7 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
         url: endpoint,
         method,
         data,
+        params,
       });
       return response.data;
     } catch (error) {
@@ -67,7 +68,6 @@ axiosInstance.interceptors.request.use(async config => {
   if(!token && !urlsWithoutAuth.includes(config.url)) {
     window.location.replace('/login');
   }
-
 
   if (config.url.includes('/auth')
       || config.url.includes('/api/token/refresh')

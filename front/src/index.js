@@ -16,11 +16,12 @@ import UserProvider from './contexts/userContext';
 import Profile from './pages/profile';
 import ReservationPage from './pages/reservationPage';
 import ProviderDashboard from './pages/providerDashboard';
-import EstablishmentItem from './components/Establishment/establishmentItem';
 import EstablishmentPage from './pages/Provider/establishmentPage';
 import Notifications from './pages/notifications/notifications';
 import Search from './pages/search';
+import Boat from './pages/Public/boat';
 import { AuthProvider } from './contexts/authContext';
+import BoatProvider from './pages/Provider/boatPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -36,6 +37,8 @@ root.render(
             <Route path="register" element={<Register />} />
             <Route path="search" element={<Search />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="boat/:id" element={<Boat />} />
+            <Route path="provider/boat/:id" element={<BoatProvider />} />
             <Route path="reservation/:id" element={<ReservationPage />} />
             <Route path="admin" element={<UserAdmin /> } />
             <Route path="provider" element={<ProviderDashboard /> } />

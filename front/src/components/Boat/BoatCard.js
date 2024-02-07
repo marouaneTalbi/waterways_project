@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button } from 'flowbite-react'
 import { HiStar } from 'react-icons/hi'
+import { Link } from 'react-router-dom'
 
 export default function BoatCard({ boat }) {
     return (
@@ -15,7 +16,7 @@ export default function BoatCard({ boat }) {
                     <div className='flex flex-row justify-between'>
                         <div>
                             <h2 className='text-gray-900 text-xl font-medium'>{boat.name} {boat.modele}</h2>
-                            <span className='text-gray-500'>{boat.establishment.address} - {boat.establishment.city}</span>
+                            <span className='text-gray-500'>{boat.address} - {boat.city}</span>
                         </div>
                         <div className='flex flex-col'>
                             <span className='text-dark-orange text-2xl font-medium'>€500</span>
@@ -25,7 +26,9 @@ export default function BoatCard({ boat }) {
                 </div>
                 <div className='flex flex-row justify-between items-center'>
                     <span className='text-gray-400'>Martine Delacroix</span>
-                    <Button className='bg-light-orange text-dark-orange'>Réserver</Button>
+                    <Button className='bg-light-orange text-dark-orange'>
+                        <Link to={`/boat/${boat.id}`}>Réserver</Link>
+                    </Button>
                 </div>
             </div>
         </div>

@@ -9,6 +9,9 @@ const boatApi = {
     },
     search: async function (search) {
         return sendRequest(`/api/search`, 'get', {}, true, search);
+    },
+    get: async function (id) {
+        return sendRequest(`api/boat/${id}`, 'get', {}, true)
     }
 }
 

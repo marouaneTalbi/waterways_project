@@ -6,6 +6,7 @@ import { SlotsContext } from '../../contexts/slotsContext';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import fr from 'date-fns/locale/fr';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function BoatForm({ onCloseModal }) {
@@ -20,7 +21,6 @@ export default function BoatForm({ onCloseModal }) {
         getEstablishmentList();
     }, [])
 
-
     const isDateValid = useMemo(() => {
         const isStartDateValid = !slots.startBookingDate || new Date(slots.startBookingDate) > new Date();
         const isEndDateValid = !slots.startBookingDate || !slots.endBookingDate || new Date(slots.startBookingDate) <= new Date(slots.endBookingDate);
@@ -28,21 +28,58 @@ export default function BoatForm({ onCloseModal }) {
         return isStartDateValid && isEndDateValid && isTimeValid;
     }, [slots.startBookingDate, slots.endBookingDate, startTime, endTime]);
 
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        const validTypes = ['image/jpeg', 'image/png'];
+        
+        if (file && validTypes.includes(file.type)) {
+            setBoat((prevBoat) => ({ ...prevBoat, image: file }));
+        } else {
+            toast.error("Seuls les fichiers JPEG et PNG sont autorisés.", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        }
+
+        if (file.size > 1048576) { 
+            toast.error("Le fichier est trop volumineux.", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            return;
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        const formData = new FormData();
+        formData.append('name', boat.name);
+        formData.append('modele', boat.modele);
+        formData.append('size', boat.size);
+        formData.append('capacity', boat.capacity);
+        formData.append('minTime', boat.minTime);
+        formData.append('image', boat.image);
+        formData.append('establishment', boat.establishment);
+        formData.append('city', boat.city);
+        formData.append('address', boat.address);
+      
         if (!isDateValid) {
             setFormErrors({
                 dateError: "Veuillez vérifier les dates et heures.",
             });
+            toast.error("Veuillez vérifier les dates et heures.", {
+                position: toast.POSITION.TOP_RIGHT
+            });
             return;
-        }
+        } 
         try {
-            const idBoat = await addBoat();
-            const formattedStartTime = startTime ? startTime : "00:00";
-            const formattedEndTime = endTime ? endTime : "00:00";
+            if(formData) {
+                const idBoat = await addBoat(formData);
+                const formattedStartTime = startTime ? startTime : "00:00";
+                const formattedEndTime = endTime ? endTime : "00:00";
 
-            await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate);
-            onCloseModal();
+                await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate);
+                onCloseModal();
+            }
         } catch (error) {
             console.error(error);
         }
@@ -51,6 +88,7 @@ export default function BoatForm({ onCloseModal }) {
 
     return (
         <form onSubmit={handleSubmit}>
+            <ToastContainer />
             <div className="mb-2 block">
                 <Label htmlFor="name" value="Nom" />
             </div>
@@ -58,6 +96,26 @@ export default function BoatForm({ onCloseModal }) {
                 id="name"
                 value={boat && boat.name ? boat.name : ''}
                 onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, name: event.target.value }))}
+                required
+            />
+
+            <div className="mb-2 block">
+                <Label htmlFor="address" value="Adresse" />
+            </div>
+            <TextInput
+                id="address"
+                value={boat && boat.address ? boat.address : ''}
+                onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, address: event.target.value }))}
+                required
+            />
+
+            <div className="mb-2 block">
+                <Label htmlFor="city" value="Ville" />
+            </div>
+            <TextInput
+                id="city"
+                value={boat && boat.city ? boat.city : ''}
+                onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, city: event.target.value }))}
                 required
             />
             
@@ -103,6 +161,15 @@ export default function BoatForm({ onCloseModal }) {
                 onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, minTime: Number(event.target.value) }))}
                 type="integer"
                 required
+            />
+
+            <div className="mb-2 block">
+                <Label htmlFor="Image" value="image" />
+            </div>
+            <input 
+                type="file" 
+                // onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, image: event.target.files[0]}))}
+                onChange={(event) => handleImageChange(event)}
             />
 
             <div className="mb-2 block">

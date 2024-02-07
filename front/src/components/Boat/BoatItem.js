@@ -1,5 +1,6 @@
 import React from 'react'
 import { Table } from 'flowbite-react'
+import { Link } from 'react-router-dom'
 
 export default function BoatItem({ boat }) {
     return (
@@ -11,9 +12,9 @@ export default function BoatItem({ boat }) {
             <Table.Cell>{boat.modele}</Table.Cell>
             <Table.Cell>{boat.capacity}</Table.Cell>
             <Table.Cell>
-                <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
+                <Link to={`/provider/boat/${boat.id}`} className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
                     GERER
-                </a>
+                </Link>
             </Table.Cell>
         </Table.Row>
     )
