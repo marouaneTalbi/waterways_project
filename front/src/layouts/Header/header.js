@@ -73,7 +73,7 @@ export default function Header() {
             </div>
             <Navbar.Collapse>
             {
-                    (!token || !isValidToken) && (
+                    (!token && !isValidToken) && (
                         <>
                             <Navbar.Link href="/Login">Login</Navbar.Link>
                             <Navbar.Link href="/Register">Register</Navbar.Link>
