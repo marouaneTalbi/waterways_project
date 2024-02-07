@@ -20,7 +20,6 @@ export default function BoatForm({ onCloseModal }) {
         getEstablishmentList();
     }, [])
 
-
     const isDateValid = useMemo(() => {
         const isStartDateValid = !slots.startBookingDate || new Date(slots.startBookingDate) > new Date();
         const isEndDateValid = !slots.startBookingDate || !slots.endBookingDate || new Date(slots.startBookingDate) <= new Date(slots.endBookingDate);
@@ -30,6 +29,15 @@ export default function BoatForm({ onCloseModal }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const formData = new FormData();
+        formData.append('name', boat.name);
+        formData.append('modele', boat.modele);
+        formData.append('size', boat.size);
+        formData.append('capacity', boat.capacity);
+        formData.append('minTime', boat.minTime);
+        formData.append('image', boat.image);
+        formData.append('establishment', boat.establishment);
+      
         if (!isDateValid) {
             setFormErrors({
                 dateError: "Veuillez vérifier les dates et heures.",
@@ -37,12 +45,16 @@ export default function BoatForm({ onCloseModal }) {
             return;
         }
         try {
-            const idBoat = await addBoat();
-            const formattedStartTime = startTime ? startTime : "00:00";
-            const formattedEndTime = endTime ? endTime : "00:00";
+            if(formData) {
+                const idBoat = await addBoat(formData);
 
-            await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate);
-            onCloseModal();
+                console.log(idBoat)
+                const formattedStartTime = startTime ? startTime : "00:00";
+                const formattedEndTime = endTime ? endTime : "00:00";
+
+                await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate);
+                onCloseModal();
+            }
         } catch (error) {
             console.error(error);
         }
@@ -106,6 +118,14 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
+                <Label htmlFor="Image" value="image" />
+            </div>
+            <input 
+                type="file" 
+                onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, image: event.target.files[0]}))}
+            />
+
+            <div className="mb-2 block">
                 <Label htmlFor="startBookingDate" value="Date de début" />
             </div>
             <DatePicker
@@ -150,6 +170,8 @@ export default function BoatForm({ onCloseModal }) {
                 placeholder="HH:mm"
                 required
             />
+
+            
 
             <div className="mb-2 block">
                 <Label htmlFor="Establishment" value="establishment" />

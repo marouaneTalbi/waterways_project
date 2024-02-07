@@ -67,7 +67,6 @@ axiosInstance.interceptors.request.use(async config => {
     window.location.replace('/login');
   }
 
-
   if (config.url.includes('/auth')
       || config.url.includes('/api/token/refresh')
       || (config.url.includes('/api/users') && config.method === 'post')

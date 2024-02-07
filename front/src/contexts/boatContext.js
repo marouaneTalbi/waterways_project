@@ -1,6 +1,7 @@
 import React, { useState, createContext } from 'react';
 import boatModel from './models/boatModel';
 import sendRequest, {getUserRole} from '../services/axiosRequestFunction';
+import axios from 'axios';
 
 export const BoatContext = createContext(null);
 
@@ -12,22 +13,23 @@ const BoatProvider = ({ children }) => {
     const [results, setResults] = useState([]);
     let lastBoat = null;
 
-    const addBoat = async () => {
+    const addBoat = async (formdata) => {
         if (isProvider) {
-            // A REFACTO
-            console.log("et de 1");
-            const modifiedEstablishment = `/api/establishments/${boat.establishment}`;
-            console.log(modifiedEstablishment);
-            // A REFACTO
-            const modifiedBoat = { ...boat, establishment: modifiedEstablishment };
+            return axios.post('http://localhost:8888/api/addboat', formdata, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }).then(
+                response => {
+                    console.log(response.data)
+                    setBoatList(prevBoats => [...prevBoats, response.data]);
+                    setLastBoat(response.data.id);
+                    return response.data.id;
+                }).catch(error => {
+                    console.log(error);
+                });
 
-            return boatModel.add(modifiedBoat).then(response => {
-                setBoatList(prevBoats => [...prevBoats, response]);
-                setLastBoat(response.id);
-                return response.id;
-            }).catch(error => {
-                console.log(error);
-            });
+
         }
     };
 
