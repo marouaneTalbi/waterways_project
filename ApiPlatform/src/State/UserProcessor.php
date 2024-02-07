@@ -27,11 +27,11 @@ final class UserProcessor implements ProcessorInterface
         $this->sendWelcomeEmail($data);
         return $result;
     }
+
     private function sendWelcomeEmail(User $user)
     {
-
         $currentEmail = (new Email())
-            ->from('marwane.berkani@gmail.com')
+            ->from('challenge.noreply@gmail.com')
             ->to($user->getEmail())
             ->subject('Time for Symfony Mailer!')
             ->text('Sending emails is fun again!')

@@ -28,17 +28,14 @@ class VerifyUserController extends AbstractController
     #[Route('/verify/{token}', name: 'user_verify', methods: ['GET'])]
     public function __invoke(string $token, EntityManagerInterface $em): RedirectResponse
     {
-
         $user = $em->getRepository(User::class)->findOneBy(['token' => $token]);
         if ($user) {
             $user->setVerified(true);
             $em->flush();
 
-
             return new RedirectResponse($_ENV['FRONT_SERVER']);
         }
 
         return new RedirectResponse($_ENV['FRONT_SERVER']);
-
     }
 }

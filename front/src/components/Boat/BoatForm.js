@@ -6,6 +6,7 @@ import { SlotsContext } from '../../contexts/slotsContext';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import fr from 'date-fns/locale/fr';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function BoatForm({ onCloseModal }) {
@@ -27,6 +28,26 @@ export default function BoatForm({ onCloseModal }) {
         return isStartDateValid && isEndDateValid && isTimeValid;
     }, [slots.startBookingDate, slots.endBookingDate, startTime, endTime]);
 
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        const validTypes = ['image/jpeg', 'image/png'];
+        
+        if (file && validTypes.includes(file.type)) {
+            setBoat((prevBoat) => ({ ...prevBoat, image: file }));
+        } else {
+            toast.error("Seuls les fichiers JPEG et PNG sont autorisés.", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        }
+
+        if (file.size > 1048576) { 
+            toast.error("Le fichier est trop volumineux.", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            return;
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData();
@@ -42,13 +63,14 @@ export default function BoatForm({ onCloseModal }) {
             setFormErrors({
                 dateError: "Veuillez vérifier les dates et heures.",
             });
+            toast.error("Username ou mot de passe incorrect", {
+                position: toast.POSITION.TOP_RIGHT
+            });
             return;
-        }
+        } 
         try {
             if(formData) {
                 const idBoat = await addBoat(formData);
-
-                console.log(idBoat)
                 const formattedStartTime = startTime ? startTime : "00:00";
                 const formattedEndTime = endTime ? endTime : "00:00";
 
@@ -63,6 +85,7 @@ export default function BoatForm({ onCloseModal }) {
 
     return (
         <form onSubmit={handleSubmit}>
+            <ToastContainer />
             <div className="mb-2 block">
                 <Label htmlFor="name" value="Nom" />
             </div>
@@ -122,7 +145,8 @@ export default function BoatForm({ onCloseModal }) {
             </div>
             <input 
                 type="file" 
-                onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, image: event.target.files[0]}))}
+                // onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, image: event.target.files[0]}))}
+                onChange={(event) => handleImageChange(event)}
             />
 
             <div className="mb-2 block">
@@ -170,8 +194,6 @@ export default function BoatForm({ onCloseModal }) {
                 placeholder="HH:mm"
                 required
             />
-
-            
 
             <div className="mb-2 block">
                 <Label htmlFor="Establishment" value="establishment" />
