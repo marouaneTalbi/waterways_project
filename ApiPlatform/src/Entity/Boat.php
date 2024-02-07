@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use App\Controller\BoatController;
 use App\Controller\BoatSearchController;
 use App\State\SearchStateProvider;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: BoatRepository::class)]
@@ -33,6 +34,7 @@ use App\State\SearchStateProvider;
         ),
         new Post(
             uriTemplate: '/addboat',
+            security: "is_granted('ROLE_ADMIN')",
             controller: BoatController::class,
             deserialize: false, 
             // normalizationContext: ['groups' => ['boat:create']],
@@ -124,6 +126,11 @@ class Boat
     private Collection $reservations;
 
     #[Vich\UploadableField(mapping: 'boat', fileNameProperty: 'image')]
+    #[Assert\File(
+        maxSize: '1024k',
+        mimeTypes: ['image/jpeg', 'image/png'],
+        mimeTypesMessage: 'Veuillez uploader une image valide (JPEG ou PNG).',
+    )]
     public ?File $file = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -305,5 +312,16 @@ class Boat
         $this->file = $file;
 
         return $this;
+    }
+
+    // ça nous permet de recuperet les chemain des photos
+    #[Groups(['boat:read'])]
+    public function getImageUrl(): ?string
+    {
+        if ($this->image) {
+            return '/uploads/boat/' . $this->image;
+        }
+
+        return '';
     }
 }

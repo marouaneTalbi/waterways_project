@@ -15,28 +15,20 @@ const BoatProvider = ({ children }) => {
 
     const addBoat = async (formdata) => {
         if (isProvider) {
-            return axios.post('http://localhost:8888/api/addboat', formdata, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }).then(
+            return boatModel.add(formdata)
+            .then(
                 response => {
-                    console.log(response.data)
-                    setBoatList(prevBoats => [...prevBoats, response.data]);
-                    setLastBoat(response.data.id);
-                    return response.data.id;
+                    setBoatList(prevBoats => [...prevBoats, response]);
+                    setLastBoat(response.id);
+                    return response.id;
                 }).catch(error => {
                     console.log(error);
-                });
-
-
+            });
         }
     };
 
     const setLastBoat = async (idBoat) => {
         lastBoat = idBoat;
-        console.log("setLastBoat");
-        console.log(lastBoat);
     }
 
     const getLastBoat = async () => {
@@ -45,6 +37,8 @@ const BoatProvider = ({ children }) => {
 
     const getBoatList = async () => {
         return boatModel.getList().then(response => {
+
+            console.log(response)
             setBoatList(response);
         }).catch(error => {
             console.log(error)
@@ -54,7 +48,6 @@ const BoatProvider = ({ children }) => {
     const searchBoat = async (payload) => {
         return boatModel.search(payload).then(response => {
             setResults(response);
-            console.log(response);
         }).catch(error => {
             console.log(error)
         })

@@ -15,7 +15,6 @@ final class BoatController extends AbstractController
 {
     public function __invoke(Request $request, EntityManagerInterface $entityManager, UploaderHelper $uploaderHelper): Boat
     {
-
         $formData = $request->request->all();
         $boat = new Boat();
         
@@ -32,7 +31,6 @@ final class BoatController extends AbstractController
             $originalFileName = $imageFile->getClientOriginalName();
             $boat->setImage($originalFileName);
             $boat->file = $imageFile;
-
         }
         return $boat;
     }
