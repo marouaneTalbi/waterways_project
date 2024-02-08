@@ -8,21 +8,18 @@ import { isSameDay } from 'date-fns';
 export const ReservationContext = createContext(null);
 
 const ReservationProvider = ({ children }) => {
-    const [ReservationList, setReservationList] = useState([]);
-    const [Reservation, setReservation] = useState({});
+    const [reservationList, setReservationList] = useState([]);
+    const [reservation, setReservation] = useState({});
     const currentUser = getUserRole();
     const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
 
     const addReservation = async (idBoat, idSlot, idUser) => {
         if (isProvider) {
-            const getBoat = `/api/boats/${idBoat}`;
+            const getBoat = `/api/boat/${idBoat}`;
             const getSlot = `/api/slots/${idSlot}`;
             const getUser = `/api/users/${idUser}`;
             const currentDate = new Date();
-            console.log(getBoat)
-            console.log(getSlot)
-            console.log(getUser)
             const modifiedReservation = { boat: getBoat, slots: getSlot, consumer: getUser, reservationDate: new Date()};
 
             return ReservationModel.add(modifiedReservation).then(response => {
@@ -67,7 +64,7 @@ const ReservationProvider = ({ children }) => {
     }
 
     return (
-        <ReservationContext.Provider value={{ getReservationList, ReservationList, Reservation, setReservation, addReservation, deleteReservation }}>
+        <ReservationContext.Provider value={{ getReservationList, reservationList, reservation, setReservation, addReservation, deleteReservation }}>
             {children}
         </ReservationContext.Provider>
     );
