@@ -7,7 +7,7 @@ export const BoatContext = createContext(null);
 
 const BoatProvider = ({ children }) => {
     const [boatList, setBoatList] = useState([]);
-    const [boat, setBoat] = useState({});
+    const [boat, setBoat] = useState(null);
     const currentUser = getUserRole();
     const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
     const [results, setResults] = useState([]);
@@ -61,8 +61,18 @@ const BoatProvider = ({ children }) => {
         })
     }
 
+    const editBoat = async (boat) => {
+        if (isProvider) {
+            return boatModel.edit(boat).then(response => {
+                console.log(response)
+            })
+        } else {
+            throw new Error('You are not a provider');  
+        }
+    }
+
     return (
-        <BoatContext.Provider value={{ getBoatList, boatList, boat, setBoat, addBoat, lastBoat, getLastBoat, searchBoat, results, getBoat }}>
+        <BoatContext.Provider value={{ getBoatList, boatList, boat, setBoat, addBoat, lastBoat, getLastBoat, searchBoat, results, getBoat, editBoat }}>
             {children}
         </BoatContext.Provider>
     );

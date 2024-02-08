@@ -10,7 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function BoatForm({ onCloseModal }) {
-    const { boat, setBoat, addBoat, getLastBoat} = useContext(BoatContext);
+    const { boat, setBoat, addBoat, getLastBoat, editBoat} = useContext(BoatContext);
     const { establishmentList, getEstablishmentList, establishment, setEstablishment, getEtablismentName } = useContext(EstablishmentContext);
     const { addSlots, setSlots, slots, addMultipleSlots} = useContext(SlotsContext);
     const [startTime, setStartTime] = useState(slots && slots.startTime ? slots.startTime : '');
@@ -74,6 +74,7 @@ export default function BoatForm({ onCloseModal }) {
         try {
             if(formData) {
                 const idBoat = await addBoat(formData);
+                
                 const formattedStartTime = startTime ? startTime : "00:00";
                 const formattedEndTime = endTime ? endTime : "00:00";
 
@@ -217,39 +218,49 @@ export default function BoatForm({ onCloseModal }) {
                 placeholder="HH:mm"
                 required
             />
-
-            <div className="mb-2 block">
-                <Label htmlFor="Establishment" value="establishment" />
-            </div>
-            <Select
-                id="establishment"
-                value={establishment || ''}
-                onChange={(event) => {
-                    setEstablishment(event.target.value);
-                    setBoat((prevBoat) => ({ ...prevBoat, establishment: event.target.value }));
-                }}
-                required
-            >
-
-                <h3 className="flex items-center justify-center mt-10">Date de disponibilité</h3>
-
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="dateAvailable" value="date de début" />
-                    </div>
-
-                </div>
-
-                <option value="" disabled>Choisir un établissement</option>
-                {establishmentList.map((establishment) => (
-                    <option key={establishment.id} value={establishment.id}>
-                        {establishment.name}
-                    </option>
-                ))}
-            </Select>
+            {
+                boat && boat ? (
+                    <></>
+                ) : (
+                    <>
+                        <div className="mb-2 block">
+                            <Label htmlFor="Establishment" value="establishment" />
+                        </div>
+                        <Select
+                            id="establishment"
+                            value={boat?.establishment || ''}
+                            onChange={(event) => {
+                                setEstablishment(event.target.value);
+                                setBoat((prevBoat) => ({ ...prevBoat, establishment: event.target.value }));
+                            }}
+                            required
+                        >
+                            <h3 className="flex items-center justify-center mt-10">Date de disponibilité</h3>
+            
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="dateAvailable" value="date de début" />
+                                </div>
+            
+                            </div>
+            
+                            <option value="" disabled>Choisir un établissement</option>
+                            {establishmentList.map((establishment) => (
+                                <option key={establishment.id} value={establishment.id}>
+                                    {establishment.name}
+                                </option>
+                            ))}
+                        </Select>
+                    </>
+                )
+            }
 
             <div className="w-full mt-4">
-                <Button color='red' type='submit'>Ajouter</Button>
+                {boat && boat ? (
+                    <Button color='red' type='submit'>Modifier</Button>
+                ) : (
+                    <Button color='red' type='submit'>Ajouter</Button>
+                )}
             </div>
         </form>
     )
