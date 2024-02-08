@@ -58,14 +58,18 @@ export default function BoatInfo() {
                             </svg>
                         </div>
                     ) : (
-                        <img alt='boat-image' src='https://coursnautique.com/wp-content/uploads/2022/02/Les-diff%C3%A9rentes-parties-dun-bateau-scaled.jpeg' className='bg-red-500 w-full object-cover h-[300px] rounded-md' />
+                        <img alt='boat-image' 
+                        src={boat ?  process.env.REACT_APP_SERVER+boat?.imageUrl : 'https://coursnautique.com/wp-content/uploads/2022/02/Les-diff%C3%A9rentes-parties-dun-bateau-scaled.jpeg' }
+                        className='bg-red-500 w-full object-cover h-[300px] rounded-md' 
+                        />
+
                     )}
                     <div className='flex flex-row flex-wrap h-max gap-8 mt-8 mb-8'>
                         <DataCard title='etablissement' value={boat?.establishment.name} icon={faHouse} />
                         <DataCard title='modele' value={boat?.modele} icon={faGears} />
                         <DataCard title='prix' value="500€ l'heure" icon={faMoneyBill} />
                         <DataCard title='personnes max' value={boat?.capacity} icon={faUser} />
-                        <DataCard title='description' value="description du bateau" icon={faFileLines} />
+                        <DataCard title='description' value={boat?.description} icon={faFileLines} />
                     </div>
                 </div>
                 <div className="py-6 border-t border-gray-100 absolute bottom-0 w-[calc(100%_-_2rem)] flex flex-row justify-between">
