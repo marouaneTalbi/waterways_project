@@ -57,7 +57,8 @@ const ReservationSlotList = () => {
     const reservations = slotsList?.flatMap(function (slot) {
         const dailyReservations = [];
         const slotBoat = slot.boat;
-        if (slotBoat === `/api/boats/${idBoat}`) {
+        console.log(slot);
+        if (slotBoat === `/api/boat/${idBoat}`) {
             const startDate = new Date(slot.startBookingDate);
             const endDate = new Date(slot.endBookingDate);
             const startTime = new Date(slot.startTime);
