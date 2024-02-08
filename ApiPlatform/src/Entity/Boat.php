@@ -47,49 +47,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/boat/{id}',
             normalizationContext: ['groups' => ['boat:read', 'user:read']],
         ),
-        new Patch(
+        new POST(
             uriTemplate: '/boat/{id}',
-            normalizationContext: ['groups' => ['boat:read', 'user:read']]
+            security: "is_granted('ROLE_ADMIN')",
+            controller: BoatController::class,
+            deserialize: false, 
         )
-        // new Post(
-        //     name: 'search',
-        //     uriTemplate: '/search',
-        //     processor: SearchStateProvider::class,
-        //     openapiContext: [
-        //         'requestBody' => [
-        //             'content' => [
-        //                 'application/json' => [
-        //                     'schema' => [
-        //                         'type' => 'object',
-        //                         'properties' => [
-        //                             'search' => ['type' => 'string'],
-        //                             'search' => ['type' => 'string'],
-        //                             'location' => ['type' => 'string'],
-        //                         ],
-        //                     ],
-        //                 ],
-        //             ],
-        //         ],
-        //     ],
-        // )
-     /*   new Get(
-            security: "is_granted('ROLE_ADMIN')",
-            normalizationContext: ['groups' => ['boat:read']],
-        ),
-        /*
-        new Put(
-            security: "is_granted('ROLE_ADMIN')",
-            securityMessage: "Only authenticated users can modify users."
-        ),
-        new Patch(
-            security: "is_granted('ROLE_ADMIN')",
-            securityMessage: "Only authenticated users can modify users."
-        ),
-        new Delete(
-            security: "is_granted('ROLE_ADMIN')",
-            securityMessage: "Only authenticated users can delete users."
-        ),*/
-
     ],
     normalizationContext: ['groups' => ['boat:read', 'media_object:read']],
     denormalizationContext: ['groups' => ['boat:create', 'boat:update']],
@@ -151,6 +114,10 @@ class Boat
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update'])]
     private ?string $image = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update'])]
+    private ?string $description = null;
 
     public function __construct()
     {
@@ -360,5 +327,17 @@ class Boat
         }
 
         return '';
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
     }
 }
