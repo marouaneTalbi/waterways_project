@@ -47,6 +47,10 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/boat/{id}',
             normalizationContext: ['groups' => ['boat:read', 'user:read']],
         ),
+        new Patch(
+            uriTemplate: '/boat/{id}',
+            normalizationContext: ['groups' => ['boat:read', 'user:read']]
+        )
         // new Post(
         //     name: 'search',
         //     uriTemplate: '/search',

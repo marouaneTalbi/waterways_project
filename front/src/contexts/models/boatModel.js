@@ -12,6 +12,9 @@ const boatApi = {
     },
     get: async function (id) {
         return sendRequest(`api/boat/${id}`, 'get', {}, true)
+    },
+    edit: async function (boat) {
+        return sendRequest(`/api/boat/${boat.id}`, 'patch', {boat: boat}, true)
     }
 }
 

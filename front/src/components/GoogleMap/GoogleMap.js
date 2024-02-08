@@ -17,7 +17,7 @@ const mapContainerStyle = {
 export default function GoogleMapComponent() {
     const [markerPositions, setMarkerPositions] = useState([]);
     const [selectedBoat, setSelectedBoat] = useState(null); // Nouvel état pour suivre le bateau sélectionné
-    const { results } = useContext(BoatContext);
+    const { results, boat } = useContext(BoatContext);
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: 'AIzaSyD612is2fyjpnMcXuA6XAxM1lNIFxJkgU4',
@@ -29,7 +29,6 @@ export default function GoogleMapComponent() {
             const loadMarkers = () => {
                 const geocoder = new window.google.maps.Geocoder();
                 const newMarkers = [];
-                console.log('results : ', results)
                 results.forEach((boat) => {
                     geocoder.geocode({ address: boat.address + ' ' + boat.city }, (results, status) => {
                         if (status === 'OK' && results[0]) {
@@ -44,6 +43,26 @@ export default function GoogleMapComponent() {
                 });
             };
 
+            if (isLoaded) {
+                loadMarkers();
+            }
+        } else if(boat) {
+            console.log(boat)
+            const loadMarkers = () => {
+                const geocoder = new window.google.maps.Geocoder();
+                const newMarkers = [];
+                geocoder.geocode({ address: boat.address + ' ' + boat.city }, (results, status) => {
+                    console.log(results)
+                    if (status === 'OK' && results[0]) {
+                        console.log('ok')
+                        const { lat, lng } = results[0].geometry.location;
+                        newMarkers.push({ lat: lat(), lng: lng(), boat }); // Inclure l'objet bateau dans les données du marqueur
+                        setMarkerPositions((prevMarkerPositions) => [...prevMarkerPositions, ...newMarkers]);
+                    } else {
+                        console.error('Geocode was not successful for the following reason:', status);
+                    }
+                });
+            };
             if (isLoaded) {
                 loadMarkers();
             }
