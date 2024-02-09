@@ -77,14 +77,14 @@ export default function BoatInfo() {
                     <Link to={`/boat/${id}`} className="font-semibold p-3 text-center">Voir la page du bateau</Link>
                 </div>
             </div>
-            <div className="md:col-start-3 md:row-start-1 row-start-3 p-6 md:p-8 bg-white rounded border-2 border-gray-100 flex flex-row gap-4 md:gap-6 items-center">
+            <div className="md:col-start-3 md:row-start-1 row-start-3 p-6 md:p-8 bg-white rounded border-2 border-gray-100 flex flex-row gap-4 md:gap-6 items-center" title="Nombre d'utilisateurs ayant ce bateau en favoris">
                 <div className='bg-[#FFF5FB] w-20 h-20 flex justify-center items-center rounded-full'>
                     <svg width="25" height="23" viewBox="0 0 23 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M17.3333 1C13.6 1 11.5 4.11111 11.5 5.66667C11.5 4.11111 9.4 1 5.66667 1C1.93333 1 1 4.11111 1 5.66667C1 13.8333 11.5 19.6667 11.5 19.6667C11.5 19.6667 22 13.8333 22 5.66667C22 4.11111 21.0667 1 17.3333 1Z" stroke="#FFB6E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                 </div>
                 <div className='flex flex-col'>
-                    <span className='text-4xl font-semibold'>10</span>
+                    <span className='text-4xl font-semibold'>{boat == null ? <Loader /> : (boat.usersFavorites.length)}</span>
                     <span className='text-lg text-gray-500'>Favoris</span>
                 </div>
             </div>

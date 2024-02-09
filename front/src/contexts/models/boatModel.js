@@ -13,6 +13,15 @@ const boatApi = {
     get: async function (id) {
         return sendRequest(`api/boat/${id}`, 'get', {}, true)
     },
+    addFavorite: async function (boat) {
+        return sendRequest(`api/boat/${boat.id}/addFavorite`, 'post', boat, true)
+    },
+    getFavorite: async function () {
+        return sendRequest(`/api/boat/favorite`, 'get', {}, true)
+    },
+    deleteFavorite: async function(boat) {
+        return sendRequest(`api/boat/${boat.id}/removeFavorite`, 'delete', {}, true)
+    },
     edit: async function (boat, id) {
         return sendRequest(`/api/boat/${id}?_method=PUT`, 'post', boat, true)
     }
