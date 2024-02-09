@@ -140,10 +140,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->establishments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->notes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     #[ORM\OneToMany(mappedBy: 'consumer', targetEntity: Reservation::class)]
     private Collection $reservations;
+
+    #[ORM\OneToMany(mappedBy: 'createdby', targetEntity: Note::class)]
+    private Collection $notes;
+
+    #[ORM\OneToMany(mappedBy: 'createdby', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
 
 
 
@@ -398,6 +406,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($reservation->getConsumer() === $this) {
                 $reservation->setConsumer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setCreatedby($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getCreatedby() === $this) {
+                $note->setCreatedby(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setCreatedby($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getCreatedby() === $this) {
+                $comment->setCreatedby(null);
             }
         }
 

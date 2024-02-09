@@ -22,6 +22,7 @@ import Notifications from './pages/notifications/notifications';
 import Search from './pages/search';
 import BoatPublic from './components/Boat/BoatPublic';
 import Boat from './pages/Public/boat';
+import BoatComment from './components/Comment/CommentForm';
 import { AuthProvider } from './contexts/authContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -46,6 +47,7 @@ root.render(
             <Route path="KabisRequests" element={<KabisRequests /> } />
             <Route path="myRequest" element={<MyRequest /> } />
             <Route path="notifications" element={<Notifications /> } />
+            <Route path="addcomment" element={<BoatComment /> } />
           </Route>
         </Routes>
       </BrowserRouter>
