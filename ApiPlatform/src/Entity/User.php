@@ -21,6 +21,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\OpenApi\Model\RequestBody;
+use App\Controller\AddFavoriteController;
+use App\Controller\UserController;
+use App\State\UserAddFavoriteProcessor;
+use Symfony\Config\ApiPlatform\SwaggerConfig;
+use App\Controller\GetFavoriteController;
+use App\Controller\UserGetController;
 
 #[ApiResource(
     operations: [
@@ -134,18 +141,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Notification::class)]
     private Collection $notifications;
 
+    #[ORM\OneToMany(mappedBy: 'consumer', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
+    #[ORM\ManyToMany(targetEntity: Boat::class, inversedBy: 'usersFavorites', cascade: ['persist'])]
+    private Collection $favorite;
 
     public function __construct()
     {
         $this->establishments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->favorite = new ArrayCollection();
     }
-
-    #[ORM\OneToMany(mappedBy: 'consumer', targetEntity: Reservation::class)]
-    private Collection $reservations;
-
-
 
     public function getPlainPassword(): ?string
     {
@@ -400,6 +408,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $reservation->setConsumer(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Boat>
+     */
+    public function getFavorite(): Collection
+    {
+        return $this->favorite;
+    }
+
+    public function addFavorite(Boat $favorite): static
+    {
+        if (!$this->favorite->contains($favorite)) {
+            $this->favorite->add($favorite);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Boat $favorite): static
+    {
+        $this->favorite->removeElement($favorite);
 
         return $this;
     }
