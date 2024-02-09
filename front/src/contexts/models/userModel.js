@@ -8,6 +8,10 @@ const userApi = {
     get: async function () {
         return sendRequest(`/api/user`, 'get', {}, true);
     },
+
+    getAll: async function () {
+        return sendRequest(`/api/users`, 'get', {}, true);
+    }
 };
 
 export default userApi;
