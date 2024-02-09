@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
     Scheduler,
     WeekView,
@@ -6,9 +6,11 @@ import {
     AllDayPanel,
     DateNavigator,
     Toolbar,
+    AppointmentTooltip,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import { SlotsContext } from '../../contexts/slotsContext';
+import { ReservationContext } from "../../contexts/reservationContext";
 import { useParams } from 'react-router-dom';
 import {
     Modal,
@@ -20,31 +22,57 @@ import {
     Button,
 } from '@material-ui/core';
 import SlotsList from "../Slots/SlotsList";
+import moment from 'moment';
+import 'moment/locale/fr';
+
+const MyAppointmentTooltip = ({ children, appointmentData, ...restProps }) => {
+    const { addReservation } = useContext(ReservationContext);
+    const { id: idBoat } = useParams();
+    const handleClick = () => {
+        addReservation(idBoat, appointmentData.id, 3);
+    };
+
+    return (
+        <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
+            <>
+                <button  onClick={handleClick}>Réserver</button>
+            </>
+            <div>
+                {children}
+            </div>
+        </AppointmentTooltip.Content>
+    );
+};
 
 const ReservationSlotList = () => {
     const { slotsList, getSlotsList } = React.useContext(SlotsContext);
+    const { reservationList, getReservationList } = React.useContext(ReservationContext);
     const { id: idBoat } = useParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedReservation, setSelectedReservation] = useState(null);
 
     useEffect(() => {
         getSlotsList();
+        getReservationList();
     }, []);
 
     const reservations = slotsList?.flatMap(function (slot) {
         const dailyReservations = [];
         const slotBoat = slot.boat;
-        if (slotBoat === `/api/boats/${idBoat}`) {
+        console.log(reservationList);
+        if (slotBoat === `/api/boat/${idBoat}`) {
             const startDate = new Date(slot.startBookingDate);
             const endDate = new Date(slot.endBookingDate);
             const startTime = new Date(slot.startTime);
             const endTime = new Date(slot.endTime);
+            const finalStartDate = moment(new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), startTime.getHours(), startTime.getMinutes()));
+            const finalEndDate = moment(new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), endTime.getHours(), endTime.getMinutes()));
             const slotId = slot.id;
 
             dailyReservations.push({
                 title: 'rien' + slotId,
-                startDate: new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), startTime.getHours(), startTime.getMinutes()),
-                endDate: new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), endTime.getHours(), endTime.getMinutes()),
+                startDate: finalStartDate,
+                endDate: finalEndDate,
                 id: slotId,
                 location: 'Room 1',
             });
@@ -55,16 +83,6 @@ const ReservationSlotList = () => {
     const openModal = (reservation) => {
         setSelectedReservation(reservation);
         setIsModalOpen(true);
-    };
-
-    const handleEdit = () => {
-        console.log("Edition de la réservation", selectedReservation);
-        setIsModalOpen(false);
-    };
-
-    const handleDelete = () => {
-        console.log("Suppression de la réservation", selectedReservation);
-        setIsModalOpen(false);
     };
 
     let currentDate = new Date();
@@ -94,8 +112,11 @@ const ReservationSlotList = () => {
                 />
                 <Toolbar />
                 <DateNavigator />
-                <Appointments />
+                <Appointments/>
                 <AllDayPanel />
+                <AppointmentTooltip
+                    contentComponent={MyAppointmentTooltip}
+                />
             </Scheduler>
         </div>
     );

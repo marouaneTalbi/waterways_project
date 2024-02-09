@@ -1,5 +1,6 @@
 import React, { useState, createContext } from 'react';
 import userModel from './models/userModel';
+import { jwtDecode } from "jwt-decode";
 
 export const UserContext = createContext(null);
 
@@ -8,12 +9,15 @@ const UserProvider = ({ children }) => {
     const [highestRole, SethighestRole] = useState(null);
 
     const getUser = async () => {
-        return userModel.get().then(response => {
+        return userModel.getAll().then(res =>{
+            const token = localStorage.getItem('token');
+            const decodedToken = jwtDecode(token);
+            const currentUser = res.find((user) => user.email === decodedToken?.username)
             setUser({
-                ...response,
-                fullName: `${response.lastname} ${response.firstname}`
+                ...currentUser,
+                fullName: `${currentUser.lastname} ${currentUser.firstname}`
             });
-            SethighestRole(getHighestRole(response.roles));
+            SethighestRole(getHighestRole(currentUser.roles));
         })
     }
 

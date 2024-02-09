@@ -1,17 +1,19 @@
 import React, { useState, createContext } from 'react';
 import boatModel from './models/boatModel';
-import sendRequest, {getUserRole} from '../services/axiosRequestFunction';
-import axios from 'axios';
+import {getUserRole} from '../services/axiosRequestFunction';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const BoatContext = createContext(null);
 
 const BoatProvider = ({ children }) => {
     const [boatList, setBoatList] = useState([]);
-    const [boat, setBoat] = useState({});
+    const [boat, setBoat] = useState(null);
     const currentUser = getUserRole();
     const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
     const [results, setResults] = useState([]);
     let lastBoat = null;
+    const [favorites, setFavorites] = useState(null);
 
     const addBoat = async (formdata) => {
         if (isProvider) {
@@ -45,8 +47,6 @@ const BoatProvider = ({ children }) => {
 
     const getBoatList = async () => {
         return boatModel.getList().then(response => {
-
-            console.log(response)
             setBoatList(response);
         }).catch(error => {
             console.log(error)
@@ -61,8 +61,47 @@ const BoatProvider = ({ children }) => {
         })
     }
 
+    const editBoat = async (boat, id) => {
+        if (isProvider) {
+            return boatModel.edit(boat, id).then(response => {
+                console.log(response)
+            })
+        } else {
+            throw new Error('You are not a provider');  
+        }
+    }
+
+    const addFavorite = async (boat) => {
+        return boatModel.addFavorite(boat).then(response => {
+            setFavorites(prevFavorites => [...prevFavorites, response]);
+            toast.success(`Vous avez ajouté le bateau ${boat.name} en favoris`);
+        }).catch(error => {
+            toast.error('Erreur lors de l\'ajout en favoris')
+            console.error(error)
+        })
+    }
+
+    const getFavorite = async () => {
+        return boatModel.getFavorite().then(response => {
+            setFavorites(response);
+        }).catch(error => {
+            console.error(error);
+        })
+    }
+
+    const removeFavorite = async (boat) => {
+        return boatModel.deleteFavorite(boat).then(response => {
+            setFavorites(prevFavorites => prevFavorites.filter(favorite => favorite.id !== boat.id));
+            toast.success(`Vous avez supprimé le bateau ${boat.name} des favoris`);
+        }).catch(error => {
+            toast.error('Erreur lors de la supression du favoris')
+            console.error(error);
+        })
+    }
+
     return (
-        <BoatContext.Provider value={{ getBoatList, boatList, boat, setBoat, addBoat, lastBoat, getLastBoat, searchBoat, results, getBoat }}>
+        <BoatContext.Provider value={{ getBoatList, boatList, boat, setBoat, addBoat, lastBoat, getLastBoat, searchBoat, results, getBoat, editBoat, addFavorite, favorites, getFavorite, removeFavorite }}>
+            <ToastContainer />
             {children}
         </BoatContext.Provider>
     );

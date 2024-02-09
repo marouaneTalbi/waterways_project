@@ -38,6 +38,7 @@ export default function Header() {
     const logout = () => {
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         navigate('/login');
         setUserRole(null);
         setIsValidToken(null);

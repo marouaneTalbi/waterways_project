@@ -3,12 +3,55 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')",
+            normalizationContext: ['groups' => ['reservation:read']],
+            paginationEnabled: false,
+        /*paginationItemsPerPage: 100,*/
+        ),
+        new Post(
+            name: 'Reservation',
+            uriTemplate: '/reservation',
+            normalizationContext: ['groups' => ['reservation:create']],
+
+        ),
+        new Get(
+            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
+            normalizationContext: ['groups' => ['reservation:read']],
+        ),
+        /*   new Get(
+               security: "is_granted('ROLE_ADMIN')",
+               normalizationContext: ['groups' => ['establishment:read']],
+           ),
+           new Put(
+               security: "is_granted('ROLE_ADMIN')",
+               securityMessage: "Only authenticated users can modify users."
+           ),
+           new Patch(
+               security: "is_granted('ROLE_ADMIN')",
+               securityMessage: "Only authenticated users can modify users."
+           ),
+           new Delete(
+               security: "is_granted('ROLE_ADMIN')",
+               securityMessage: "Only authenticated users can delete users."
+           ),*/
+
+    ],
+    normalizationContext: ['groups' => ['reservation:read']],
+    denormalizationContext: ['groups' => ['reservation:create', 'reservation:update']],
+
+)]
 class Reservation
 {
     #[ORM\Id]
@@ -18,17 +61,21 @@ class Reservation
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['reservation:read', 'reservation:create'])]
     private ?Boat $boat = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['reservation:read', 'reservation:create'])]
     private ?User $consumer = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $ReservationDate = null;
+    #[Groups(['reservation:read', 'reservation:create'])]
+    private ?\DateTimeInterface $reservationDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['reservation:read', 'reservation:create'])]
     private ?Slot $slots = null;
 
     public function getId(): ?int
@@ -62,12 +109,12 @@ class Reservation
 
     public function getReservationDate(): ?\DateTimeInterface
     {
-        return $this->ReservationDate;
+        return $this->reservationDate;
     }
 
-    public function setReservationDate(\DateTimeInterface $ReservationDate): static
+    public function setReservationDate(\DateTimeInterface $reservationDate): static
     {
-        $this->ReservationDate = $ReservationDate;
+        $this->reservationDate = $reservationDate;
 
         return $this;
     }

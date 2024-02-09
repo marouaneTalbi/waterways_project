@@ -1,22 +1,42 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import BoatProvider, { BoatContext } from '../../contexts/boatContext';
+import { BoatContext } from '../../contexts/boatContext';
 import { Button } from 'flowbite-react';
 import CommentItem from '../Comment/CommentItem';
-
+import CommentForm from '../Comment/CommentForm';
+import CommentsList from '../Comment/CommentList';
+import AddNote from '../notes/Addnotes';
+import BoatRatingsSummary from '../notes/Shownotes';
 
 export default function BoatPublic() {
     const { id } = useParams();
-    const { getBoat, boat } = useContext(BoatContext);
+    const { getBoat, boat, addFavorite, favorites, getFavorite, removeFavorite } = useContext(BoatContext);
+    const [newFavorites, setNewFavorites] = useState([]);
+
+    useEffect(() => {
+        getFavorite()
+    }, [])
+
+    useEffect(() => {
+        setNewFavorites(favorites);
+    }, [favorites]);
 
     useEffect(() => {
         getBoat(id)
     }, [id])
 
+    const removeBoatFromFavorite = () => {
+        removeFavorite(boat)
+    }
+
+    const addBoatToFavorite = () => {
+        addFavorite(boat);
+    }
+
     return (
             <div className="grid grid-cols-12 gap-4 flex-1">
                 <div className="col-span-12 md:col-span-8 relative flex flex-col">
-                    <img alt='boat-image' src='https://coursnautique.com/wp-content/uploads/2022/02/Les-diff%C3%A9rentes-parties-dun-bateau-scaled.jpeg' className='bg-red-500 w-full object-cover h-[400px] rounded-md' />
+                    <img alt='boat-image' src='https://coursnautique.com/wp-content/uploads/2022/02/Les-diff%C3%A9rentes-parties-dun-bateau-scaled.jpeg' className='bg-red-500 w-full object-cover h-[500px] rounded-md' />
                     <div className='mt-4 flex flex-row justify-between px-4'>
                         <div>
                             <h2 className='font-bold text-2xl'>{boat && boat.name + ' ' + boat.modele}</h2>
@@ -69,12 +89,23 @@ export default function BoatPublic() {
                     <div className='mt-8 px-4 flex sm:flex-row flex-col sm:justify-between sm:items-center items-start gap-10 sm:gap-0'>
                         <div className='flex flex-row gap-6'>
                             <Button className='bg-dark-orange'>Réserver</Button>
-                            <Button className='text-gray-500' color='gray'>
-                                <svg className='mr-4' width="23" height="23" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M17.4863 4.21619C14.2863 4.21619 12.4863 6.88285 12.4863 8.21619C12.4863 6.88285 10.6863 4.21619 7.48633 4.21619C4.28633 4.21619 3.48633 6.88285 3.48633 8.21619C3.48633 15.2162 12.4863 20.2162 12.4863 20.2162C12.4863 20.2162 21.4863 15.2162 21.4863 8.21619C21.4863 6.88285 20.6863 4.21619 17.4863 4.21619Z" stroke="#929595" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                                Ajouter aux favoris
-                            </Button>
+                            {
+                                (boat && favorites) && favorites.some(favorite => favorite.id === boat.id) ? (
+                                    <Button onClick={removeBoatFromFavorite} className='border-red-500 text-red-500'>
+                                        <svg className="w-6 h-6 text-red-500 dark:text-white mr-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="m12.7 20.7 6.2-7.1c2.7-3 2.6-6.5.8-8.7A5 5 0 0 0 16 3c-1.3 0-2.7.4-4 1.4A6.3 6.3 0 0 0 8 3a5 5 0 0 0-3.7 1.9c-1.8 2.2-2 5.8.8 8.7l6.2 7a1 1 0 0 0 1.4 0Z"/>
+                                        </svg>
+                                        Supprimer des favoris
+                                    </Button>
+                                ) : (
+                                    <Button className='text-gray-500' color='gray' onClick={addBoatToFavorite}>
+                                        <svg className='mr-4' width="23" height="23" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M17.4863 4.21619C14.2863 4.21619 12.4863 6.88285 12.4863 8.21619C12.4863 6.88285 10.6863 4.21619 7.48633 4.21619C4.28633 4.21619 3.48633 6.88285 3.48633 8.21619C3.48633 15.2162 12.4863 20.2162 12.4863 20.2162C12.4863 20.2162 21.4863 15.2162 21.4863 8.21619C21.4863 6.88285 20.6863 4.21619 17.4863 4.21619Z" stroke="#929595" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                        Ajouter aux favoris
+                                    </Button>
+                                )
+                            }
                         </div>
                         <div className='flex sm:flex-row flex-row-reverse gap-4 items-center'>
                             <div className='flex flex-col sm:text-right text-left'>
@@ -93,9 +124,10 @@ export default function BoatPublic() {
                         <span className='font-semibold text-gray-400 text-sm'>3 Commentaires</span>
                     </header>
                     <div className='flex flex-col gap-4'>
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
+                        <CommentsList boatId={id} />
+                        <CommentForm boatId={id} /> 
+                        <AddNote boatId={id}/>
+                        <BoatRatingsSummary boatId={id}/>
                     </div>
                 </div>
             </div>
