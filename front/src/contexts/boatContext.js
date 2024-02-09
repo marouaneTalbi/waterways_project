@@ -47,8 +47,6 @@ const BoatProvider = ({ children }) => {
 
     const getBoatList = async () => {
         return boatModel.getList().then(response => {
-
-            console.log(response)
             setBoatList(response);
         }).catch(error => {
             console.log(error)
@@ -63,9 +61,9 @@ const BoatProvider = ({ children }) => {
         })
     }
 
-    const editBoat = async (boat) => {
+    const editBoat = async (boat, id) => {
         if (isProvider) {
-            return boatModel.edit(boat).then(response => {
+            return boatModel.edit(boat, id).then(response => {
                 console.log(response)
             })
         } else {

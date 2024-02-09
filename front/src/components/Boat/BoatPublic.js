@@ -3,6 +3,10 @@ import { useParams } from 'react-router-dom';
 import { BoatContext } from '../../contexts/boatContext';
 import { Button } from 'flowbite-react';
 import CommentItem from '../Comment/CommentItem';
+import CommentForm from '../Comment/CommentForm';
+import CommentsList from '../Comment/CommentList';
+import AddNote from '../notes/Addnotes';
+import BoatRatingsSummary from '../notes/Shownotes';
 
 export default function BoatPublic() {
     const { id } = useParams();
@@ -120,9 +124,10 @@ export default function BoatPublic() {
                         <span className='font-semibold text-gray-400 text-sm'>3 Commentaires</span>
                     </header>
                     <div className='flex flex-col gap-4'>
-                        <CommentItem />
-                        <CommentItem />
-                        <CommentItem />
+                        <CommentsList boatId={id} />
+                        <CommentForm boatId={id} /> 
+                        <AddNote boatId={id}/>
+                        <BoatRatingsSummary boatId={id}/>
                     </div>
                 </div>
             </div>

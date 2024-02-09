@@ -40,7 +40,7 @@ export default function BoatForm({ onCloseModal }) {
             });
         }
 
-        if (file.size > 1048576) { 
+        if (file?.size > 1048576) { 
             toast.error("Le fichier est trop volumineux.", {
                 position: toast.POSITION.TOP_RIGHT
             });
@@ -57,11 +57,11 @@ export default function BoatForm({ onCloseModal }) {
         formData.append('size', boat.size);
         formData.append('capacity', boat.capacity);
         formData.append('minTime', boat.minTime);
-        formData.append('image', boat.image);
-        formData.append('establishment', boat.establishment);
         formData.append('city', boat.city);
         formData.append('address', boat.address);
-      
+        formData.append('image', boat.image);
+        formData.append('description', boat.description);
+        
         if (!isDateValid) {
             setFormErrors({
                 dateError: "Veuillez vérifier les dates et heures.",
@@ -73,13 +73,27 @@ export default function BoatForm({ onCloseModal }) {
         } 
         try {
             if(formData) {
-                const idBoat = await addBoat(formData);
+                if(boat.id) {
+                    formData.append('establishment', boat.establishment.id);
+                    editBoat(formData, boat.id).then((res) => {
+                        console.log(res,'___________________________________________')
+                        onCloseModal();
+                    }).catch((error) => {
+                        toast.error("Erreur lors de la modification", {
+                            position: toast.POSITION.TOP_RIGHT
+                        });
+                    })
                 
-                const formattedStartTime = startTime ? startTime : "00:00";
-                const formattedEndTime = endTime ? endTime : "00:00";
-
-                await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate);
-                onCloseModal();
+                } else {
+                    formData.append('establishment', boat.establishment);
+                    const idBoat = await addBoat(formData);
+                    
+                    const formattedStartTime = startTime ? startTime : "00:00";
+                    const formattedEndTime = endTime ? endTime : "00:00";
+    
+                    await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate);
+                    onCloseModal();
+                }
             }
         } catch (error) {
             console.error(error);
@@ -165,14 +179,27 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
+            <Label htmlFor="description" value="Description" />
+            </div>
+            <TextInput
+                id="description"
+                value={boat && boat.description ? boat.description : ''}
+                onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, description: event.target.value }))}
+                type="integer"
+                required
+            />
+
+            <div className="mb-2 block">
                 <Label htmlFor="Image" value="image" />
             </div>
             <input 
                 type="file" 
-                // onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, image: event.target.files[0]}))}
                 onChange={(event) => handleImageChange(event)}
             />
 
+            {
+               boat && boat?.id == null && (
+                    <>
             <div className="mb-2 block">
                 <Label htmlFor="startBookingDate" value="Date de début" />
             </div>
@@ -218,8 +245,11 @@ export default function BoatForm({ onCloseModal }) {
                 placeholder="HH:mm"
                 required
             />
+                    </>
+                )
+            }
             {
-                boat && boat ? (
+                boat && boat?.id ? (
                     <></>
                 ) : (
                     <>

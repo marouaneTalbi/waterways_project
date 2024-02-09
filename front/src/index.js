@@ -20,6 +20,7 @@ import EstablishmentPage from './pages/Provider/establishmentPage';
 import Notifications from './pages/notifications/notifications';
 import Search from './pages/search';
 import Boat from './pages/Public/boat';
+import BoatComment from './components/Comment/CommentForm';
 import { AuthProvider } from './contexts/authContext';
 import BoatProvider from './pages/Provider/boatPage';
 
@@ -46,6 +47,7 @@ root.render(
             <Route path="KabisRequests" element={<KabisRequests /> } />
             <Route path="myRequest" element={<MyRequest /> } />
             <Route path="notifications" element={<Notifications /> } />
+            <Route path="addcomment" element={<BoatComment /> } />
           </Route>
         </Routes>
       </BrowserRouter>
