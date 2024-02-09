@@ -6,10 +6,11 @@ import { SlotsContext } from '../../contexts/slotsContext';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import fr from 'date-fns/locale/fr';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function BoatForm({ onCloseModal }) {
-    const { boat, setBoat, addBoat, getLastBoat} = useContext(BoatContext);
+    const { boat, setBoat, addBoat, getLastBoat, editBoat} = useContext(BoatContext);
     const { establishmentList, getEstablishmentList, establishment, setEstablishment, getEtablismentName } = useContext(EstablishmentContext);
     const { addSlots, setSlots, slots, addMultipleSlots} = useContext(SlotsContext);
     const [startTime, setStartTime] = useState(slots && slots.startTime ? slots.startTime : '');
@@ -20,7 +21,6 @@ export default function BoatForm({ onCloseModal }) {
         getEstablishmentList();
     }, [])
 
-
     const isDateValid = useMemo(() => {
         const isStartDateValid = !slots.startBookingDate || new Date(slots.startBookingDate) > new Date();
         const isEndDateValid = !slots.startBookingDate || !slots.endBookingDate || new Date(slots.startBookingDate) <= new Date(slots.endBookingDate);
@@ -28,21 +28,73 @@ export default function BoatForm({ onCloseModal }) {
         return isStartDateValid && isEndDateValid && isTimeValid;
     }, [slots.startBookingDate, slots.endBookingDate, startTime, endTime]);
 
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        const validTypes = ['image/jpeg', 'image/png'];
+        
+        if (file && validTypes.includes(file.type)) {
+            setBoat((prevBoat) => ({ ...prevBoat, image: file }));
+        } else {
+            toast.error("Seuls les fichiers JPEG et PNG sont autorisés.", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        }
+
+        if (file?.size > 1048576) { 
+            toast.error("Le fichier est trop volumineux.", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            return;
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // if (!isDateValid) {
-        //     setFormErrors({
-        //         dateError: "Veuillez vérifier les dates et heures.",
-        //     });
-        //     return;
-        // }
-        try {
-            const idBoat = await addBoat();
-            const formattedStartTime = startTime ? startTime : "00:00";
-            const formattedEndTime = endTime ? endTime : "00:00";
 
-            await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate);
-            onCloseModal();
+        const formData = new FormData();
+        formData.append('name', boat.name);
+        formData.append('modele', boat.modele);
+        formData.append('size', boat.size);
+        formData.append('capacity', boat.capacity);
+        formData.append('minTime', boat.minTime);
+        formData.append('city', boat.city);
+        formData.append('address', boat.address);
+        formData.append('image', boat.image);
+        formData.append('description', boat.description);
+        
+        if (!isDateValid) {
+            setFormErrors({
+                dateError: "Veuillez vérifier les dates et heures.",
+            });
+            toast.error("Veuillez vérifier les dates et heures.", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            return;
+        } 
+        try {
+            if(formData) {
+                if(boat.id) {
+                    formData.append('establishment', boat.establishment.id);
+                    editBoat(formData, boat.id).then((res) => {
+                        console.log(res,'___________________________________________')
+                        onCloseModal();
+                    }).catch((error) => {
+                        toast.error("Erreur lors de la modification", {
+                            position: toast.POSITION.TOP_RIGHT
+                        });
+                    })
+                
+                } else {
+                    formData.append('establishment', boat.establishment);
+                    const idBoat = await addBoat(formData);
+                    
+                    const formattedStartTime = startTime ? startTime : "00:00";
+                    const formattedEndTime = endTime ? endTime : "00:00";
+    
+                    await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate);
+                    onCloseModal();
+                }
+            }
         } catch (error) {
             console.error(error);
         }
@@ -51,6 +103,7 @@ export default function BoatForm({ onCloseModal }) {
 
     return (
         <form onSubmit={handleSubmit}>
+            <ToastContainer />
             <div className="mb-2 block">
                 <Label htmlFor="name" value="Nom" />
             </div>
@@ -126,6 +179,28 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
+            <Label htmlFor="description" value="Description" />
+            </div>
+            <TextInput
+                id="description"
+                value={boat && boat.description ? boat.description : ''}
+                onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, description: event.target.value }))}
+                type="integer"
+                required
+            />
+
+            <div className="mb-2 block">
+                <Label htmlFor="Image" value="image" />
+            </div>
+            <input 
+                type="file" 
+                onChange={(event) => handleImageChange(event)}
+            />
+
+            {
+               boat && boat?.id == null && (
+                    <>
+            <div className="mb-2 block">
                 <Label htmlFor="startBookingDate" value="Date de début" />
             </div>
             <DatePicker
@@ -170,39 +245,52 @@ export default function BoatForm({ onCloseModal }) {
                 placeholder="HH:mm"
                 required
             />
-
-            <div className="mb-2 block">
-                <Label htmlFor="Establishment" value="establishment" />
-            </div>
-            <Select
-                id="establishment"
-                value={establishment || ''}
-                onChange={(event) => {
-                    setEstablishment(event.target.value);
-                    setBoat((prevBoat) => ({ ...prevBoat, establishment: event.target.value }));
-                }}
-                required
-            >
-
-                <h3 className="flex items-center justify-center mt-10">Date de disponibilité</h3>
-
-                <div>
-                    <div className="mb-2 block">
-                        <Label htmlFor="dateAvailable" value="date de début" />
-                    </div>
-
-                </div>
-
-                <option value="" disabled>Choisir un établissement</option>
-                {establishmentList.map((establishment) => (
-                    <option key={establishment.id} value={establishment.id}>
-                        {establishment.name}
-                    </option>
-                ))}
-            </Select>
+                    </>
+                )
+            }
+            {
+                boat && boat?.id ? (
+                    <></>
+                ) : (
+                    <>
+                        <div className="mb-2 block">
+                            <Label htmlFor="Establishment" value="establishment" />
+                        </div>
+                        <Select
+                            id="establishment"
+                            value={boat?.establishment || ''}
+                            onChange={(event) => {
+                                setEstablishment(event.target.value);
+                                setBoat((prevBoat) => ({ ...prevBoat, establishment: event.target.value }));
+                            }}
+                            required
+                        >
+                            <h3 className="flex items-center justify-center mt-10">Date de disponibilité</h3>
+            
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="dateAvailable" value="date de début" />
+                                </div>
+            
+                            </div>
+            
+                            <option value="" disabled>Choisir un établissement</option>
+                            {establishmentList.map((establishment) => (
+                                <option key={establishment.id} value={establishment.id}>
+                                    {establishment.name}
+                                </option>
+                            ))}
+                        </Select>
+                    </>
+                )
+            }
 
             <div className="w-full mt-4">
-                <Button color='red' type='submit'>Ajouter</Button>
+                {boat && boat ? (
+                    <Button color='red' type='submit'>Modifier</Button>
+                ) : (
+                    <Button color='red' type='submit'>Ajouter</Button>
+                )}
             </div>
         </form>
     )

@@ -19,7 +19,7 @@ export default function BoatPublic() {
     return (
             <div className="grid grid-cols-12 gap-4 flex-1">
                 <div className="col-span-12 md:col-span-8 relative flex flex-col">
-                    <img alt='boat-image' src='https://coursnautique.com/wp-content/uploads/2022/02/Les-diff%C3%A9rentes-parties-dun-bateau-scaled.jpeg' className='bg-red-500 w-full object-cover h-[400px] rounded-md' />
+                    <img alt='boat-image' src='https://coursnautique.com/wp-content/uploads/2022/02/Les-diff%C3%A9rentes-parties-dun-bateau-scaled.jpeg' className='bg-red-500 w-full object-cover h-[500px] rounded-md' />
                     <div className='mt-4 flex flex-row justify-between px-4'>
                         <div>
                             <h2 className='font-bold text-2xl'>{boat && boat.name + ' ' + boat.modele}</h2>
