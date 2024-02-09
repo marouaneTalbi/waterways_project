@@ -119,10 +119,18 @@ class Boat
     #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update'])]
     private ?string $description = null;
 
+    #[ORM\OneToMany(mappedBy: 'boat', targetEntity: Note::class)]
+    private Collection $createdBy;
+
+    #[ORM\OneToMany(mappedBy: 'boat', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->slots = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->createdBy = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -299,6 +307,23 @@ class Boat
     }
 
     /**
+     * @return Collection<int, Note>
+     */
+    public function getCreatedBy(): Collection
+    {
+        return $this->createdBy;
+    }
+
+    public function addCreatedBy(Note $createdBy): static
+    {
+        if (!$this->createdBy->contains($createdBy)) {
+            $this->createdBy->add($createdBy);
+            $createdBy->setBoat($this);
+        }
+         return $this;
+    }
+
+    /**
      * Get the value of file
      */ 
     public function getFile()
@@ -314,6 +339,48 @@ class Boat
     public function setFile($file)
     {
         $this->file = $file;
+        return $this;
+    }
+
+
+    public function removeCreatedBy(Note $createdBy): static
+    {
+        if ($this->createdBy->removeElement($createdBy)) {
+            // set the owning side to null (unless already changed)
+            if ($createdBy->getBoat() === $this) {
+                $createdBy->setBoat(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setBoat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getBoat() === $this) {
+                $comment->setBoat(null);
+            }
+        }
 
         return $this;
     }
@@ -340,4 +407,5 @@ class Boat
 
         return $this;
     }
+
 }
