@@ -20,30 +20,6 @@ import moment from 'moment';
 import 'moment/locale/fr';
 import { UserContext } from '../../contexts/userContext'
 
-const MyAppointmentTooltip = ({ children, appointmentData, ...restProps }) => {
-    const { addReservation } = useContext(ReservationContext);
-    const { user, getUser, getRoleLabel, highestRole } = useContext(UserContext);
-    const { id: idBoat } = useParams();
-
-    const handleClick = () => {
-        getUser()
-        if(user) {
-            addReservation(idBoat, appointmentData.id, user.id);
-        }
-    };
-
-    return (
-        <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
-            <>
-                <button  onClick={handleClick}>Réserver</button>
-            </>
-            <div>
-                {children}
-            </div>
-        </AppointmentTooltip.Content>
-    );
-};
-
 const ReservationSlotList = () => {
     const { slotsList, getSlotsList } = React.useContext(SlotsContext);
     const { reservationList, getReservationList } = React.useContext(ReservationContext);
@@ -56,10 +32,64 @@ const ReservationSlotList = () => {
         getReservationList();
     }, []);
 
+    const MyAppointmentTooltip = ({ children, appointmentData, ...restProps }) => {
+        const { addReservation } = useContext(ReservationContext);
+        const { id: idBoat } = useParams();
+        const { user, getUser, getRoleLabel, highestRole } = useContext(UserContext);
+        const handleClick = () => {
+            getUser()
+            if(user) {
+                addReservation(idBoat, appointmentData.id, user.id);
+            }
+        };
+
+        const isReserved = reservationList.some(reservation => reservation.slots === `/api/slots/${appointmentData.id}`);
+
+        return (
+            <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
+                <div style={{ backgroundColor: isReserved ? '#ccc' : 'transparent' }}>
+                    {children}
+                </div>
+                <div>
+                    {moment(appointmentData.startDate).format('HH:mm')} - {moment(appointmentData.endDate).format('HH:mm')}
+                </div>
+                <>
+                    {!isReserved && <button onClick={handleClick}>Réserver</button>}
+                </>
+            </AppointmentTooltip.Content>
+        );
+    };
+
+
+
+    const isSlotReserved = (slotId) => {
+        return reservationList.some(reservation => reservation.slots === `/api/boat/${slotId}`);
+    };
+    const Appointment = ({
+                             children, style, data, ...restProps
+                         }) => {
+        const { reservationList } = useContext(ReservationContext);
+        const isReserved = reservationList.some(reservation => reservation.slots === `/api/slots/${data.id}`);
+
+        return (
+            <Appointments.Appointment
+                {...restProps}
+                style={{
+                    ...style,
+                    backgroundColor: isReserved ? '#ccc' : '#FFC107',
+                    borderRadius: '8px',
+                }}
+            >
+                {children}
+            </Appointments.Appointment>
+        );
+    };
+
     const reservations = slotsList?.flatMap(function (slot) {
         const dailyReservations = [];
         const slotBoat = slot.boat;
-        console.log(reservationList);
+        const slotId = slot.id;
+
         if (slotBoat === `/api/boat/${idBoat}`) {
             const startDate = new Date(slot.startBookingDate);
             const endDate = new Date(slot.endBookingDate);
@@ -69,13 +99,31 @@ const ReservationSlotList = () => {
             const finalEndDate = moment(new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), endTime.getHours(), endTime.getMinutes()));
             const slotId = slot.id;
 
-            dailyReservations.push({
-                title: 'rien' + slotId,
-                startDate: finalStartDate,
-                endDate: finalEndDate,
-                id: slotId,
-                location: 'Room 1',
-            });
+            let reservationFound = false;
+            if (reservationList && reservationList.length > 0) {
+                reservationList.forEach(reservation => {
+                    if (reservation.slots && reservation.slots === `/api/slots/${slotId}`) {
+                        dailyReservations.push({
+                            title: 'reserved' + slotId,
+                            startDate: finalStartDate,
+                            endDate: finalEndDate,
+                            id: slotId,
+                            location: 'Room 1',
+                        });
+                        reservationFound = true;
+                    }
+                });
+            }
+
+            if (!reservationFound) {
+                dailyReservations.push({
+                    title: 'rien' + slotId,
+                    startDate: finalStartDate,
+                    endDate: finalEndDate,
+                    id: slotId,
+                    location: 'Room 1',
+                });
+            }
         }
         return dailyReservations;
     }) || [];
@@ -112,7 +160,9 @@ const ReservationSlotList = () => {
                 />
                 <Toolbar />
                 <DateNavigator />
-                <Appointments/>
+                <Appointments
+                    appointmentComponent={Appointment}
+                />
                 <AllDayPanel />
                 <AppointmentTooltip
                     contentComponent={MyAppointmentTooltip}
