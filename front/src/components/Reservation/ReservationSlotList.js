@@ -32,6 +32,37 @@ const ReservationSlotList = () => {
         getReservationList();
     }, []);
 
+    const Appointment = ({
+                             children,
+                             style,
+                             data,
+                             ...restProps
+                         }) => {
+        const { reservationList } = useContext(ReservationContext);
+        const isReserved = reservationList.some(reservation => reservation.slots === `/api/slots/${data.id}`);
+
+        // Construire les données de l'horaires
+        const appointmentData = {
+            id: data.id,
+            isReserved: isReserved,
+            // Autres informations nécessaires peuvent être ajoutées ici
+        };
+
+        return (
+            <Appointments.Appointment
+                {...restProps}
+                data={appointmentData} // Passer les données de l'horaires
+                style={{
+                    ...style,
+                    backgroundColor: isReserved ? '#ccc' : '#FFC107',
+                    borderRadius: '8px',
+                }}
+            >
+                {children}
+            </Appointments.Appointment>
+        );
+    };
+
     const MyAppointmentTooltip = ({ children, appointmentData, ...restProps }) => {
         const { addReservation } = useContext(ReservationContext);
         const { id: idBoat } = useParams();
@@ -43,19 +74,14 @@ const ReservationSlotList = () => {
             }
         };
 
-        const isReserved = reservationList.some(reservation => reservation.slots === `/api/slots/${appointmentData.id}`);
+        const isReserved = appointmentData.isReserved;
 
         return (
             <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
                 <div style={{ backgroundColor: isReserved ? '#ccc' : 'transparent' }}>
                     {children}
                 </div>
-                <div>
-                    {moment(appointmentData.startDate).format('HH:mm')} - {moment(appointmentData.endDate).format('HH:mm')}
-                </div>
-                <>
-                    {!isReserved && <button onClick={handleClick}>Réserver</button>}
-                </>
+                {!isReserved && <button onClick={handleClick}>Réserver</button>}
             </AppointmentTooltip.Content>
         );
     };
@@ -84,6 +110,8 @@ const ReservationSlotList = () => {
             </Appointments.Appointment>
         );
     };
+
+
 
     const reservations = slotsList?.flatMap(function (slot) {
         const dailyReservations = [];
