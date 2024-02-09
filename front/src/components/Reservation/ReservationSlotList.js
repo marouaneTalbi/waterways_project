@@ -24,12 +24,18 @@ import {
 import SlotsList from "../Slots/SlotsList";
 import moment from 'moment';
 import 'moment/locale/fr';
+import { UserContext } from '../../contexts/userContext'
 
 const MyAppointmentTooltip = ({ children, appointmentData, ...restProps }) => {
     const { addReservation } = useContext(ReservationContext);
+    const { user, getUser, getRoleLabel, highestRole } = useContext(UserContext);
     const { id: idBoat } = useParams();
+
     const handleClick = () => {
-        addReservation(idBoat, appointmentData.id, 3);
+        getUser()
+        if(user) {
+            addReservation(idBoat, appointmentData.id, user.id);
+        }
     };
 
     return (
