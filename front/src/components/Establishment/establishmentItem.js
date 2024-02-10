@@ -63,7 +63,7 @@ export default function EstablishmentItem() {
                     </div>
                     <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenBoatModal}>AJOUTER</button>
                 </header>
-               { boatList && establishment && <BoatList /> }
+               { boatList && establishment && <BoatList showList={false} /> }
     
                 <GenericModal title="Ajouter un bateau" onClose={handleCloseBoatModal} isOpen={isBoatModalOpen}>
                     <BoatForm onCloseModal={handleCloseBoatModal} />

@@ -3,11 +3,13 @@ import { BoatContext } from '../../contexts/boatContext';
 import { Table } from 'flowbite-react';
 import BoatItem from './BoatItem'
 
-export default function BoatList() {
+export default function BoatList({showList}) {
     const { boatList, getBoatList } = React.useContext(BoatContext);
 
     useEffect(() => {
-        getBoatList();
+        if(showList) {
+            getBoatList();
+        }
     }, [])
 
     return (
