@@ -10,7 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function BoatForm({ onCloseModal }) {
-    const { boat, setBoat, addBoat, getLastBoat, editBoat} = useContext(BoatContext);
+    const { boat, setBoat, addBoat, getLastBoat, editBoat, showSlots, showEstablishment} = useContext(BoatContext);
     const { establishmentList, getEstablishmentList, establishment, setEstablishment, getEtablismentName } = useContext(EstablishmentContext);
     const { addSlots, setSlots, slots, addMultipleSlots} = useContext(SlotsContext);
     const [startTime, setStartTime] = useState(slots && slots.startTime ? slots.startTime : '');
@@ -61,6 +61,7 @@ export default function BoatForm({ onCloseModal }) {
         formData.append('address', boat.address);
         formData.append('image', boat.image);
         formData.append('description', boat.description);
+        formData.append('price', boat.price);
         
         if (!isDateValid) {
             setFormErrors({
@@ -76,7 +77,6 @@ export default function BoatForm({ onCloseModal }) {
                 if(boat.id) {
                     formData.append('establishment', boat.establishment.id);
                     editBoat(formData, boat.id).then((res) => {
-                        console.log(res,'___________________________________________')
                         onCloseModal();
                     }).catch((error) => {
                         toast.error("Erreur lors de la modification", {
@@ -190,6 +190,17 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
+            <Label htmlFor="price" value="Prix" />
+            </div>
+            <TextInput
+                id="price"
+                value={boat && boat.price ? boat.price : ''}
+                onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, price: event.target.value }))}
+                type="integer"
+                required
+            />
+
+            <div className="mb-2 block">
                 <Label htmlFor="Image" value="image" />
             </div>
             <input 
@@ -198,58 +209,59 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             {
-               boat && boat?.id == null && (
-                    <>
-            <div className="mb-2 block">
-                <Label htmlFor="startBookingDate" value="Date de début" />
-            </div>
-            <DatePicker
-                locale={fr}
-                selected={slots && slots.startBookingDate ? slots.startBookingDate : ''}
-                onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, startBookingDate: date }))}
-                dateFormat="dd/MM/yyyy"
-            />
+               (boat && boat?.id !== null) || !showSlots ? <></> : (
 
-            <div className="mb-2 block">
-                <Label htmlFor="endBookingDate" value="Date de fin" />
-            </div>
-            <DatePicker
-                locale={fr}
-                selected={slots && slots.endBookingDate ? slots.endBookingDate : ''}
-                onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, endBookingDate: date }))}
-                dateFormat="dd/MM/yyyy"
-            />
+            <>
+                <div className="mb-2 block">
+                    <Label htmlFor="startBookingDate" value="Date de début" />
+                </div>
+                <DatePicker
+                    locale={fr}
+                    selected={slots && slots.startBookingDate ? slots.startBookingDate : ''}
+                    onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, startBookingDate: date }))}
+                    dateFormat="dd/MM/yyyy"
+                />
 
-            <div className="mb-2 block">
-                <Label htmlFor="startTime" value="Horaire de début" />
-            </div>
-            <input
-                id="startTime"
-                type="text"
-                value={startTime}
-                onChange={(event) => setStartTime(event.target.value)}
-                pattern="[0-9]{2}:[0-9]{2}"
-                placeholder="HH:mm"
-                required
-            />
+                <div className="mb-2 block">
+                    <Label htmlFor="endBookingDate" value="Date de fin" />
+                </div>
+                <DatePicker
+                    locale={fr}
+                    selected={slots && slots.endBookingDate ? slots.endBookingDate : ''}
+                    onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, endBookingDate: date }))}
+                    dateFormat="dd/MM/yyyy"
+                />
 
-            <div className="mb-2 block">
-                <Label htmlFor="endTime" value="Horaire de fin" />
-            </div>
-            <input
-                id="endTime"
-                type="text"
-                value={endTime}
-                onChange={(event) => setEndTime(event.target.value)}
-                pattern="[0-9]{2}:[0-9]{2}"
-                placeholder="HH:mm"
-                required
-            />
-                    </>
+                <div className="mb-2 block">
+                    <Label htmlFor="startTime" value="Horaire de début" />
+                </div>
+                <input
+                    id="startTime"
+                    type="text"
+                    value={startTime}
+                    onChange={(event) => setStartTime(event.target.value)}
+                    pattern="[0-9]{2}:[0-9]{2}"
+                    placeholder="HH:mm"
+                    required
+                />
+
+                <div className="mb-2 block">
+                    <Label htmlFor="endTime" value="Horaire de fin" />
+                </div>
+                <input
+                    id="endTime"
+                    type="text"
+                    value={endTime}
+                    onChange={(event) => setEndTime(event.target.value)}
+                    pattern="[0-9]{2}:[0-9]{2}"
+                    placeholder="HH:mm"
+                    required
+                />
+            </>
                 )
             }
             {
-                boat && boat?.id ? (
+                 (boat && boat?.id )? (
                     <></>
                 ) : (
                     <>
@@ -286,7 +298,7 @@ export default function BoatForm({ onCloseModal }) {
             }
 
             <div className="w-full mt-4">
-                {boat && boat ? (
+                {boat && boat?.id ? (
                     <Button color='red' type='submit'>Modifier</Button>
                 ) : (
                     <Button color='red' type='submit'>Ajouter</Button>

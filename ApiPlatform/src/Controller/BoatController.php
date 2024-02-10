@@ -34,6 +34,7 @@ final class BoatController extends AbstractController
         $boat->setCity($formData['city']);
         $boat->setDescription($formData['description']);
         $boat->setAddress($formData['address']);
+        $boat->setPrice((float)$formData['price']);
         $imageFile = $request->files->get('image');
         if ($imageFile) {
             $originalFileName = $imageFile->getClientOriginalName();

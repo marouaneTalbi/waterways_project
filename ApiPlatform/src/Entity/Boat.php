@@ -120,6 +120,7 @@ class Boat
     #[ORM\Column(length: 255)]
     #[Groups(['boat:read', 'boat:create', 'boat:update', 'user:favorite'])]
     private ?string $city = null;
+
     #[Vich\UploadableField(mapping: 'boat', fileNameProperty: 'image')]
     #[Assert\File(
         maxSize: '1024k',
@@ -144,6 +145,10 @@ class Boat
 
     #[ORM\OneToMany(mappedBy: 'boat', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update'])]
+    private ?float $price = 0;
 
     public function __construct()
     {
@@ -450,6 +455,18 @@ class Boat
         if ($this->usersFavorites->removeElement($usersFavorite)) {
             $usersFavorite->removeFavorite($this);
         }
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): static
+    {
+        $this->price = $price;
 
         return $this;
     }

@@ -67,7 +67,7 @@ export default function BoatInfo() {
                     <div className='flex flex-row flex-wrap h-max gap-8 mt-8 mb-8'>
                         <DataCard title='etablissement' value={boat?.establishment.name} icon={faHouse} />
                         <DataCard title='modele' value={boat?.modele} icon={faGears} />
-                        <DataCard title='prix' value="500€ l'heure" icon={faMoneyBill} />
+                        <DataCard title='prix' value={boat?.price+'€'} icon={faMoneyBill} />
                         <DataCard title='personnes max' value={boat?.capacity} icon={faUser} />
                         <DataCard title='description' value={boat?.description} icon={faFileLines} />
                     </div>
