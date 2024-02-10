@@ -69,7 +69,7 @@ export default function Header() {
                 </Dropdown>
                 <Navbar.Toggle />
             </div>
-            <Navbar.Collapse> Test a ooddd
+            <Navbar.Collapse>
             {
                     (!token ) && (
                         <>
