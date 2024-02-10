@@ -19,7 +19,7 @@ export default function BoatCard({ boat }) {
                             <span className='text-gray-500'>{boat.address} - {boat.city}</span>
                         </div>
                         <div className='flex flex-col'>
-                            <span className='text-dark-orange text-2xl font-medium'>€500</span>
+                            <span className='text-dark-orange text-2xl font-medium'>€{boat.price}</span>
                             <span className='text-gray-400'>l'heure</span>
                         </div>
                     </div>
