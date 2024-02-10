@@ -14,6 +14,8 @@ const BoatProvider = ({ children }) => {
     const [results, setResults] = useState([]);
     let lastBoat = null;
     const [favorites, setFavorites] = useState(null);
+    const [showSlots, setShowslots ] = useState(true);
+    const [showEstablishment, setShowEstablishment ] = useState(true);
 
     const addBoat = async (formdata) => {
         if (isProvider) {
@@ -39,6 +41,16 @@ const BoatProvider = ({ children }) => {
 
     const setLastBoat = async (idBoat) => {
         lastBoat = idBoat;
+    }
+
+    const getboatsOfEstablishment = async ($id) => {
+        return boatModel.getMyBoatsOfEstablishment($id).then(response => {
+            setBoatList(response);
+            setShowslots(false);
+            setShowEstablishment(false);
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     const getLastBoat = async () => {
@@ -100,7 +112,7 @@ const BoatProvider = ({ children }) => {
     }
 
     return (
-        <BoatContext.Provider value={{ getBoatList, boatList, boat, setBoat, addBoat, lastBoat, getLastBoat, searchBoat, results, getBoat, editBoat, addFavorite, favorites, getFavorite, removeFavorite }}>
+        <BoatContext.Provider value={{showSlots, showEstablishment, getboatsOfEstablishment, getBoatList, boatList, boat, setBoat, addBoat, lastBoat, getLastBoat, searchBoat, results, getBoat, editBoat, addFavorite, favorites, getFavorite, removeFavorite }}>
             <ToastContainer />
             {children}
         </BoatContext.Provider>

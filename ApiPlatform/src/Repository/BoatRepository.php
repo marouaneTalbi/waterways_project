@@ -29,6 +29,15 @@ class BoatRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByEstablishment($idestablishment)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.establishment  = :idestablishment')
+            ->setParameter('idestablishment', $idestablishment)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Boat[] Returns an array of Boat objects
 //     */

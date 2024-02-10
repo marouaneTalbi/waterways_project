@@ -24,7 +24,10 @@ const boatApi = {
     },
     edit: async function (boat, id) {
         return sendRequest(`/api/boat/${id}?_method=PUT`, 'post', boat, true)
-    }
+    },
+    getMyBoatsOfEstablishment: async function ($id) {
+        return sendRequest(`/api/establishment/boats/`+$id, 'get', {}, true);
+    },
 }
 
 export default boatApi;

@@ -16,8 +16,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\EstablishmentController;
-
-
+use App\Controller\ProviderBoatsController;
 
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
 #[ApiResource(
@@ -36,6 +35,12 @@ use App\Controller\EstablishmentController;
          new Get(
             uriTemplate: '/establishments/{id}',
             security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
+            normalizationContext: ['groups' => ['establishment:read', 'user:read']],
+        ),
+        new Get(
+            uriTemplate: '/establishment/boats/{id}',
+            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
+            controller: ProviderBoatsController::class,
             normalizationContext: ['groups' => ['establishment:read', 'user:read']],
         ),
         new Put(
