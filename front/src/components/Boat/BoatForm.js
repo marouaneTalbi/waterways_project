@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import fr from 'date-fns/locale/fr';
 import { ToastContainer, toast } from 'react-toastify';
+import { UserContext } from '../../contexts/userContext';
 
 
 export default function BoatForm({ onCloseModal }) {
@@ -16,10 +17,12 @@ export default function BoatForm({ onCloseModal }) {
     const [startTime, setStartTime] = useState(slots && slots.startTime ? slots.startTime : '');
     const [endTime, setEndTime] = useState(slots && slots.endTime ? slots.endTime : '');
     const [formErrors, setFormErrors] = useState({});
+    const { user, getUser, getRoleLabel, highestRole } = useContext(UserContext);
+
 
     useEffect(() => {
         getEstablishmentList();
-    }, [])
+    }, [user])
 
     const isDateValid = useMemo(() => {
         const isStartDateValid = !slots.startBookingDate || new Date(slots.startBookingDate) > new Date();
@@ -208,57 +211,59 @@ export default function BoatForm({ onCloseModal }) {
                 onChange={(event) => handleImageChange(event)}
             />
 
+
             {
-               (boat && boat?.id !== null) || !showSlots ? <></> : (
+               boat && !boat?.id || showSlots ? 
+               
+               <>
+               <div className="mb-2 block">
+                   <Label htmlFor="startBookingDate" value="Date de début" />
+               </div>
+               <DatePicker
+                   locale={fr}
+                   selected={slots && slots.startBookingDate ? slots.startBookingDate : ''}
+                   onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, startBookingDate: date }))}
+                   dateFormat="dd/MM/yyyy"
+               />
 
-            <>
-                <div className="mb-2 block">
-                    <Label htmlFor="startBookingDate" value="Date de début" />
-                </div>
-                <DatePicker
-                    locale={fr}
-                    selected={slots && slots.startBookingDate ? slots.startBookingDate : ''}
-                    onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, startBookingDate: date }))}
-                    dateFormat="dd/MM/yyyy"
-                />
+               <div className="mb-2 block">
+                   <Label htmlFor="endBookingDate" value="Date de fin" />
+               </div>
+               <DatePicker
+                   locale={fr}
+                   selected={slots && slots.endBookingDate ? slots.endBookingDate : ''}
+                   onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, endBookingDate: date }))}
+                   dateFormat="dd/MM/yyyy"
+               />
 
-                <div className="mb-2 block">
-                    <Label htmlFor="endBookingDate" value="Date de fin" />
-                </div>
-                <DatePicker
-                    locale={fr}
-                    selected={slots && slots.endBookingDate ? slots.endBookingDate : ''}
-                    onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, endBookingDate: date }))}
-                    dateFormat="dd/MM/yyyy"
-                />
+               <div className="mb-2 block">
+                   <Label htmlFor="startTime" value="Horaire de début" />
+               </div>
+               <input
+                   id="startTime"
+                   type="text"
+                   value={startTime}
+                   onChange={(event) => setStartTime(event.target.value)}
+                   pattern="[0-9]{2}:[0-9]{2}"
+                   placeholder="HH:mm"
+                   required
+               />
 
-                <div className="mb-2 block">
-                    <Label htmlFor="startTime" value="Horaire de début" />
-                </div>
-                <input
-                    id="startTime"
-                    type="text"
-                    value={startTime}
-                    onChange={(event) => setStartTime(event.target.value)}
-                    pattern="[0-9]{2}:[0-9]{2}"
-                    placeholder="HH:mm"
-                    required
-                />
-
-                <div className="mb-2 block">
-                    <Label htmlFor="endTime" value="Horaire de fin" />
-                </div>
-                <input
-                    id="endTime"
-                    type="text"
-                    value={endTime}
-                    onChange={(event) => setEndTime(event.target.value)}
-                    pattern="[0-9]{2}:[0-9]{2}"
-                    placeholder="HH:mm"
-                    required
-                />
-            </>
-                )
+               <div className="mb-2 block">
+                   <Label htmlFor="endTime" value="Horaire de fin" />
+               </div>
+               <input
+                   id="endTime"
+                   type="text"
+                   value={endTime}
+                   onChange={(event) => setEndTime(event.target.value)}
+                   pattern="[0-9]{2}:[0-9]{2}"
+                   placeholder="HH:mm"
+                   required
+               />
+           </>
+            
+            : (  <></>  )
             }
             {
                  (boat && boat?.id )? (
