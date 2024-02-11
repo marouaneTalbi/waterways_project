@@ -7,6 +7,7 @@ import CommentForm from '../Comment/CommentForm';
 import CommentsList from '../Comment/CommentList';
 import AddNote from '../notes/Addnotes';
 import BoatRatingsSummary from '../notes/Shownotes';
+import CommentProvider from '../../contexts/commentContext';
 
 export default function BoatPublic() {
     const { id } = useParams();
@@ -121,10 +122,12 @@ export default function BoatPublic() {
                     <header className='w-full flex flex-row justify-between items-center mb-6'>
                         <h4 className='text-2xl font-semibold'>Commentaires</h4>
                         {/** FAUSSE DATA **/}
-                        <span className='font-semibold text-gray-400 text-sm'>3 Commentaires</span>
+                        {/* <span className='font-semibold text-gray-400 text-sm'>3 Commentaires</span> */}
                     </header>
-                    <CommentsList boatId={id} />
-                    <CommentForm boatId={id} /> 
+                    <CommentProvider>
+                        <CommentsList boatId={id} />
+                        <CommentForm boatId={id} /> 
+                    </CommentProvider>
 
                     {/* <div className='flex flex-col gap-4'>
                         <CommentsList boatId={id} />

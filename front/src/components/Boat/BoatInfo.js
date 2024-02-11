@@ -10,10 +10,12 @@ import BoatForm from './BoatForm';
 import EstablishmentProvider from '../../contexts/establishmentContext';
 import SlotsProvider from '../../contexts/slotsContext';
 import GoogleMapComponent from '../GoogleMap/GoogleMap';
+import { CommentContext } from '../../contexts/commentContext';
 
 export default function BoatInfo() {
     const { id } = useParams()
     const { getBoat, boat } = useContext(BoatContext);
+    const { getBoatComments, boatComments } = useContext(CommentContext);
 
     const [isModalOpen, setModalOpen] = useState(false);
 
@@ -24,6 +26,10 @@ export default function BoatInfo() {
     const handleCloseModal = () => {
         setModalOpen(false);
     };
+
+    useEffect(() => {
+        getBoatComments(id);
+    })
 
     useEffect(() => {
         getBoat(id)
@@ -95,7 +101,7 @@ export default function BoatInfo() {
                     </svg>
                 </div>
                 <div className='flex flex-col'>
-                    <span className='text-4xl font-semibold'>4</span>
+                    <span className='text-4xl font-semibold'>{boatComments == null ? <Loader /> : (boatComments.length)}</span>
                     <span className='text-lg text-gray-500'>Commentaires</span>
                 </div>
             </div>
