@@ -117,18 +117,21 @@ export default function BoatPublic() {
                         </div>
                     </div>
                 </div>
-                <div className="col-span-12 md:col-span-4 bg-gray-100 rounded-md border border-gray-200 p-4">
+                <div className="col-span-12 md:col-span-4 bg-gray-100 rounded-md border border-gray-200 p-4 flex flex-col">
                     <header className='w-full flex flex-row justify-between items-center mb-6'>
                         <h4 className='text-2xl font-semibold'>Commentaires</h4>
                         {/** FAUSSE DATA **/}
                         <span className='font-semibold text-gray-400 text-sm'>3 Commentaires</span>
                     </header>
-                    <div className='flex flex-col gap-4'>
+                    <CommentsList boatId={id} />
+                    <CommentForm boatId={id} /> 
+
+                    {/* <div className='flex flex-col gap-4'>
                         <CommentsList boatId={id} />
                         <CommentForm boatId={id} /> 
                         <AddNote boatId={id}/>
                         <BoatRatingsSummary boatId={id}/>
-                    </div>
+                    </div> */}
                 </div>
             </div>
     )

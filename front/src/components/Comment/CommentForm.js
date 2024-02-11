@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import sendRequest from "../../services/axiosRequestFunction";
+import { Textarea, Button, Label } from 'flowbite-react';
 import { UserContext } from '../../contexts/userContext'
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const notify = (message, type) => {
   if (type === 'success') {
@@ -51,16 +52,12 @@ const AddCommentForm = ({ boatId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="comment">Commentaire:</label>
-      <textarea
-        id="comment"
-        value={commentData.comment} 
-        placeholder='message'
-        onChange={handleChange}
-        required
-      />
-      <button type="submit">Ajouter Commentaire</button>
+    <form onSubmit={handleSubmit} className='flex flex-col mt-auto'>
+      <div className="mb-2 block">
+        <Label htmlFor="comment" value="Ton commentaire" />
+      </div>
+      <Textarea id='comment' value={comment} onChange={(e) => setComment(e.target.value)} rows={4} className="resize-none" placeholder='Ton commentaire' required />
+      <Button className='w-full mt-2' color='blue' type='submit'>Envoyer</Button>
     </form>
   );
 };
