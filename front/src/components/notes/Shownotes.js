@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import sendRequest from "../../services/axiosRequestFunction";
+import { Rating } from 'flowbite-react'; 
 
 const BoatRatingsSummary = ({ boatId }) => {
   const [ratings, setRatings] = useState({
@@ -8,11 +9,12 @@ const BoatRatingsSummary = ({ boatId }) => {
     performance: 0,
     equipement: 0,
   });
+
   useEffect(() => {
     const fetchNotes = async () => {
         try {
             const notes = await sendRequest('/api/notes', 'GET');
-            const filteredNotes = notes.filter(note => note.boat == '/api/boat/'+boatId);
+            const filteredNotes = notes.filter(note => note.boat === `/api/boat/${boatId}`);
             const averages = filteredNotes.reduce((acc, note) => {
               acc.proprete += note.proprete;
               acc.confort += note.confort;
@@ -36,15 +38,23 @@ const BoatRatingsSummary = ({ boatId }) => {
     };
 
     fetchNotes();
-  }, []);
+  }, [boatId]); 
+
+  const renderRating = (ratingValue) => (
+    <Rating>
+      {[...Array(5)].map((_, index) => (
+        <Rating.Star key={index} filled={index < ratingValue} />
+      ))}
+    </Rating>
+  );
 
   return (
     <div>
       <h2>Résumé des notes pour le bateau {boatId}</h2>
-      <p>Propreté: {ratings.proprete.toFixed(2)}%</p>
-      <p>Confort: {ratings.confort.toFixed(2)}%</p>
-      <p>Performance: {ratings.performance.toFixed(2)}%</p>
-      <p>Équipement: {ratings.equipement.toFixed(2)}%</p>
+      <div>Propreté: {renderRating(ratings.proprete)}</div>
+      <div>Confort: {renderRating(ratings.confort)}</div>
+      <div>Performance: {renderRating(ratings.performance)}</div>
+      <div>Équipement: {renderRating(ratings.equipement)}</div>
     </div>
   );
 };
