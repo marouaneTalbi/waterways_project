@@ -18,6 +18,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\EstablishmentController;
 use App\Controller\ProviderBoatsController;
 use App\Controller\UserBoatEstablishmentController;
+use App\Controller\UserEstablishmentController;
+
 
 
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
@@ -31,6 +33,12 @@ use App\Controller\UserBoatEstablishmentController;
             uriTemplate: '/establishment/{id}/user/boats',
             security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
             controller: UserBoatEstablishmentController::class,
+            normalizationContext: ['groups' => ['establishment:read', 'user:read']],
+        ),
+        new GetCollection(
+            uriTemplate: '/establishment/{id}/user',
+            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
+            controller: UserEstablishmentController::class,
             normalizationContext: ['groups' => ['establishment:read', 'user:read']],
         ), 
         new Post(
