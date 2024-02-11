@@ -4,9 +4,14 @@ const boatApi = {
     add: async function (boat) {
         return sendRequest(`/api/addboat`, 'post', boat, true);
     },
+
     getList: async function () {
         return sendRequest(`/api/boats`, 'get', {}, true);
     },
+    getMyListBoats: async function (id) {
+        return sendRequest(`/api/establishment/${id}/user/boats`, 'get', {}, true);
+    },
+
     search: async function (search) {
         return sendRequest(`/api/search`, 'get', {}, true, search);
     },
