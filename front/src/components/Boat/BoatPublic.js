@@ -128,10 +128,9 @@ export default function BoatPublic() {
                         <CommentsList boatId={id} />
                         <CommentForm boatId={id} /> 
                     </CommentProvider>
-
+                    
                     {/* <div className='flex flex-col gap-4'>
-                        <CommentsList boatId={id} />
-                        <CommentForm boatId={id} /> 
+
                         <AddNote boatId={id}/>
                         <BoatRatingsSummary boatId={id}/>
                     </div> */}
