@@ -1,16 +1,22 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { BoatContext } from '../../contexts/boatContext';
 import { Table } from 'flowbite-react';
 import BoatItem from './BoatItem'
+import { UserContext } from '../../contexts/userContext';
 
 export default function BoatList({showList}) {
-    const { boatList, getBoatList } = React.useContext(BoatContext);
+    const { user, getUser} = useContext(UserContext);
+    const { boatList, getBoatList, setBoatList } = React.useContext(BoatContext);
 
     useEffect(() => {
-        if(showList) {
-            getBoatList();
-        }
+        getUser()
     }, [])
+
+    useEffect(() => {
+        if(user && showList) {
+            getBoatList(user.id)
+        }
+    }, [user])
 
     return (
         <>

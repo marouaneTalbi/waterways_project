@@ -57,8 +57,8 @@ const BoatProvider = ({ children }) => {
         return lastBoat;
     }
 
-    const getBoatList = async () => {
-        return boatModel.getList().then(response => {
+    const getBoatList = async (id) => {
+        return boatModel.getMyListBoats(id).then(response => {
             setBoatList(response);
         }).catch(error => {
             console.log(error)
