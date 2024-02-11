@@ -39,6 +39,18 @@ class EstablishmentRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+
+    public function findOneByIdUser(string $userId)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.createdby = :id')
+            ->setParameter('id', $userId)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
 //    /**
 //     * @return Establishment[] Returns an array of Establishment objects
 //     */

@@ -17,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\EstablishmentController;
 use App\Controller\ProviderBoatsController;
+use App\Controller\UserBoatEstablishmentController;
+
 
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
 #[ApiResource(
@@ -25,12 +27,17 @@ use App\Controller\ProviderBoatsController;
             security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['establishment:read', 'user:read', 'media_object:read']],
         ),
+        new GetCollection(
+            uriTemplate: '/establishment/{id}/user/boats',
+            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
+            controller: UserBoatEstablishmentController::class,
+            normalizationContext: ['groups' => ['establishment:read', 'user:read']],
+        ), 
         new Post(
             name: 'Establishment', 
             uriTemplate: '/addestablishment', 
             controller: EstablishmentController::class,
             normalizationContext: ['groups' => ['establishment:create']],
-
          ),
          new Get(
             uriTemplate: '/establishments/{id}',
