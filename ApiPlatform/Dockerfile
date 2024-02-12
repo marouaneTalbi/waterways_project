@@ -55,6 +55,9 @@ COPY . /srv/app/
 
 RUN APP_ENV=prod composer run auto-scripts
 
+RUN apk update && \
+    apk add --no-cache curl acl 
+
 COPY --link --chmod=755 ./.docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
 ENTRYPOINT ["docker-entrypoint"]
