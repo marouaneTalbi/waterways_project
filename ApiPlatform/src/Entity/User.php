@@ -66,6 +66,11 @@ use App\Controller\UserBoatEstablishmentController;
             processor: UserGetController::class,
             normalizationContext: ['groups' => ['user:read']]
         ), 
+        new Get(
+            name: 'getCurrentUser',
+            uriTemplate: '/user/{id}',
+            normalizationContext: ['groups' => ['user:read']]
+        ), 
     ],
     normalizationContext: ['groups' => ['user:read', 'establishment:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
