@@ -56,7 +56,9 @@ COPY . /srv/app/
 RUN APP_ENV=prod composer run auto-scripts
 
 COPY --link --chmod=755 ./.docker/php/docker-entrypoint.sh /usr/local/etc/php/docker-entrypoint
-ENTRYPOINT ["docker-entrypoint"]
+
+ENTRYPOINT ["/usr/local/etc/php/docker-entrypoint"]
+
 CMD ["php-fpm"]
 
 #<<<<<<<<<<End: PHP-FPM Image Target>>>>>>>>>>#
