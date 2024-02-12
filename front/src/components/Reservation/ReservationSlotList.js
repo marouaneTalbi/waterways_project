@@ -41,11 +41,9 @@ const ReservationSlotList = () => {
         const { reservationList } = useContext(ReservationContext);
         const isReserved = reservationList.some(reservation => reservation.slots === `/api/slots/${data.id}`);
 
-        // Construire les données de l'horaires
         const appointmentData = {
             id: data.id,
             isReserved: isReserved,
-            // Autres informations nécessaires peuvent être ajoutées ici
         };
 
         return (
@@ -91,27 +89,6 @@ const ReservationSlotList = () => {
     const isSlotReserved = (slotId) => {
         return reservationList.some(reservation => reservation.slots === `/api/boat/${slotId}`);
     };
-    const Appointment = ({
-                             children, style, data, ...restProps
-                         }) => {
-        const { reservationList } = useContext(ReservationContext);
-        const isReserved = reservationList.some(reservation => reservation.slots === `/api/slots/${data.id}`);
-
-        return (
-            <Appointments.Appointment
-                {...restProps}
-                style={{
-                    ...style,
-                    backgroundColor: isReserved ? '#ccc' : '#FFC107',
-                    borderRadius: '8px',
-                }}
-            >
-                {children}
-            </Appointments.Appointment>
-        );
-    };
-
-
 
     const reservations = slotsList?.flatMap(function (slot) {
         const dailyReservations = [];
