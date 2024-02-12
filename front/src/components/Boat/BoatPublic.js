@@ -9,6 +9,7 @@ import AddNote from '../notes/Addnotes';
 import BoatRatingsSummary from '../notes/Shownotes';
 import CommentProvider from '../../contexts/commentContext';
 
+
 export default function BoatPublic() {
     const { id } = useParams();
     const { getBoat, boat, addFavorite, favorites, getFavorite, removeFavorite } = useContext(BoatContext);
