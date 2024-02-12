@@ -8,7 +8,9 @@ const userApi = {
     get: async function () {
         return sendRequest(`/api/user`, 'get', {}, true);
     },
-
+    getById: async function (id) {
+        return sendRequest(`/api/user/${id}`, 'get', {}, true);
+    },
     getAll: async function () {
         return sendRequest(`/api/users`, 'get', {}, true);
     }

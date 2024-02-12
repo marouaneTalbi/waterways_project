@@ -44,7 +44,7 @@ export default function BoatPublic() {
                             <p className='text-gray-600'>{boat && boat.address + ' ' + boat.city}</p>
                         </div>
                         {/** FAUSSE DATA **/}
-                        <span className='font-bold text-2xl'>€500/heure</span>
+                        <span className='font-bold text-2xl'>€{boat && boat.price ? boat.price : '500'}/heure</span>
                     </div>
                     <div className='flex gap-12 mt-8 px-4 flex-wrap'>
                         <div className='flex flex-row items-center gap-2'>
@@ -119,7 +119,7 @@ export default function BoatPublic() {
                     </div>
                 </div>
                 <div className="col-span-12 md:col-span-4 bg-gray-100 rounded-md border border-gray-200 p-4 flex flex-col">
-                    <header className='w-full flex flex-row justify-between items-center mb-6'>
+                    <header className='w-full flex flex-row justify-between items-center mb-60'>
                         <h4 className='text-2xl font-semibold'>Commentaires</h4>
                         {/** FAUSSE DATA **/}
                         {/* <span className='font-semibold text-gray-400 text-sm'>3 Commentaires</span> */}

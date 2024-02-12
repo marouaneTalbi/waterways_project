@@ -6,7 +6,7 @@ import { UserContext } from '../../contexts/userContext';
 
 export default function BoatList({showList}) {
     const { user, getUser} = useContext(UserContext);
-    const { boatList, getBoatList, setBoatList } = React.useContext(BoatContext);
+    const {boat, boatList, getBoatList, setBoatList } = React.useContext(BoatContext);
 
     useEffect(() => {
         getUser()
@@ -16,11 +16,11 @@ export default function BoatList({showList}) {
         if(user && showList) {
             getBoatList(user.id)
         }
-    }, [user])
+    }, [user, boat, boatList])
 
     return (
         <>
-        <span className='text-gray-500 text-sm mb-4'>
+            <span className='text-gray-500 text-sm mb-4'>
                 {
                     boatList && boatList.length > 0 ? boatList.length : 0
                 }
@@ -28,28 +28,28 @@ export default function BoatList({showList}) {
                     boatList && boatList.length > 1 ? " bateaux trouvés" : " bateau trouvé"
                 }
             </span>
-        <div className="overflow-x-auto">
-            <div className='mt-4 h-[200px]'>
-                <Table hoverable>
-                    <Table.Head>
-                        <Table.HeadCell>Nom</Table.HeadCell>
-                        <Table.HeadCell>Etablissement</Table.HeadCell>
-                        <Table.HeadCell>Modèle</Table.HeadCell>
-                        <Table.HeadCell>Places</Table.HeadCell>
-                        <Table.HeadCell>
-                            <span className="sr-only">GERER</span>
-                        </Table.HeadCell>
-                    </Table.Head>
-                    <Table.Body className="divide-y overflow-y-scroll w-full" style={{height: '50px'}}>
-                        {
-                            boatList && boatList.map((boat) => (
-                                <BoatItem key={boat.id} boat={boat} />
-                            ))
-                        }
-                    </Table.Body>
-                </Table>
+            <div className="overflow-x-auto">
+                <div className='mt-4 h-[200px]'>
+                    <Table hoverable>
+                        <Table.Head>
+                            <Table.HeadCell>Nom</Table.HeadCell>
+                            <Table.HeadCell>Etablissement</Table.HeadCell>
+                            <Table.HeadCell>Modèle</Table.HeadCell>
+                            <Table.HeadCell>Places</Table.HeadCell>
+                            <Table.HeadCell>
+                                <span className="sr-only">GERER</span>
+                            </Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body className="divide-y overflow-y-scroll w-full" style={{height: '50px'}}>
+                            {
+                                boatList && boatList.map((boat) => (
+                                    <BoatItem key={boat.id} boat={boat} />
+                                ))
+                            }
+                        </Table.Body>
+                    </Table>
+                </div>
             </div>
-        </div>
         </>
     )
 }

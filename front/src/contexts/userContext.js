@@ -31,6 +31,12 @@ const UserProvider = ({ children }) => {
         })
     }
 
+    const getUserById = async (id) => {
+        return userModel.getById(id).then(response => {
+            return response
+        })
+    }
+
     const getHighestRole = (roles) => {
         const roleOrder = ["ROLE_ADMIN", "ROLE_PROVIDER", "ROLE_USER"];
         for (const role of roleOrder) {
@@ -55,7 +61,7 @@ const UserProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole }}>
+        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById }}>
             {children}
         </UserContext.Provider>
     );

@@ -6,6 +6,9 @@ const commentApi = {
     },
     getList: async function() {
         return sendRequest('/api/comments');
+    },
+    delete: async function (id) {
+        return sendRequest(`/api/comments/${id}`, 'delete', {}, true);
     }
 }
 

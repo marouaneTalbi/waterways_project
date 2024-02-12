@@ -7,6 +7,8 @@ export const CommentContext = createContext(null);
 
 const CommentProvider = ({ children }) => {
     const [boatComments, setBoatComments] = useState(null);
+    const [allComments, setComments] = useState(null);
+
 
     const addComment = async (commentData) => {
         return commentApi.add(commentData).then(response => {
@@ -27,8 +29,24 @@ const CommentProvider = ({ children }) => {
         })
     }
 
+    const getAllComments = async () => {
+        return commentApi.getList().then(response => {
+            setComments(response);
+        }).catch(error => {
+            toast.success(`Nous n'avons pas pu récupérer les commentaires`);
+        })
+    }
+
+    const deleteComment = async (id) => {
+        return commentApi.delete(id).then(response => {
+            return response
+        }).catch(error => {
+            toast.success(`Nous n'avons pas pu récupérer les commentaires`);
+        })
+    }
+
     return (
-        <CommentContext.Provider value={{ addComment, boatComments, getBoatComments }}>
+        <CommentContext.Provider value={{deleteComment, addComment, boatComments, getBoatComments, getAllComments, allComments }}>
             <ToastContainer />
             {children}
         </CommentContext.Provider>

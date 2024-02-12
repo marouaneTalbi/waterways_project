@@ -11,18 +11,20 @@ import { UserContext } from '../../contexts/userContext';
 
 
 export default function BoatForm({ onCloseModal }) {
-    const { boat, setBoat, addBoat, getLastBoat, editBoat, showSlots, showEstablishment} = useContext(BoatContext);
-    const { establishmentList, getEstablishmentList, establishment, setEstablishment, getEtablismentName } = useContext(EstablishmentContext);
-    const { addSlots, setSlots, slots, addMultipleSlots} = useContext(SlotsContext);
+    const { boat, setBoat, addBoat, editBoat, showSlots} = useContext(BoatContext);
+    const { establishmentList, getEstablishmentList, setEstablishment } = useContext(EstablishmentContext);
+    const { setSlots, slots, addMultipleSlots} = useContext(SlotsContext);
     const [startTime, setStartTime] = useState(slots && slots.startTime ? slots.startTime : '');
     const [endTime, setEndTime] = useState(slots && slots.endTime ? slots.endTime : '');
     const [formErrors, setFormErrors] = useState({});
-    const { user, getUser, getRoleLabel, highestRole } = useContext(UserContext);
-
+    const { user } = useContext(UserContext);
 
     useEffect(() => {
         getEstablishmentList();
-    }, [user])
+    }, [user]);
+
+
+
 
     const isDateValid = useMemo(() => {
         const isStartDateValid = !slots.startBookingDate || new Date(slots.startBookingDate) > new Date();

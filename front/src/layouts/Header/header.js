@@ -6,6 +6,7 @@ import { isTokenExpired, checkIfRequestExists } from '../../services/axiosReques
 import NotificationIcon from './notif';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext';
+import LanguageSwitcher from '../../services/languageSwitcher';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
@@ -22,9 +23,6 @@ export default function Header() {
             const provider =  decoded.roles.find(role => role === 'ROLE_PROVIDER')
             setUserProvider(provider)
         }
-
-        console.log(userRole)
-
     }, [token]);
     
     useEffect(() => {
@@ -73,7 +71,7 @@ export default function Header() {
                 <Navbar.Toggle />
             </div>
             <Navbar.Collapse>
-            {
+                {
                     (!token && !isValidToken) && (
                         <>
                             <Navbar.Link href="/Login">Login</Navbar.Link>
