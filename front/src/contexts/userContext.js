@@ -32,9 +32,7 @@ const UserProvider = ({ children }) => {
     }
 
     const getUserById = async (id) => {
-        return userModel.getById(id).then(response => {
-            return response
-        })
+        return userModel.getById(id)
     }
 
     const getHighestRole = (roles) => {
