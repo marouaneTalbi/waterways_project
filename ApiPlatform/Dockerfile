@@ -57,7 +57,8 @@ RUN APP_ENV=prod composer run auto-scripts
 
 COPY --link --chmod=755 ./.docker/php/docker-entrypoint.sh /usr/local/etc/php/docker-entrypoint.sh
 
-ENTRYPOINT ["docker-entrypoint"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
 
 CMD ["php-fpm"]
 
