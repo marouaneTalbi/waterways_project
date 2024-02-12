@@ -7,6 +7,8 @@ import CommentsList from '../Comment/CommentList';
 import CommentProvider from '../../contexts/commentContext';
 import GenericModal from '../GenericModal/GenericModal';
 import { NoteContext } from '../../contexts/noteContext';
+import AddNote from '../notes/Addnotes';
+import BoatRatingsSummary from '../notes/Shownotes';
 
 export default function BoatPublic() {
     const { id } = useParams();
@@ -56,7 +58,6 @@ export default function BoatPublic() {
                 >
                     <AddNote boatId={id}/>
                     <BoatRatingsSummary boatId={id}/>
-                    
                 </GenericModal>
                 <div className="col-span-12 md:col-span-8 relative flex flex-col">
                     <img alt='boat-image' src='https://coursnautique.com/wp-content/uploads/2022/02/Les-diff%C3%A9rentes-parties-dun-bateau-scaled.jpeg' className='bg-red-500 w-full object-cover h-[500px] rounded-md' />
@@ -141,7 +142,7 @@ export default function BoatPublic() {
                     </div>
                 </div>
                 <div className="col-span-12 md:col-span-4 bg-gray-100 rounded-md border border-gray-200 p-4 flex flex-col">
-                    <header className='w-full flex flex-row justify-between items-center mb-60'>
+                    <header className='w-full flex flex-row justify-between items-center mb-4'>
                         <h4 className='text-2xl font-semibold'>Commentaires</h4>
                         <div className='flex flex-row gap-2'>
                             <span className='font-normal text-gray-400 text-sm underline cursor-pointer' onClick={handleOpenModal}>Ajouter une note</span>
@@ -157,9 +158,6 @@ export default function BoatPublic() {
                         <CommentsList boatId={id} />
                         <CommentForm boatId={id} /> 
                     </CommentProvider>
-                    
-                    <div className='flex flex-col gap-4'>
-                    </div>
                 </div>
             </div>
     )
