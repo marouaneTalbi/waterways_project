@@ -57,13 +57,13 @@ RUN COMPOSER_ALLOW_SUPERUSER=1 composer require symfony/runtime && APP_ENV=prod 
 
 # RUN APP_ENV=prod composer run auto-scripts
 
-# RUN apk update && \
-#     apk add --no-cache curl acl 
+RUN apk update && \
+    apk add --no-cache curl acl 
 
-# COPY --link --chmod=755 ./.docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+COPY --link --chmod=755 ./.docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
-# RUN docker-entrypoint
-# CMD ["php-fpm"]
+RUN docker-entrypoint
+CMD ["php-fpm"]
 
 #<<<<<<<<<<End: PHP-FPM Image Target>>>>>>>>>>#
 
