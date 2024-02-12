@@ -13,12 +13,6 @@ import { SlotsContext } from '../../contexts/slotsContext';
 import { ReservationContext } from "../../contexts/reservationContext";
 import { useParams } from 'react-router-dom';
 import {
-    Modal,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
     Button,
 } from '@material-ui/core';
 import SlotsList from "../Slots/SlotsList";

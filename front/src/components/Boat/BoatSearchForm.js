@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { TextInput } from 'flowbite-react';
 import { HiSearch, HiLocationMarker, HiUser } from 'react-icons/hi';
 import { BoatContext } from '../../contexts/boatContext';
-import { Button, Spinner } from 'flowbite-react';
+import { Button } from 'flowbite-react';
 // import { HiSearch } from 'react-icons/hi';
 
 export default function BoatSearchForm({ initialValues = { search: '', location: '', people: '' } }) {

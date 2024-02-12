@@ -2,17 +2,14 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { BoatContext } from '../../contexts/boatContext';
 import { Button } from 'flowbite-react';
-import CommentItem from '../Comment/CommentItem';
 import CommentForm from '../Comment/CommentForm';
 import CommentsList from '../Comment/CommentList';
-import AddNote from '../notes/Addnotes';
-import BoatRatingsSummary from '../notes/Shownotes';
 import CommentProvider from '../../contexts/commentContext';
 
 export default function BoatPublic() {
     const { id } = useParams();
     const { getBoat, boat, addFavorite, favorites, getFavorite, removeFavorite } = useContext(BoatContext);
-    const [newFavorites, setNewFavorites] = useState([]);
+    const [setNewFavorites] = useState([]);
 
     useEffect(() => {
         getFavorite()

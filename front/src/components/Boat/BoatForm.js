@@ -16,15 +16,11 @@ export default function BoatForm({ onCloseModal }) {
     const { setSlots, slots, addMultipleSlots} = useContext(SlotsContext);
     const [startTime, setStartTime] = useState(slots && slots.startTime ? slots.startTime : '');
     const [endTime, setEndTime] = useState(slots && slots.endTime ? slots.endTime : '');
-    const [formErrors, setFormErrors] = useState({});
     const { user } = useContext(UserContext);
 
     useEffect(() => {
         getEstablishmentList();
     }, [user]);
-
-
-
 
     const isDateValid = useMemo(() => {
         const isStartDateValid = !slots.startBookingDate || new Date(slots.startBookingDate) > new Date();
@@ -69,9 +65,6 @@ export default function BoatForm({ onCloseModal }) {
         formData.append('price', boat.price);
         
         if (!isDateValid) {
-            setFormErrors({
-                dateError: "Veuillez vérifier les dates et heures.",
-            });
             toast.error("Veuillez vérifier les dates et heures.", {
                 position: toast.POSITION.TOP_RIGHT
             });
@@ -215,7 +208,7 @@ export default function BoatForm({ onCloseModal }) {
 
 
             {
-               boat && !boat?.id || showSlots ? 
+               (boat && !boat?.id )|| showSlots ? 
                
                <>
                <div className="mb-2 block">

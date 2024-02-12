@@ -64,7 +64,7 @@ export default function BoatInfo() {
                             </svg>
                         </div>
                     ) : (
-                        <img alt='boat-image' 
+                        <img alt='boat' 
                         src={boat ?  process.env.REACT_APP_SERVER+boat?.imageUrl : 'https://coursnautique.com/wp-content/uploads/2022/02/Les-diff%C3%A9rentes-parties-dun-bateau-scaled.jpeg' }
                         className='bg-red-500 w-full object-cover h-[300px] rounded-md' 
                         />

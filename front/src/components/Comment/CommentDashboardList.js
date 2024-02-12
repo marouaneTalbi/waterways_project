@@ -1,9 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
-import CommentItem from './CommentItem';
 import { CommentContext } from '../../contexts/commentContext';
-import Loader from '../Loader/Loader';
 import { Table } from 'flowbite-react';
-import { Link } from 'react-router-dom';
 import { UserContext } from '../../contexts/userContext';
 import { BoatContext } from '../../contexts/boatContext';
 
