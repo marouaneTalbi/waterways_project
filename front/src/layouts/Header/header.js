@@ -17,6 +17,7 @@ export default function Header() {
 
     useEffect(() => {
         if (token) {
+            console.log(token)
             const decoded = jwtDecode(token);
             setUserRole(decoded.roles[0])
             const provider =  decoded.roles.find(role => role === 'ROLE_PROVIDER')
