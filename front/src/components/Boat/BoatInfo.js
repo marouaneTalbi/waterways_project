@@ -4,18 +4,21 @@ import { Link, useParams } from 'react-router-dom'
 import { BoatContext } from '../../contexts/boatContext'
 import Loader from '../Loader/Loader';
 import DataCard from '../DataCard/DataCard';
-import { faHouse, faMoneyBill, faUser, faFileLines, faGears } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faMoneyBill, faUser, faFileLines, faGears, faWandMagicSparkles, faWrench, faBath, faRocket } from '@fortawesome/free-solid-svg-icons';
 import GenericModal from '../GenericModal/GenericModal';
 import BoatForm from './BoatForm';
 import EstablishmentProvider from '../../contexts/establishmentContext';
 import SlotsProvider from '../../contexts/slotsContext';
 import GoogleMapComponent from '../GoogleMap/GoogleMap';
 import { CommentContext } from '../../contexts/commentContext';
+import NoteCard from '../notes/NoteCard';
+import { NoteContext } from '../../contexts/noteContext';
 
 export default function BoatInfo() {
     const { id } = useParams()
     const { getBoat, boat } = useContext(BoatContext);
     const { getBoatComments, boatComments } = useContext(CommentContext);
+    const { getBoatNotes, getPercentage, ratings } = useContext(NoteContext);
 
     const [isModalOpen, setModalOpen] = useState(false);
 
@@ -28,8 +31,12 @@ export default function BoatInfo() {
     };
 
     useEffect(() => {
+        getBoatNotes(id);
+    }, [])
+
+    useEffect(() => {
         getBoatComments(id);
-    })
+    }, [])
 
     useEffect(() => {
         getBoat(id)
@@ -107,6 +114,12 @@ export default function BoatInfo() {
             </div>
             <div className="col-span-2 md:col-start-3 md:row-start-2 row-start-4 bg-white rounded border-2 border-gray-100 p-4">
                 <h5 className='font-semibold text-xl'>Notes</h5>
+                <div className='flex flex-row items-center justify-between mx-4 mt-6'>
+                    <NoteCard title="Propreté" icon={faWandMagicSparkles} percentage={ratings && getPercentage(ratings.proprete)} />
+                    <NoteCard title="Confort" icon={faBath} percentage={ratings && getPercentage(ratings.confort)} />
+                    <NoteCard title="Performance" icon={faRocket} percentage={ratings && getPercentage(ratings.performance)} />
+                    <NoteCard title="Equipement" icon={faWrench} percentage={ratings && getPercentage(ratings.equipement)} />
+                </div>
             </div>
             <div className="col-span-2 row-span-2 md:row-start-3 md:col-start-3 row-start-5 bg-white rounded border-2 border-gray-100 p-4">
                 {

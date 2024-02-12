@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import sendRequest from "../../services/axiosRequestFunction";
 import { UserContext } from '../../contexts/userContext';
 import {  toast } from 'react-toastify';
-import { Rating } from 'flowbite-react';
+import { Rating, Button } from 'flowbite-react';
 
 const notify = (message, type) => {
   if (type === 'success') {
@@ -61,10 +61,9 @@ const AddNoteForm = ({ boatId }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Ajouter une note</h2>
+    <form onSubmit={handleSubmit} className='flex flex-col items-center'>
       {Object.keys(note).filter(field => field !== 'boat' && field !== 'createdby').map(field => (
-        <div key={field} className="flex flex-col mb-4">
+        <div key={field} className="flex flex-col items-center mb-4">
           <label className="mb-2">{field.charAt(0).toUpperCase() + field.slice(1)}:</label>
           <Rating>
             {[...Array(5)].map((_, index) => (
@@ -80,7 +79,7 @@ const AddNoteForm = ({ boatId }) => {
           </Rating>
         </div>
       ))}
-      <button type="submit" className="mt-4">Ajouter Note</button>
+      <Button type="submit" color='blue' className="mt-4 mb-6">Ajouter une Note</Button>
     </form>
   );
 };
