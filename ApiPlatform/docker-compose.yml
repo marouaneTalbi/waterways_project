@@ -18,7 +18,7 @@ services:
     user: root
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    build:
+    build: 
       context: .
       dockerfile: ./Dockerfile
       target: php_dev
