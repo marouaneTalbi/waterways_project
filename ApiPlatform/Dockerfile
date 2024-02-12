@@ -55,7 +55,7 @@ COPY . /srv/app/
 
 RUN APP_ENV=prod composer run auto-scripts
 
-COPY --link --chmod=755 ./.docker/php/docker-entrypoint.sh /usr/local/etc/php/docker-entrypoint
+COPY --link --chmod=755 ./.docker/php/docker-entrypoint.sh /usr/local/etc/php/docker-entrypoint.sh
 
 ENTRYPOINT ["docker-entrypoint"]
 
