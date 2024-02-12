@@ -60,7 +60,7 @@ RUN apk update && \
 
 COPY --link --chmod=755 ./.docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 
-ENTRYPOINT ["docker-entrypoint"]
+RUN docker-entrypoint
 CMD ["php-fpm"]
 
 #<<<<<<<<<<End: PHP-FPM Image Target>>>>>>>>>>#
