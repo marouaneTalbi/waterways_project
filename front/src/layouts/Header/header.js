@@ -6,6 +6,7 @@ import { isTokenExpired, checkIfRequestExists } from '../../services/axiosReques
 import NotificationIcon from './notif';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext';
+import LanguageSwitcher from '../../services/languageSwitcher';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
@@ -72,6 +73,7 @@ export default function Header() {
             <Navbar.Collapse>
             {
                     (!token ) && (
+
                         <>
                             <Navbar.Link href="/Login">Login</Navbar.Link>
                             <Navbar.Link href="/Register">Register</Navbar.Link>

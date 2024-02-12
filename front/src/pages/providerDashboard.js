@@ -53,7 +53,7 @@ export default function ProviderDashboard() {
                     <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenBoatModal}>AJOUTER</button>
                 </header>
                 <BoatProvider>
-                    <BoatList />
+                    <BoatList showList={true}/>
                 </BoatProvider>
             </div> 
             <div className="md:col-span-2 row-span-2 md:row-start-4 bg-white rounded border-2 border-gray-100 p-4">
