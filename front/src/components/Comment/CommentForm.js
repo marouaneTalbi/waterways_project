@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
-import sendRequest from "../../services/axiosRequestFunction";
 import { Textarea, Button, Label } from 'flowbite-react';
 import { UserContext } from '../../contexts/userContext'
-import { toast } from 'react-toastify';
 import { CommentContext } from '../../contexts/commentContext';
 
 const AddCommentForm = ({ boatId }) => {

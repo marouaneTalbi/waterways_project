@@ -6,7 +6,7 @@ import { UserContext } from '../../contexts/userContext';
 
 export default function BoatList({showList}) {
     const { user, getUser} = useContext(UserContext);
-    const {boat, boatList, getBoatList, setBoatList } = React.useContext(BoatContext);
+    const {boat, boatList, getBoatList } = React.useContext(BoatContext);
 
     useEffect(() => {
         getUser()
