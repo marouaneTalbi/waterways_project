@@ -17,6 +17,7 @@ const CommentsDashboardList = () => {
     const deleteCurrentComment = (id) => {
         deleteComment(id).then((res) => {
             console.log(res)
+            return res;
         })
     }
 
