@@ -69,6 +69,7 @@ export default function Header() {
                 <Dropdown.Item href="/profile">Profile</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
+                <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
             </div>
@@ -104,7 +105,6 @@ export default function Header() {
                             <Navbar.Link href="/myrequest">Suivre ma demande</Navbar.Link> :
                             <Navbar.Link href="/requestProvider">Request Provider</Navbar.Link>
                             }
-                            <NotificationIcon />
                         </>
                     )
                 }

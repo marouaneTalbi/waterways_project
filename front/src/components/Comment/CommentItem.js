@@ -3,7 +3,7 @@ import sendRequest from "../../services/axiosRequestFunction";
 
 export default function CommentItem({ comment={} }) {
     const [userName, setUserName] = useState('');
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchUserName = async () => {
             const userId = comment.createdby.split('/').pop();
             try {
@@ -18,13 +18,13 @@ export default function CommentItem({ comment={} }) {
             fetchUserName();
         }
     }, [comment.createdby]);
-
+*/
     return (
         <div className='bg-white rounded-lg p-4 flex flex-col gap-4'>
             <div className='flex flex-row gap-4 items-center'>
                 <img className='rounded-lg w-12 h-12' alt='user-picture' src='https://flowbite.com/docs/images/people/profile-picture-5.jpg' />
                 <div className='flex flex-col text-left justify-between'>
-                    <span className='font-semibold'>{userName}</span>
+                    <span className='font-semibold'>{comment.createdby}</span>
                     <time className='text-sm text-gray-400'>{comment.date}</time>
                 </div>
             </div>
