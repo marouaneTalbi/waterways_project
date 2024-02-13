@@ -29,9 +29,8 @@ const KabisRequests = () => {
     useEffect(() => {
         const fetchRequests = async () => {
             try {
-                //const response = await sendRequest('/api/kbis');
-                const response = await axios.get(`http://localhost:8888/api/kbis`);
-                setRequests(response.data);
+                const response = await sendRequest('/api/kbis');
+                setRequests(response);
             } catch (error) {
                 console.error("Erreur lors de la récupération des demandes :", error);
             } finally {
@@ -45,6 +44,7 @@ const KabisRequests = () => {
     const filteredRequests = filterStatus
     ? requests.filter(request => request.status.toString() === filterStatus)
     : requests;
+
 
     function mapStatusToText(status) {
         switch (status) {
@@ -60,14 +60,14 @@ const KabisRequests = () => {
     };
     const handleStatusChange = async (id, newStatus) => {
         try {
-            const response = await axios.put(`http://localhost:8888/api/kbis/${id}`, { status: newStatus });
+            const response = await sendRequest(`/api/kbis/${id}`, 'PUT', { status: newStatus });
             setRequests(requests.map(request => 
                 request.id === id ? { ...request, status: newStatus } : request
             ));
             notify('Status updates', 'success');
         } catch (error) {
             console.error("Erreur lors de la mise à jour du statut :", error);
-            notify('updaate failed', 'error');
+            notify('update failed', 'error');
         }
     };
     const sendEmailToUser = (email) => {
