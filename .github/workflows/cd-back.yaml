@@ -24,13 +24,7 @@ jobs:
           cd ApiPlatform
           docker build -t ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php -f Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
-   
-    - name: Build and Push Nginx Docker Image
-      run: |
-          cd ApiPlatform
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd -f Dockerfile.httpd .
-          docker push ${{ secrets.DOCKER_USERNAME }}/waterways-backend-httpd:latest
-   
+
     - name: Deploy to EC2 Instance
       uses: appleboy/ssh-action@master
       with:
@@ -48,5 +42,19 @@ jobs:
 
           sleep 10 
           
+
+          docker exec php sh -c "cat <<EOF > .env.local
+          APP_ENV=${{ secrets.APP_ENV }}
+          APP_SECRET=${{ secrets.APP_SECRET }}
+          MAILER_DSN=${{ secrets.MAILER_DSN }}
+          CORS_ALLOW_ORIGIN=${{ secrets.CORS_ALLOW_ORIGIN }}
+          JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+          JWT_PUBLIC_KEY=${{ secrets.JWT_PUBLIC_KEY }}
+          JWT_PASSPHRASE=${{ secrets.JWT_PASSPHRASE }}
+          FRONT_SERVER=${{ secrets.FRONT_SERVER }}
+          DATABASE_VERSION=${{ secrets.DATABASE_VERSION }}
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
+          EOF"
+          
           docker exec php composer install
-          docker exec php php bin/console lexik:jwt:generate-keypair 
+          docker exec php php bin/console lexik:jwt:generate-keypair

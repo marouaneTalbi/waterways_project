@@ -68,6 +68,15 @@ const BoatProvider = ({ children }) => {
     const getBoatList = async (id) => {
         return boatModel.getMyListBoats(id).then(response => {
             setBoatList(response);
+            console.log(boatList);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    const getBoatListUser = async (id) => {
+        return boatModel.getMyListBoats(id).then(response => {
+            setBoatList(response);
         }).catch(error => {
             console.log(error)
         })
@@ -120,7 +129,7 @@ const BoatProvider = ({ children }) => {
     }
 
     return (
-        <BoatContext.Provider value={{getCurrentBoat, showSlots, showEstablishment, getboatsOfEstablishment, getBoatList, boatList, boat, setBoat, addBoat, lastBoat, getLastBoat, searchBoat, results, getBoat, editBoat, addFavorite, favorites, getFavorite, removeFavorite }}>
+        <BoatContext.Provider value={{getCurrentBoat, showSlots, showEstablishment, getboatsOfEstablishment, getBoatList, getBoatListUser, boatList, boat, setBoat, addBoat, lastBoat, getLastBoat, searchBoat, results, getBoat, editBoat, addFavorite, favorites, getFavorite, removeFavorite }}>
             <ToastContainer />
             {children}
         </BoatContext.Provider>

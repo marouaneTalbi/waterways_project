@@ -5,18 +5,18 @@ import BoatItem from './BoatItem'
 import { UserContext } from '../../contexts/userContext';
 
 export default function BoatList({showList}) {
-    const { user, getUser} = useContext(UserContext);
-    const {boat, boatList, getBoatList } = React.useContext(BoatContext);
+    const { user, getUser } = useContext(UserContext);
+    const { boatList, getBoatListUser } = useContext(BoatContext);
 
     useEffect(() => {
         getUser()
     }, [])
 
     useEffect(() => {
-        if(user && showList) {
-            getBoatList(user.id)
+        if(user) {
+            getBoatListUser(user.id)
         }
-    }, [user, boat, boatList])
+    }, [user])
 
     return (
         <>

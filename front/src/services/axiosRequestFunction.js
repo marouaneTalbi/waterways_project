@@ -126,7 +126,6 @@ export async function checkIfRequestExists() {
     if (error.response && error.response.status === 404) {
       return false;
     }
-    console.error('Erreur lors de la vérification de la demande Kbis:', error);
     return null;
   }
 }

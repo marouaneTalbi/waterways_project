@@ -19,6 +19,7 @@ const EstablishmentProvider = ({ children }) => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [showToast, setShowToast] = useState(false);
+    const [establishmentResults, setEstablishmentResults] = useState([]);
     const currentUser = getUserRole();
     const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
     const { user } = useContext(UserContext);
@@ -97,6 +98,14 @@ const EstablishmentProvider = ({ children }) => {
         }
     }
 
+    const searchEstablishment = async (payload) => {
+        return EstablishmentApi.search(payload).then(response => {
+            setEstablishmentResults(response);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
     const getCurrentEstablishment = async () => {
         const url = window.location.href;
         const urlSplit = url.split('/');
@@ -116,7 +125,7 @@ const EstablishmentProvider = ({ children }) => {
     }
 
     return (
-        <EstablishmentContext.Provider value={{editEstablishment, getEstablishmentItem, getEstablishmentList, establishment, setEstablishment, establishmentList, getEtablismentName, name, setName, address, setAddress, city, setCity, endDate, setEndDate, startDate, setStartDate, establishments, setEstablishments, addEstablishment, getEstablishment, getCurrentEstablishment, formatDate}}>
+        <EstablishmentContext.Provider value={{editEstablishment, getEstablishmentItem, getEstablishmentList, establishment, setEstablishment, establishmentList, getEtablismentName, name, setName, address, setAddress, city, setCity, endDate, setEndDate, startDate, setStartDate, establishments, setEstablishments, addEstablishment, getEstablishment, getCurrentEstablishment, formatDate, searchEstablishment, establishmentResults}}>
             {showToast && (
                 <ToastContainer />
             )}
