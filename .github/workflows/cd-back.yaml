@@ -43,7 +43,7 @@ jobs:
           sleep 10 
           
 
-          docker exec php sh -c "cat <<EOF > .env.local
+          docker exec php sh -c "rm -f .gitignore && cat <<EOF > .env.local
           APP_ENV=${{ secrets.APP_ENV }}
           APP_SECRET=${{ secrets.APP_SECRET }}
           MAILER_DSN=${{ secrets.MAILER_DSN }}
