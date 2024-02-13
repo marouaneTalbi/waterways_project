@@ -23,6 +23,9 @@ import Boat from './pages/Public/boat';
 import BoatComment from './components/Comment/CommentForm';
 import { AuthProvider } from './contexts/authContext';
 import BoatProvider from './pages/Provider/boatPage';
+import NotFoundPage from './pages/httpErrors/404';
+import UnauthorizedPage from './pages/httpErrors/401';
+import ErrorPage from './pages/httpErrors/error';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -44,10 +47,13 @@ root.render(
             <Route path="admin" element={<UserAdmin /> } />
             <Route path="provider" element={<ProviderDashboard /> } />
             <Route path="requestProvider" element={<RequestProvider /> } />
-            <Route path="KabisRequests" element={<KabisRequests /> } />
+            <Route path="admin/KbisRequests" element={<KabisRequests /> } />
             <Route path="myRequest" element={<MyRequest /> } />
             <Route path="notifications" element={<Notifications /> } />
             <Route path="addcomment" element={<BoatComment /> } />
+            <Route path="NotFound" element={<NotFoundPage /> } />
+            <Route path="Unauthorized" element={<UnauthorizedPage /> } />
+            <Route path="Error" element={<ErrorPage /> } />
           </Route>
         </Routes>
       </BrowserRouter>

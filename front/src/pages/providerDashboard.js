@@ -9,7 +9,6 @@ import Establishments from '../components/Establishment/establishments'
 
 export default function ProviderDashboard() {
     const [isBoatModalOpen, setBoatModalOpen] = useState(false);
-
     const handleCloseModal = () => {
         setBoatModalOpen(false);
     };
