@@ -33,14 +33,14 @@ use App\Controller\ReservationSlotController;
             normalizationContext: ['groups' => ['reservation:read']],
         ),
         new GetCollection(
-            uriTemplate: '/reservations/{id}/boats',
+            uriTemplate: '/reservation/{id}/boat',
             controller: ReservationBoatController::class,
             paginationEnabled: false,
             security: "is_granted('ROLE_USER')",
             normalizationContext: ['groups' => ['boat:read']],
         ),
         new GetCollection(
-            uriTemplate: '/reservations/{id}/slots',
+            uriTemplate: '/reservation/{id}/slots',
             controller: ReservationSlotController::class,
             paginationEnabled: false,
             security: "is_granted('ROLE_USER')",
