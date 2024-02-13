@@ -1,6 +1,9 @@
 #<<<<<<<<<<Start: PHP-FPM Image Target>>>>>>>>>>#
 FROM php:8.2-fpm-alpine as php
 
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+
 RUN apk update
 RUN apk add curl
 
@@ -23,13 +26,13 @@ RUN apk add --update yaml-dev \
 RUN apk add libpq-dev && \
     docker-php-ext-install pdo pdo_pgsql && \
     docker-php-ext-enable pdo_pgsql
-
+ 
 # zip
 RUN apk add libzip-dev && apk add zip && \
     docker-php-ext-install zip
 
 # Installing Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.6.6 /usr/bin/composer /usr/bin/composer
 
 RUN mkdir /srv/app/
 
@@ -53,21 +56,16 @@ RUN composer install --no-dev --no-scripts
 
 COPY . /srv/app/
 
-RUN COMPOSER_ALLOW_SUPERUSER=1 composer require symfony/runtime && APP_ENV=prod php bin/console cache:clear 
+RUN touch /srv/app/.env && \
+    echo "APP_ENV=dev" >> /srv/app/.env && \
+    echo "DATABASE_VERSION=15" >> /srv/app/.env
 
-# RUN APP_ENV=prod composer run auto-scripts
 
-RUN apk update && \
-    apk add --no-cache curl acl 
-
-COPY --link --chmod=755 ./.docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-
-RUN docker-entrypoint
-CMD ["php-fpm"]
+RUN APP_ENV=prod composer run auto-scripts
 
 #<<<<<<<<<<End: PHP-FPM Image Target>>>>>>>>>>#
 
-#<<<<<<<<<<Start: PHP-FPM Image For the Dev Environment Target>>>>>>>>>>#
+#<<<<<<<<<<Start: PHP-FPM Image For the Dev Environment Target>>>>>>>>>># 
 FROM php as php_dev
 
 # xdebug

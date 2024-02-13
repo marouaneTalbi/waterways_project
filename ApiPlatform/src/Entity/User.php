@@ -29,10 +29,15 @@ use Symfony\Config\ApiPlatform\SwaggerConfig;
 use App\Controller\GetFavoriteController;
 use App\Controller\UserGetController;
 use App\Controller\UserBoatEstablishmentController;
-
+use App\Controller\UserSearchController;
 
 #[ApiResource(
     operations: [
+        new Get(
+            name: 'searchProvider',
+            uriTemplate: '/user/search',
+            controller: UserSearchController::class
+        ),
         new GetCollection(
             security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['user:read', 'establishment:read']],
@@ -60,17 +65,16 @@ use App\Controller\UserBoatEstablishmentController;
             security: "is_granted('ROLE_ADMIN')",
             securityMessage: "Only authenticated users can delete users."
         ),
-        new Get(
+        new GetCollection(
             name: 'getUser',
             uriTemplate: '/user',
-            processor: UserGetController::class,
-            normalizationContext: ['groups' => ['user:read']]
+            controller: UserGetController::class
         ), 
         new Get(
             name: 'getCurrentUser',
             uriTemplate: '/user/{id}',
             normalizationContext: ['groups' => ['user:read']]
-        ), 
+        ),
     ],
     normalizationContext: ['groups' => ['user:read', 'establishment:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
@@ -143,6 +147,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $phone = null;
 
     #[ORM\OneToMany(mappedBy: 'createdby', targetEntity: Establishment::class)]
+    #[Groups(['user:read'])]
     private Collection $establishments;
 
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Notification::class)]

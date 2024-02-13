@@ -13,7 +13,7 @@ services:
     links:
       - php
     ports:
-      - '8888:80'
+      - '8888:80' 
   php:
     user: root
     extra_hosts:

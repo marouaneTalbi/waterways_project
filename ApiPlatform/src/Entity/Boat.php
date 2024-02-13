@@ -57,6 +57,7 @@ use App\Controller\RemoveFavoriteController;
         ),
         new Get(
             uriTemplate: '/boat/{id}',
+            security: "is_granted('ROLE_PROVIDER')",
             normalizationContext: ['groups' => ['boat:read', 'user:read']],
         ),
         new Post(
@@ -84,7 +85,7 @@ class Boat
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['boat:read', 'boat:create', 'boat:update', 'media_object:read', 'user:favorite'], 'search')]
+    #[Groups(['boat:read', 'boat:create', 'boat:update', 'media_object:read', 'user:favorite', 'user:read'], 'search')]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -114,11 +115,11 @@ class Boat
     private Collection $reservations;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['boat:read', 'boat:create', 'boat:update', 'user:favorite'])]
+    #[Groups(['boat:read', 'boat:create', 'boat:update', 'user:favorite', 'establishment:read'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['boat:read', 'boat:create', 'boat:update', 'user:favorite'])]
+    #[Groups(['boat:read', 'boat:create', 'boat:update', 'user:favorite', 'establishment:read'])]
     private ?string $city = null;
 
     #[Vich\UploadableField(mapping: 'boat', fileNameProperty: 'image')]
@@ -147,7 +148,7 @@ class Boat
     private Collection $comments;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update'])]
+    #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update', 'user:read'])]
     private ?float $price = 0;
 
     public function __construct()

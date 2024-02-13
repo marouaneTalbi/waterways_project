@@ -70,16 +70,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getOneOrNullResult();
     }
 
-    public function findUsersByNameAndRole(string $userName): ?User
+    public function findUsersByNameAndRole(string $firstName, string $lastName)
     {
         $users = $this->createQueryBuilder('u')
-            ->select('u')
             ->andWhere('u.firstname = :firstname')
-            ->andWhere('JSON_GET_TEXT(u.roles, 0) LIKE :role')
-            ->setParameter('firstname', $userName)
-            ->setParameter('role', '%ROLE_PROVIDER%')
+            ->andWhere('u.lastname = :lastname')
+            ->andWhere('JSON_GET_TEXT(u.roles, 0) LIKE :roles')
+            ->setParameter('firstname', $firstName)
+            ->setParameter('lastname', $lastName)
+            ->setParameter('roles', '%ROLE_PROVIDER%')
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
+
+        if(!$users) {
+            return [];
+        }
 
         return $users;
     }

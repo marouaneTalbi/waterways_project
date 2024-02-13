@@ -19,7 +19,7 @@ use App\Controller\EstablishmentController;
 use App\Controller\ProviderBoatsController;
 use App\Controller\UserBoatEstablishmentController;
 use App\Controller\UserEstablishmentController;
-
+use App\Controller\EstablishmentSearchController;
 
 
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
@@ -64,6 +64,11 @@ use App\Controller\UserEstablishmentController;
             security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
             securityMessage: "Only authenticated users can modify users."
         ),
+        new GetCollection(
+            name: 'searchEstablishment',
+            uriTemplate: '/establishment/search',
+            controller: EstablishmentSearchController::class
+        )
      /*   new Get(
             security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['establishment:read']],
@@ -107,6 +112,7 @@ class Establishment
     private ?\DateTimeInterface $endDate = null;
 
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Boat::class)]
+    #[Groups(['establishment:read'])]
     private Collection $boats;
 
     #[ORM\ManyToOne(inversedBy: 'establishments')]
