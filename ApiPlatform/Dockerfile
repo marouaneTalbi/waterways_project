@@ -8,6 +8,8 @@ RUN if [ -f .env ]; then \
         echo "Le fichier .env n'existe pas."; \
     fi
 
+    
+
 # RUN apk update
 # RUN apk add curl
 
