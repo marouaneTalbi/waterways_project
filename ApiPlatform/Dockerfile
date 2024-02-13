@@ -57,7 +57,7 @@ RUN composer install --no-dev --no-scripts
 COPY . /srv/app/
 
 RUN touch /srv/app/.env && \
-    echo "APP_ENV=prod" >> /srv/app/.env && \
+    echo "APP_ENV=dev" >> /srv/app/.env && \
     echo "DATABASE_VERSION=15" >> /srv/app/.env
 
 
