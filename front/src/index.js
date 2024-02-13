@@ -23,11 +23,13 @@ import Boat from './pages/Public/boat';
 import BoatComment from './components/Comment/CommentForm';
 import { AuthProvider } from './contexts/authContext';
 import BoatProvider from './pages/Provider/boatPage';
+import { TranslationProvider } from './contexts/translationContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthProvider>
     <UserProvider>
+    <TranslationProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -51,6 +53,7 @@ root.render(
           </Route>
         </Routes>
       </BrowserRouter>
+      </TranslationProvider>
     </UserProvider>
   </AuthProvider>
 );

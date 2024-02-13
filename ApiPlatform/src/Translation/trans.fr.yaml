@@ -1,0 +1,16 @@
+requests: "Postuler"
+provider: "Prestatire"
+menu: "Accueil"
+search: "Rechercher"
+request_provider: "Demandes de Prestatire"
+login: "Se connecter"
+register: "S'inscrire"
+follow_my_request: "Suivre ma demande"
+profile: "profile"
+logout: "Se deonnecter"
+languange_change: "Changer la langue"
+frensh: "Français"
+english: "Anglais"
+
+
+
