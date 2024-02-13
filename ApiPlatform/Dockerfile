@@ -55,7 +55,6 @@ COPY ./symfony.lock /srv/app/
 RUN composer install --no-dev --no-scripts
 
 COPY . /srv/app/
-COPY .env /srv/app/.env
 
 RUN touch /srv/app/.env && \
     echo "APP_ENV=dev" >> /srv/app/.env && \
