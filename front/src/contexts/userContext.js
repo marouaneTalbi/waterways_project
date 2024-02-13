@@ -9,10 +9,8 @@ const UserProvider = ({ children }) => {
     const [highestRole, SethighestRole] = useState(null);
 
     const getUser = async () => {
-        return userModel.getAll().then(res =>{
-            const token = localStorage.getItem('token');
-            const decodedToken = jwtDecode(token);
-            const currentUser = res.find((user) => user.email === decodedToken?.username)
+        return userModel.get().then(res =>{
+            const currentUser = res
             setUser({
                 ...currentUser,
                 fullName: `${currentUser.lastname} ${currentUser.firstname}`
