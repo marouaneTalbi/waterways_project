@@ -28,6 +28,8 @@ use App\State\UserAddFavoriteProcessor;
 use Symfony\Config\ApiPlatform\SwaggerConfig;
 use App\Controller\GetFavoriteController;
 use App\Controller\UserGetController;
+use App\Controller\UserBoatEstablishmentController;
+
 
 #[ApiResource(
     operations: [
@@ -61,9 +63,13 @@ use App\Controller\UserGetController;
         new Get(
             name: 'getUser',
             uriTemplate: '/user',
-            processor: UserGetController::class,
+            controller: UserGetController::class
+        ), 
+        new Get(
+            name: 'getCurrentUser',
+            uriTemplate: '/user/{id}',
             normalizationContext: ['groups' => ['user:read']]
-        )
+        ), 
     ],
     normalizationContext: ['groups' => ['user:read', 'establishment:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],

@@ -1,25 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import CommentItem from './CommentItem';
-import sendRequest from "../../services/axiosRequestFunction";
+import { CommentContext } from '../../contexts/commentContext';
+import Loader from '../Loader/Loader';
 
 const CommentsList = ({ boatId }) => {
-    const [comments, setComments] = useState([]);
+    const { boatComments, getBoatComments } = useContext(CommentContext)
 
     useEffect(() => {
-        const fetchComments = async () => {
-            const data = await sendRequest('/api/comments');
-            const filteredComments = data.filter(comment => comment.boat == '/api/boat/'+boatId);
-            setComments(filteredComments);
-        };
-
-        fetchComments();
-    }, []);
+        getBoatComments(boatId)
+    }, [])
 
     return (
-        <div>
-            {comments.map(comment => (
-                <CommentItem key={comment.id} comment={comment} />
-            ))}
+        <div className='flex flex-col gap-4 h-[590px] overflow-y-scroll overflow-x-hidden'>
+            {
+                boatComments == null ? (
+                    <Loader />
+                ) : (
+                    boatComments.map((comment) => {
+                        return (  
+                            <CommentItem key={comment.id} comment={comment} />
+                        )
+                    })
+                )
+            }
         </div>
     );
 }

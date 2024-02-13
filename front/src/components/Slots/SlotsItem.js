@@ -10,7 +10,7 @@ export default function SlotsItem({ slots }) {
     const { id: idBoat } = useParams();
     const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
 
-    if (!slots || !slots.boat || slots.boat !== `/api/boats/${idBoat}`) {
+    if (!slots || !slots.boat || slots.boat !== `/api/boat/${idBoat}`) {
         return null;
     }
 

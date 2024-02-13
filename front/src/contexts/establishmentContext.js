@@ -1,10 +1,11 @@
 'use client';
-import React, { useState, createContext, useEffect } from 'react';
+import React, { useState, createContext, useEffect, useContext } from 'react';
 import establishmentModel from './models/establishmentModel';
 import EstablishmentApi from './models/establishmentModel';
 import { getUserRole } from '../services/axiosRequestFunction';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UserContext } from './userContext';
 
 export const EstablishmentContext = createContext(null);
 
@@ -20,11 +21,13 @@ const EstablishmentProvider = ({ children }) => {
     const [showToast, setShowToast] = useState(false);
     const currentUser = getUserRole();
     const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
-
+    const { user } = useContext(UserContext);
 
     useEffect(() => {
-        EstablishmentApi.getList().then(setEstablishments)
-    }, []);
+        if(user) {
+            EstablishmentApi.getList(user.id).then(setEstablishments)
+        }
+    }, [user]);
 
     const getEstablishmentItem = (establishment) => {
         setEstablishment(establishment);
@@ -36,11 +39,13 @@ const EstablishmentProvider = ({ children }) => {
     }
 
     const getEstablishmentList = async () => {
-        return establishmentModel.getList().then(response => {
-            setEstablishmentList(response);
-        }).catch(error => {
-            console.log(error)
-        })
+        if(user) {
+            return establishmentModel.getList(user.id).then(response => {
+                setEstablishmentList(response);
+            }).catch(error => {
+                console.log(error)
+            })
+        }
     }
 
     const getEstablishmentId = (establishment) => {

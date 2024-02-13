@@ -9,10 +9,8 @@ const UserProvider = ({ children }) => {
     const [highestRole, SethighestRole] = useState(null);
 
     const getUser = async () => {
-        return userModel.getAll().then(res =>{
-            const token = localStorage.getItem('token');
-            const decodedToken = jwtDecode(token);
-            const currentUser = res.find((user) => user.email === decodedToken?.username)
+        return userModel.get().then(res =>{
+            const currentUser = res
             setUser({
                 ...currentUser,
                 fullName: `${currentUser.lastname} ${currentUser.firstname}`
@@ -29,6 +27,10 @@ const UserProvider = ({ children }) => {
             });
             SethighestRole(getHighestRole(response.roles));
         })
+    }
+
+    const getUserById = async (id) => {
+        return userModel.getById(id)
     }
 
     const getHighestRole = (roles) => {
@@ -55,7 +57,7 @@ const UserProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole }}>
+        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById }}>
             {children}
         </UserContext.Provider>
     );

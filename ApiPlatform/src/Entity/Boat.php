@@ -81,7 +81,7 @@ class Boat
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['boat:read', 'boat:create', 'media_object:read', 'user:favorite'])]
+    #[Groups(['boat:read', 'boat:create', 'media_object:read', 'user:favorite', 'establishment:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -101,7 +101,7 @@ class Boat
     private ?int $capacity = null;
 
     #[ORM\ManyToOne(inversedBy: 'boats')]
-    #[Groups(['boat:read', 'boat:create', 'boat:update', 'media_object:read'])]
+    #[Groups(['boat:read', 'boat:create', 'boat:update', 'media_object:read', 'establishment:read'])]
     private ?Establishment $establishment = null;
 
     #[ORM\Column]

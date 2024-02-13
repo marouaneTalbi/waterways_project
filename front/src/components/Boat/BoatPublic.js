@@ -2,16 +2,24 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { BoatContext } from '../../contexts/boatContext';
 import { Button } from 'flowbite-react';
-import CommentItem from '../Comment/CommentItem';
 import CommentForm from '../Comment/CommentForm';
 import CommentsList from '../Comment/CommentList';
+import CommentProvider from '../../contexts/commentContext';
+import GenericModal from '../GenericModal/GenericModal';
+import { NoteContext } from '../../contexts/noteContext';
 import AddNote from '../notes/Addnotes';
 import BoatRatingsSummary from '../notes/Shownotes';
 
 export default function BoatPublic() {
     const { id } = useParams();
     const { getBoat, boat, addFavorite, favorites, getFavorite, removeFavorite } = useContext(BoatContext);
+    const { getBoatNotes, ratings, getBoatSumNote } = useContext(NoteContext);
     const [newFavorites, setNewFavorites] = useState([]);
+    const [isModalOpen, setModalOpen] = useState(false);
+
+    useEffect(() => {
+        getBoatNotes(id);
+    }, [])
 
     useEffect(() => {
         getFavorite()
@@ -33,8 +41,24 @@ export default function BoatPublic() {
         addFavorite(boat);
     }
 
+    const handleOpenModal = () => {
+        setModalOpen(true);
+    };
+        
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    };
+
     return (
             <div className="grid grid-cols-12 gap-4 flex-1">
+                <GenericModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    title="Ajouter une note"
+                >
+                    <AddNote boatId={id}/>
+                    <BoatRatingsSummary boatId={id}/>
+                </GenericModal>
                 <div className="col-span-12 md:col-span-8 relative flex flex-col">
                     <img alt='boat-image' src='https://coursnautique.com/wp-content/uploads/2022/02/Les-diff%C3%A9rentes-parties-dun-bateau-scaled.jpeg' className='bg-red-500 w-full object-cover h-[500px] rounded-md' />
                     <div className='mt-4 flex flex-row justify-between px-4'>
@@ -43,7 +67,7 @@ export default function BoatPublic() {
                             <p className='text-gray-600'>{boat && boat.address + ' ' + boat.city}</p>
                         </div>
                         {/** FAUSSE DATA **/}
-                        <span className='font-bold text-2xl'>€500/heure</span>
+                        <span className='font-bold text-2xl'>€{boat && boat.price ? boat.price : '500'}/heure</span>
                     </div>
                     <div className='flex gap-12 mt-8 px-4 flex-wrap'>
                         <div className='flex flex-row items-center gap-2'>
@@ -117,18 +141,23 @@ export default function BoatPublic() {
                         </div>
                     </div>
                 </div>
-                <div className="col-span-12 md:col-span-4 bg-gray-100 rounded-md border border-gray-200 p-4">
-                    <header className='w-full flex flex-row justify-between items-center mb-6'>
+                <div className="col-span-12 md:col-span-4 bg-gray-100 rounded-md border border-gray-200 p-4 flex flex-col">
+                    <header className='w-full flex flex-row justify-between items-center mb-4'>
                         <h4 className='text-2xl font-semibold'>Commentaires</h4>
-                        {/** FAUSSE DATA **/}
-                        <span className='font-semibold text-gray-400 text-sm'>3 Commentaires</span>
+                        <div className='flex flex-row gap-2'>
+                            <span className='font-normal text-gray-400 text-sm underline cursor-pointer' onClick={handleOpenModal}>Ajouter une note</span>
+                            <div className='flex flex-row items-center'>
+                                {ratings && getBoatSumNote(ratings)}
+                                <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" aria-hidden="true" data-testid="flowbite-rating-star" className="w-5 h-5 text-yellow-400" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                </svg>
+                            </div>
+                        </div>
                     </header>
-                    <div className='flex flex-col gap-4'>
+                    <CommentProvider>
                         <CommentsList boatId={id} />
                         <CommentForm boatId={id} /> 
-                        <AddNote boatId={id}/>
-                        <BoatRatingsSummary boatId={id}/>
-                    </div>
+                    </CommentProvider>
                 </div>
             </div>
     )
