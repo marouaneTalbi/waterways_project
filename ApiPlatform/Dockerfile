@@ -1,6 +1,9 @@
 #<<<<<<<<<<Start: PHP-FPM Image Target>>>>>>>>>>#
 FROM php:8.2-fpm-alpine as php
 
+ARG APP_ENV
+ENV APP_ENV=${APP_ENV}
+
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
 
@@ -55,7 +58,6 @@ COPY ./symfony.lock /srv/app/
 RUN composer install --no-dev --no-scripts
 
 COPY . /srv/app/
-COPY .env .env
 
 RUN APP_ENV=prod composer run auto-scripts
 

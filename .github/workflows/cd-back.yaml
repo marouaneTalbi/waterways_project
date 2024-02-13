@@ -26,7 +26,7 @@ jobs:
     - name: Build and Push PHP Docker Image
       run: |
           cd ApiPlatform
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php -f Dockerfile .
+          docker build -build-arg APP_ENV=${{ secrets.APP_ENV }} -t ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php -f Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
 
     - name: Deploy to EC2 Instance
