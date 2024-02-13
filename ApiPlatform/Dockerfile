@@ -55,7 +55,7 @@ COPY ./symfony.lock /srv/app/
 RUN composer install --no-dev --no-scripts
 
 COPY . /srv/app/
-
+COPY .env .env
 
 RUN APP_ENV=prod composer run auto-scripts
 
