@@ -13,6 +13,9 @@ const establishmentApi = {
     getList: async function (id) {
         return sendRequest(`/api/establishment/${id}/user`, 'get', {}, true);
     },
+    search: async function (search) {
+        return sendRequest(`/api/establishment/search`, 'get', {}, true, search);
+    },
 }
 
 export default establishmentApi;
