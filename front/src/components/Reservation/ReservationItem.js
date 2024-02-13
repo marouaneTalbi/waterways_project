@@ -17,7 +17,7 @@ export default function ReservationsItem({ reservation }) {
         const slotsId = reservation.slots.split('/').pop();
 
         getBoatFromReservation(boatId);
-        getSlotsFromReservation(slotsId);g
+        getSlotsFromReservation(slotsId);
 
     }, [getBoatFromReservation, getSlotsFromReservation]);
 
