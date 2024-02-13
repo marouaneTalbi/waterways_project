@@ -21,7 +21,7 @@ jobs:
 
     - name: Create .env file
       run: |
-        echo "${{ secrets.ENV_FILE }}" > .env
+           echo "${{ secrets.ENV_FILE }}" > ApiPlatform/.env
 
     - name: Build and Push PHP Docker Image
       run: |
