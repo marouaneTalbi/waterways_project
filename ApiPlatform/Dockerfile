@@ -1,9 +1,6 @@
 #<<<<<<<<<<Start: PHP-FPM Image Target>>>>>>>>>>#
 FROM php:8.2-fpm-alpine as php
 
-ARG APP_ENV
-ENV APP_ENV=${APP_ENV}
-
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
 
