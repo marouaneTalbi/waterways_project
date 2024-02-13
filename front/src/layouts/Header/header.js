@@ -6,6 +6,8 @@ import { isTokenExpired, checkIfRequestExists } from '../../services/axiosReques
 import NotificationIcon from './notif';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext';
+import { TranslationContext } from '../../contexts/translationContext.js';
+import LanguageSwitcher from '../../services/languageSwitcher';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
@@ -14,6 +16,15 @@ export default function Header() {
     const navigate = useNavigate();
     const { token } = useContext(AuthContext);
     const [hasPendingRequest, setHasPendingRequest] = useState(false);
+    const { translations, setLanguage  } = useContext(TranslationContext);
+
+    useEffect(() => {
+        setLanguage('fr')
+    }, []);
+
+    const handleLanguageChange = (value) => {
+        setLanguage(value);
+    };
 
     useEffect(() => {
         if (token) {
@@ -34,7 +45,7 @@ export default function Header() {
         if (userRole && !isValidToken) {
           checkRequestStatus();
         }
-      }, [userRole, isValidToken]);
+    }, [userRole, isValidToken]);
 
     const logout = () => {
         localStorage.removeItem('refresh_token');
@@ -61,25 +72,28 @@ export default function Header() {
                     }
                 >
                 <Dropdown.Header>
-                    <span className="block text-sm">Bonnie Green</span>
-                    <span className="block truncate text-sm font-medium">name@flowbite.com</span>
+                    <button  onClick={()=>handleLanguageChange('fr')}>
+                        <span className="mr-3 h-6 sm:h-9 text-xl" >🇫🇷</span>
+                    </button>
+                    <button onClick={()=>handleLanguageChange('en')}>
+                        <span className="mr-3 h-6 sm:h-9 text-xl" >🇬🇧</span>
+                    </button>
                 </Dropdown.Header>
-                <Dropdown.Item href="/profile">Profile</Dropdown.Item>
+                <Dropdown.Item href="/profile">{translations && translations.profile}</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
-                <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
+                <Dropdown.Item onClick={logout}>{translations && translations.logout}</Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
             </div>
+     
             <Navbar.Collapse>
             {
                     (!token ) && (
 
                         <>
-                            <Navbar.Link href="/Login">Login</Navbar.Link>
-                            <Navbar.Link href="/Register">Register</Navbar.Link>
+                            <Navbar.Link href="/Login">{translations && translations.login}</Navbar.Link>
+                            <Navbar.Link href="/Register">{translations && translations.register}</Navbar.Link>
                         </>
                     )
                 }
@@ -87,24 +101,24 @@ export default function Header() {
                     userRole === 'ROLE_ADMIN' && !isValidToken && (
                         <>
                         <Navbar.Link href="/admin">Admin</Navbar.Link>
-                        <Navbar.Link href="/Kabisrequests">Requests</Navbar.Link>
+                        <Navbar.Link href="/Kabisrequests">{translations && translations.requests}</Navbar.Link>
                         </>
                     )
                 }
                 {
                     userProvider === 'ROLE_PROVIDER' && !isValidToken && (
-                        <Navbar.Link href="/provider">Provider</Navbar.Link>
+                        <Navbar.Link href="/provider"> {translations && translations.provider}</Navbar.Link>
                     )
                 }
                 {
                     userRole && !isValidToken && (
                         <>
-                            <Navbar.Link href="/">Accueil</Navbar.Link>
-                            <Navbar.Link href="/search">Rechercher</Navbar.Link>
+                            <Navbar.Link href="/">{translations && translations.menu}</Navbar.Link>
+                            <Navbar.Link href="/search">{translations && translations.search}</Navbar.Link>
                             {
                             hasPendingRequest ?
-                            <Navbar.Link href="/myrequest">Suivre ma demande</Navbar.Link> :
-                            <Navbar.Link href="/requestProvider">Request Provider</Navbar.Link>
+                            <Navbar.Link href="/myrequest">{translations && translations.follow_my_request}</Navbar.Link> :
+                            <Navbar.Link href="/requestProvider">{translations && translations.request_provider}</Navbar.Link>
                             }
                         </>
                     )
