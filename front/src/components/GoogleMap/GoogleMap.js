@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { BoatContext } from '../../contexts/boatContext';
+import { EstablishmentContext } from '../../contexts/establishmentContext';
+import { UserContext } from '../../contexts/userContext'; 
 
 const libraries = ['places'];
 
@@ -16,8 +18,10 @@ const mapContainerStyle = {
 
 export default function GoogleMapComponent() {
     const [markerPositions, setMarkerPositions] = useState([]);
-    const [selectedBoat, setSelectedBoat] = useState(null); // Nouvel état pour suivre le bateau sélectionné
+    const [selectedBoat, setSelectedBoat] = useState(null); 
     const { results, boat } = useContext(BoatContext);
+    const { establishmentResults } = useContext(EstablishmentContext);
+    const { userResults } = useContext(UserContext);
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: 'AIzaSyD612is2fyjpnMcXuA6XAxM1lNIFxJkgU4',
@@ -25,49 +29,35 @@ export default function GoogleMapComponent() {
     });
 
     useEffect(() => {
-        if (results.length > 0) {
-            const loadMarkers = () => {
-                const geocoder = new window.google.maps.Geocoder();
-                const newMarkers = [];
-                results.forEach((boat) => {
-                    geocoder.geocode({ address: boat.address + ' ' + boat.city }, (results, status) => {
-                        if (status === 'OK' && results[0]) {
-                            console.log('ok')
-                            const { lat, lng } = results[0].geometry.location;
-                            newMarkers.push({ lat: lat(), lng: lng(), boat }); // Inclure l'objet bateau dans les données du marqueur
-                            setMarkerPositions((prevMarkerPositions) => [...prevMarkerPositions, ...newMarkers]);
-                        } else {
-                            console.error('Geocode was not successful for the following reason:', status);
-                        }
-                    });
-                });
-            };
-
-            if (isLoaded) {
-                loadMarkers();
-            }
-        } else if(boat) {
-            console.log(boat)
-            const loadMarkers = () => {
-                const geocoder = new window.google.maps.Geocoder();
-                const newMarkers = [];
-                geocoder.geocode({ address: boat.address + ' ' + boat.city }, (results, status) => {
-                    console.log(results)
+        const loadMarkers = (data) => {
+            const geocoder = new window.google.maps.Geocoder();
+            const newMarkers = [];
+            data.forEach((item) => {
+                geocoder.geocode({ address: item.address + ' ' + item.city }, (results, status) => {
                     if (status === 'OK' && results[0]) {
-                        console.log('ok')
                         const { lat, lng } = results[0].geometry.location;
-                        newMarkers.push({ lat: lat(), lng: lng(), boat }); // Inclure l'objet bateau dans les données du marqueur
+                        newMarkers.push({ lat: lat(), lng: lng(), item });
                         setMarkerPositions((prevMarkerPositions) => [...prevMarkerPositions, ...newMarkers]);
                     } else {
                         console.error('Geocode was not successful for the following reason:', status);
                     }
                 });
-            };
-            if (isLoaded) {
-                loadMarkers();
+            });
+            setMarkerPositions(newMarkers);
+        };
+
+        if (isLoaded) {
+            if (results.length > 0) {
+                loadMarkers(results);
+            } else if (establishmentResults.length > 0) {
+                loadMarkers(establishmentResults);
+            } else if (userResults) {
+                loadMarkers(userResults);
+            } else if (boat) {
+                loadMarkers([boat]);
             }
         }
-    }, [isLoaded, results]);
+    }, [isLoaded, results, establishmentResults, userResults, boat]);
 
     if (loadError) {
         return <div>Error loading maps</div>;
@@ -88,16 +78,16 @@ export default function GoogleMapComponent() {
                     key={index}
                     position={marker}
                     onClick={() => {
-                        setSelectedBoat(marker.boat); // Définir le bateau sélectionné lorsqu'un marqueur est cliqué
+                        setSelectedBoat(marker.item); 
                     }}
                 >
-                    {selectedBoat && marker.boat === selectedBoat && ( // Afficher l'InfoWindow seulement pour le bateau sélectionné
+                    {selectedBoat && marker.item === selectedBoat && (
                         <InfoWindow onCloseClick={() => setSelectedBoat(null)} options={{ maxWidth: 320 }}>
                             <div>
                                 <img alt='boat-image' src='https://coursnautique.com/wp-content/uploads/2022/02/Les-diff%C3%A9rentes-parties-dun-bateau-scaled.jpeg' className='bg-red-500 w-[280px] h-[180px] rounded-md' />
                                 <h3>{selectedBoat.name} {selectedBoat.modele}</h3>
                                 <p>{selectedBoat.description}</p>
-                                {/* Ajoutez d'autres informations du bateau selon votre modèle de données */}
+                                {/* Add other boat information according to your data model */}
                             </div>
                         </InfoWindow>
                     )}

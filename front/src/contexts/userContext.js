@@ -7,6 +7,7 @@ export const UserContext = createContext(null);
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [highestRole, SethighestRole] = useState(null);
+    const [userResults, setUserResults] = useState(null);
 
     const getUser = async () => {
         return userModel.getAll().then(res =>{
@@ -58,8 +59,16 @@ const UserProvider = ({ children }) => {
         }
     };
 
+    const searchUser = async (payload) => {
+        return userModel.search(payload).then(response => {
+            setUserResults(response);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
     return (
-        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById }}>
+        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById, searchUser, userResults }}>
             {children}
         </UserContext.Provider>
     );

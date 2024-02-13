@@ -11,7 +11,7 @@ use App\Repository\EstablishmentRepository;
 use App\Repository\UserRepository;
 
 #[AsController]
-class BoatSearchController extends AbstractController {
+class EstablishmentSearchController extends AbstractController {
 
     private $boatRepository;
     private $userRepository;
@@ -29,40 +29,28 @@ class BoatSearchController extends AbstractController {
         
         public function __invoke(Request $request)
         {
-        $result = [];
-        
-        if(intval($request->query->get('people'))) {
-            $boatSizeList = $this->boatRepository->findBy(['capacity' => intval($request->query->get('people')), 'city' => $request->query->get('location')]);
-            foreach ($boatSizeList as $boat) {
-                $result[] = $boat;
+            $result = [];
+            if(intval($request->query->get('location'))) {
+                $establishmentList = $this->establishmentRepository->findBy(['city' => $request->query->get('location'), 'name' => $request->query->get('search')]);
+                foreach ($establishmentList as $establishment) {
+                    $result[] = $establishment;
+                }
+            } else if($request->query->get('location')) {
+                $establishmentCity = $this->establishmentRepository->findBy(['city' => $request->query->get('location')]);
+                foreach ($establishmentCity as $establishment) {
+                    $result[] = $establishment;
+                }
+            } else if($request->query->get('search')) {
+                $establishmentName = $this->establishmentRepository->findBy(['name' => $request->query->get('search')]);
+                foreach ($establishmentName as $establishment) {
+                    
+                    $result[] = $establishment;
+                }
             }
-        } else {
-            $boatsCity = $this->boatRepository->findBy(['city' => $request->query->get('location')]);
-            foreach ($boatsCity as $boat) {
-                $result[] = $boat;
-            }
+            $uniqueResult = $this->uniqueObjectsById($result);
+
+            return $uniqueResult;
         }
-
-        $boatNameList = $this->boatRepository->findBy(['name' => $request->query->get('search')]);
-        foreach ($boatNameList as $boat) {
-            $result[] = $boat;
-        }
-        
-        // $boatOwner = $this->userRepository->findUsersByNameAndRole($request->query->get('search'));
-        // if($boatOwner) {
-        //     $establishments = $boatOwner->getEstablishments();
-        //     foreach ($establishments as $establishment) {
-        //         $boats = $establishment->getBoats();
-        //         foreach ($boats as $boat) {
-        //             $result[] = $boat;
-        //         }
-        //     }
-        // }
-
-        $uniqueResult = $this->uniqueObjectsById($result);
-
-        return $uniqueResult;
-    }
 
     private function uniqueObjectsById(array $objects): array
     {
