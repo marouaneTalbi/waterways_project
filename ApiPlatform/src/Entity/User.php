@@ -60,7 +60,7 @@ use App\Controller\UserBoatEstablishmentController;
             security: "is_granted('ROLE_ADMIN')",
             securityMessage: "Only authenticated users can delete users."
         ),
-        new Get(
+        new GetCollection(
             name: 'getUser',
             uriTemplate: '/user',
             controller: UserGetController::class
