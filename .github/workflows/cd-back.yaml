@@ -58,3 +58,4 @@ jobs:
           
           docker exec php composer install
           docker exec php php bin/console lexik:jwt:generate-keypair
+          
