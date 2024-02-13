@@ -1,8 +1,8 @@
 #<<<<<<<<<<Start: PHP-FPM Image Target>>>>>>>>>>#
 FROM php:8.2-fpm-alpine as php
 
-# ARG DATABASE_URL
-# ENV DATABASE_URL=${DATABASE_URL}
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
 
 RUN apk update
 RUN apk add curl
@@ -57,9 +57,9 @@ RUN composer install --no-dev --no-scripts
 COPY . /srv/app/
 COPY .env /srv/app/.env
 
-# RUN touch /srv/app/.env && \
-#     echo "APP_ENV=dev" >> /srv/app/.env && \
-#     echo "DATABASE_VERSION=15" >> /srv/app/.env
+RUN touch /srv/app/.env && \
+    echo "APP_ENV=dev" >> /srv/app/.env && \
+    echo "DATABASE_VERSION=15" >> /srv/app/.env
 
 
 RUN APP_ENV=prod composer run auto-scripts
