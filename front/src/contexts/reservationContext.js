@@ -57,7 +57,6 @@ const ReservationProvider = ({ children }) => {
     const getReservationList = async () => {
         return ReservationApi.getList().then(response => {
             setReservationList(response);
-            console.log(response);
         }).catch(error => {
             console.log(error)
         })
