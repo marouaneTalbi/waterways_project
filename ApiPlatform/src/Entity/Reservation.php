@@ -11,6 +11,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\ReservationBoatController;
+use App\Controller\ReservationSlotController;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ApiResource(
@@ -37,6 +38,13 @@ use App\Controller\ReservationBoatController;
             paginationEnabled: false,
             security: "is_granted('ROLE_USER')",
             normalizationContext: ['groups' => ['boat:read']],
+        ),
+        new GetCollection(
+            uriTemplate: '/reservations/{id}/slots',
+            controller: ReservationSlotController::class,
+            paginationEnabled: false,
+            security: "is_granted('ROLE_USER')",
+            normalizationContext: ['groups' => ['slots:read']],
         ),
         /*   new Get(
                security: "is_granted('ROLE_ADMIN')",

@@ -3,17 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Reservation;
-use App\Entity\Boat;
+use App\Repository\SlotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[AsController]
-class ReservationBoatController extends AbstractController
+class ReservationSlotController extends AbstractController
 {
     public function __invoke(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, $id): JsonResponse
     {
@@ -23,8 +25,8 @@ class ReservationBoatController extends AbstractController
             throw new NotFoundHttpException('Reservation not found.');
         }
 
-        $boats = $reservation->getBoat();
-        $data = $serializer->serialize($boats, 'json', ['groups' => ['boat:read']]);
+        $slots = $reservation->getSlots();
+        $data = $serializer->serialize($slots, 'json', ['groups' => ['slots:read']]);
 
         return new JsonResponse($data, JsonResponse::HTTP_OK, [], true);
     }
