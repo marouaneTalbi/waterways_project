@@ -6,7 +6,7 @@ import { UserContext } from '../../contexts/userContext';
 
 export default function BoatList({showList}) {
     const { user, getUser} = useContext(UserContext);
-    const {boat, boatList, getBoatList } = React.useContext(BoatContext);
+    const {boat, boatList, getBoatListUser } = React.useContext(BoatContext);
 
     useEffect(() => {
         getUser()
@@ -14,7 +14,7 @@ export default function BoatList({showList}) {
 
     useEffect(() => {
         if(user && showList) {
-            getBoatList(user.id)
+            getBoatListUser(user.id)
         }
     }, [user, boat, boatList])
 

@@ -57,6 +57,7 @@ use App\Controller\RemoveFavoriteController;
         ),
         new Get(
             uriTemplate: '/boat/{id}',
+            security: "is_granted('ROLE_PROVIDER')",
             normalizationContext: ['groups' => ['boat:read', 'user:read']],
         ),
         new Post(

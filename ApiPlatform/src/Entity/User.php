@@ -68,8 +68,7 @@ use App\Controller\UserSearchController;
         new Get(
             name: 'getUser',
             uriTemplate: '/user',
-            processor: UserGetController::class,
-            normalizationContext: ['groups' => ['user:read']]
+            controller: UserGetController::class
         ), 
         new Get(
             name: 'getCurrentUser',
