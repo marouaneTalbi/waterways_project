@@ -70,7 +70,26 @@ const SlotsProvider = ({ children }) => {
             const endDateTime = currentDate + ' ' + endTime;
             slots.startBookingDate = startDate;
             slots.endBookingDate = endDate;
-            await addSlots(boatId, startDateTime, endDateTime);
+            const slotsToAdd = [];
+
+            if (duration && duration >= 30 && duration <= 60) {
+                let currentSlotStart = new Date(currentDate + ' ' + startTime);
+                const slotEndTime = new Date(currentDate + ' ' + endTime);
+
+                while (currentSlotStart < slotEndTime) {
+                    const currentSlotEnd = new Date(currentSlotStart.getTime() + duration * 60000);
+                    slotsToAdd.push({ start: currentSlotStart, end: currentSlotEnd });
+                    currentSlotStart = currentSlotEnd;
+                }
+
+                if(slotsToAdd.length > 0) {
+                    for (const slot of slotsToAdd) {
+                        await addSlots(boatId, slot.start, slot.end);
+                    }
+                }
+            }else{
+                await addSlots(boatId, startDateTime, endDateTime);
+            }
         }
     };
 
