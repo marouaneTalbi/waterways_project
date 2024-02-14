@@ -90,26 +90,19 @@ export default function BoatForm({ onCloseModal }) {
                     const formattedStartTime = startTime ? startTime : "00:00";
                     const formattedEndTime = endTime ? endTime : "00:00";
 
-                    // Utilisez la durée de découpage des créneaux
                     const durationInMinutes = parseInt(slotDuration, 10);
 
-                    // Calculer la fin de chaque créneau en ajoutant la durée spécifiée à l'heure de début
                     let currentSlotStart = new Date(slots.startBookingDate);
                     const endDateTime = new Date(slots.endBookingDate);
 
                     const slotsToAdd = [];
                     while (currentSlotStart < endDateTime) {
-                        const currentSlotEnd = new Date(currentSlotStart.getTime() + durationInMinutes * 60000); // Convertir en millisecondes
+                        const currentSlotEnd = new Date(currentSlotStart.getTime() + durationInMinutes * 60000);
                         slotsToAdd.push({ start: new Date(currentSlotStart), end: new Date(currentSlotEnd) });
-                        currentSlotStart = new Date(currentSlotEnd); // Déplacer le début du créneau au début du créneau suivant
+                        currentSlotStart = new Date(currentSlotEnd);
                     }
 
-                    // Envoyer les créneaux à votre backend ou faire autre chose avec eux
-                    console.log("Slots to add:", slotsToAdd);
-
-                    // Réinitialiser l'état de la durée des créneaux
                     setSlotDuration('');
-
                     await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate, slotDuration);
                     onCloseModal();
                 }
