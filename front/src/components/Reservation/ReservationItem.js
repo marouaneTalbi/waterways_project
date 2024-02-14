@@ -52,7 +52,7 @@ const ReservationsItem = React.memo(({ reservation}) => {
                         {user && user.firstname && user.lastname && `${user.firstname} ${user.lastname}`}
                         index
                     </li>
-                    <li>Nom du bateau : {boatList[index].name}</li>
+                    <li>Nom du bateau : {boatList[index]?.name}</li>
 
                     <li>
                         {slots.startBookingDate && slots.endBookingDate && `Date : ${new Date(slots.startBookingDate).toLocaleDateString()}`}
