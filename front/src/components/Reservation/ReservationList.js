@@ -13,7 +13,7 @@ export default function ReservationList() {
 
     useEffect(() => {
         getReservationList();
-        getBoatList();
+        console.log(reservationList)
     }, [getReservationList, reservationList])
 
     return (

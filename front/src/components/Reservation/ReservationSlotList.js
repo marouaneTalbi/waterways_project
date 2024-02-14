@@ -49,7 +49,7 @@ const ReservationSlotList = () => {
         return (
             <Appointments.Appointment
                 {...restProps}
-                data={appointmentData} // Passer les données de l'horaires
+                data={appointmentData}
                 style={{
                     ...style,
                     backgroundColor: isReserved ? '#ccc' : '#FFC107',

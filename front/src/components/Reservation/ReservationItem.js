@@ -1,32 +1,35 @@
-import React, {useContext, useEffect, useState} from 'react';
-import { Table } from 'flowbite-react'
-import { ReservationContext } from "../../contexts/reservationContext";
-import { BoatContext } from "../../contexts/boatContext";
-import reservations from '../Reservation/ReservationList';
-import {useParams} from "react-router-dom";
-import Modal from 'react-modal';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import ConfirmModal from '../Modal/ConfirmModal';
-export default function ReservationsItem({ reservation }) {
-    const { deleteReservation, getBoatFromReservation, getSlotsFromReservation, boat, slots } = useContext(ReservationContext);
+import { ReservationContext } from "../../contexts/reservationContext";
+import { UserContext } from "../../contexts/userContext";
+
+const ReservationsItem = React.memo(({ reservation}) => {
+    const { deleteReservation, getBoatFromReservation, getSlotsFromReservation, slots, boat } = useContext(ReservationContext);
+    const { getUser, user } = useContext(UserContext);
+    const [slotsDetails, setSlotsDetails] = useState({});
     const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+    const fetchData = async () => {
+        if(reservation) {
+            try {
+                const boatId = reservation.boat.split('/').pop();
+                const getSlots = reservation.id;
+                getBoatFromReservation(boatId);
+                getSlotsFromReservation(reservation.id);
+                setSlotsDetails(slots);
+                console.log(slotsDetails);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+    };
 
 
     useEffect(() => {
-        const boatId = reservation.boat.split('/').pop();
-        const consumerId = reservation.consumer.split('/').pop();
-        const slotsId = reservation.slots.split('/').pop();
+        fetchData();
+    }, [reservation, boat]);
 
-        getBoatFromReservation(boatId);
-        getSlotsFromReservation(slotsId);
-
-    }, [getBoatFromReservation, getSlotsFromReservation]);
-
-    /*if (!reservation || !reservation.boat || reservation.boat !== `/api/boat/${idBoat}`) {
-        return null;
-    }*/
-
-    if (!reservation) {
-        return null;
+    if (!reservation || !boat) {
+        return null; // or render a loading indicator
     }
 
     const handleDelete = () => {
@@ -45,15 +48,13 @@ export default function ReservationsItem({ reservation }) {
     return (
         <ul className="bg-white dark:border-gray-700 dark:bg-gray-800">
             <li className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                {reservation.id}
-            </li>
-            <li className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                {reservation.id}
+                {user && user.firstname && user.lastname && `${user.firstname} ${user.lastname}`}
             </li>
             <li>{boat.name}</li>
-            <li>{reservation.consumer}</li>
-            <li>{slots.startTime}</li>
-            <li>{slots.endTime}</li>
+                <li>
+                    {slotsDetails.startBookingDate && slotsDetails.endBookingDate && `${new Date(slotsDetails.startBookingDate).toLocaleDateString()} - ${new Date(slotsDetails.endBookingDate).toLocaleDateString()}`}
+                    {slots.startTime && slots.endTime && `${new Date(slots.startTime).getHours()}:${new Date(slots.startTime).getMinutes()} - ${new Date(slots.endTime).getHours()}:${new Date(slots.endTime).getMinutes()}`}
+                </li>
             <li>{reservation.date}</li>
             <li>
                 <button onClick={handleDelete} className="font-medium text-red-600 hover:underline dark:text-red-500">
@@ -68,4 +69,7 @@ export default function ReservationsItem({ reservation }) {
             </li>
         </ul>
     )
-}
+})
+
+
+export default ReservationsItem;

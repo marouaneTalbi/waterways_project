@@ -11,7 +11,7 @@ const ReservationProvider = ({ children }) => {
     const [reservationList, setReservationList] = useState([]);
     const [reservation, setReservation] = useState({});
     const [boat, setBoat] = useState({});
-    const [slots, setSlots] = useState({});
+    const [slots, setSlots] = useState([]);
     const currentUser = getUserRole();
     const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
@@ -66,8 +66,7 @@ const ReservationProvider = ({ children }) => {
 
     const getBoatFromReservation = async (id) => {
         return ReservationApi.getBoat(id).then(response => {
-            console.log("fedeef");
-            setBoat(response);
+            setBoat(response)
         }).catch(error => {
             console.log(error)
         })
@@ -75,12 +74,13 @@ const ReservationProvider = ({ children }) => {
 
     const getSlotsFromReservation = async (id) => {
         return ReservationApi.getSlots(id).then(response => {
-            console.log("fvfrv");
             setSlots(response);
         }).catch(error => {
             console.log(error)
         })
     }
+
+
 
     return (
         <ReservationContext.Provider value={{ getReservationList, reservationList, reservation, setReservation, addReservation, deleteReservation, getBoatFromReservation, getSlotsFromReservation, boat, slots }}>
