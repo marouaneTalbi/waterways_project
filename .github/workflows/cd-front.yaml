@@ -17,7 +17,7 @@ jobs:
       run: |
         cd front 
         npm install --legacy-peer-deps
-        npm run build
+        npm run build -- --no-verify
 
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
