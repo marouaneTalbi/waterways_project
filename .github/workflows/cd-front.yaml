@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'front/**'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,7 +18,7 @@ jobs:
       run: |
         cd front 
         npm install --legacy-peer-deps
-        npm run build -- --no-verify
+        npm run build
 
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
@@ -38,4 +39,8 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: eu-north-1
 
-        
+    - name: Bypass eslint warnings and build
+      run: |
+        cd front
+        npm install --legacy-peer-deps --no-audit
+        npm run build -- --no-verify
