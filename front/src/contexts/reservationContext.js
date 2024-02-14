@@ -1,9 +1,7 @@
-import React, { useState, createContext, useEffect } from 'react';
+import React, { useState, createContext } from 'react';
 import ReservationModel from './models/reservationModel';
-import { getUserRole, isProvider } from '../services/axiosRequestFunction';
+import { getUserRole } from '../services/axiosRequestFunction';
 import ReservationApi from "./models/reservationModel";
-import { isSameDay } from 'date-fns';
-
 
 export const ReservationContext = createContext(null);
 
@@ -21,7 +19,7 @@ const ReservationProvider = ({ children }) => {
             const getBoat = `/api/boat/${idBoat}`;
             const getSlot = `/api/slots/${idSlot}`;
             const getUser = `/api/users/${idUser}`;
-            const currentDate = new Date();
+            //const currentDate = new Date();
             const modifiedReservation = { boat: getBoat, slots: getSlot, consumer: getUser, reservationDate: new Date()};
 
             return ReservationModel.add(modifiedReservation).then(response => {

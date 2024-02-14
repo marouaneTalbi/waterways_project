@@ -25,7 +25,7 @@ const ReservationSlotList = () => {
     const { reservationList, getReservationList } = React.useContext(ReservationContext);
     const { id: idBoat } = useParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedReservation, setSelectedReservation] = useState(null);
+    // const [selectedReservation, setSelectedReservation] = useState(null);
 
     useEffect(() => {
         getSlotsList();
@@ -64,7 +64,7 @@ const ReservationSlotList = () => {
     const MyAppointmentTooltip = ({ children, appointmentData, ...restProps }) => {
         const { addReservation } = useContext(ReservationContext);
         const { id: idBoat } = useParams();
-        const { user, getUser, getRoleLabel, highestRole } = useContext(UserContext);
+        const { user, getUser } = useContext(UserContext);
         const handleClick = () => {
             getUser()
             if(user) {
@@ -86,14 +86,14 @@ const ReservationSlotList = () => {
 
 
 
-    const isSlotReserved = (slotId) => {
-        return reservationList.some(reservation => reservation.slots === `/api/boat/${slotId}`);
-    };
+    // const isSlotReserved = (slotId) => {
+    //     return reservationList.some(reservation => reservation.slots === `/api/boat/${slotId}`);
+    // };
 
     const reservations = slotsList?.flatMap(function (slot) {
         const dailyReservations = [];
         const slotBoat = slot.boat;
-        const slotId = slot.id;
+        //const slotId = slot.id;
 
         if (slotBoat === `/api/boat/${idBoat}`) {
             const startDate = new Date(slot.startBookingDate);
@@ -133,10 +133,10 @@ const ReservationSlotList = () => {
         return dailyReservations;
     }) || [];
 
-    const openModal = (reservation) => {
-        setSelectedReservation(reservation);
-        setIsModalOpen(true);
-    };
+    // const openModal = (reservation) => {
+    //     setSelectedReservation(reservation);
+    //     setIsModalOpen(true);
+    // };
 
     let currentDate = new Date();
 

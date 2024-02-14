@@ -35,12 +35,12 @@ const AddNoteForm = ({ boatId }) => {
   }, [user]); 
   
 
-  const handleChange = (e) => {
-    setNote({
-      ...note,
-      [e.target.name]: parseInt(e.target.value),
-    });
-  };
+  // const handleChange = (e) => {
+  //   setNote({
+  //     ...note,
+  //     [e.target.name]: parseInt(e.target.value),
+  //   });
+  // };
 
   const handleRatingChange = (filled, newValue) => {
     setNote(prevNote => ({
@@ -52,7 +52,7 @@ const AddNoteForm = ({ boatId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await sendRequest('/api/notes', 'POST', note);
+      await sendRequest('/api/notes', 'POST', note);
       notify('Note ajoutée avec succès', 'success');
     } catch (error) {
       console.error('Erreur lors de l\'envoi de la note', error);

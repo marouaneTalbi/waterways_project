@@ -15,14 +15,14 @@ export default function ProviderDashboard() {
     const { getUser, user, getProviderSatisfaction, satisfaction } = useContext(UserContext);
 
     useEffect(() => {
-        getUser()
-    }, [])
-
+        getUser();
+    }, []);
+    
     useEffect(() => {
-        if(user) {
-            getProviderSatisfaction(user.id)
+        if (user) {
+            getProviderSatisfaction(user.id);
         }
-    }, [user])
+    }, [user]);
 
     const handleCloseModal = () => {
         setBoatModalOpen(false);

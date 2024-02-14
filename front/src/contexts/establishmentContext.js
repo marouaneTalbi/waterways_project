@@ -59,7 +59,7 @@ const EstablishmentProvider = ({ children }) => {
         const establishmentId = getEstablishmentId(establishment)
 
         if(establishmentList) {
-            const currentEstablishment = establishmentList.find(establishment => establishment.id == establishmentId);
+            const currentEstablishment = establishmentList.find(establishment => establishment.id === establishmentId);
             return currentEstablishment?.name;
         }
     }

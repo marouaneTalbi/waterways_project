@@ -22,7 +22,7 @@ const CommentProvider = ({ children }) => {
 
     const getBoatComments = async (boatId) => {
         return commentApi.getList().then(response => {
-            const filteredComments = response.filter(comment => comment.boat == '/api/boat/'+boatId);
+            const filteredComments = response.filter(comment => comment.boat === '/api/boat/'+boatId);
             setBoatComments(filteredComments);
         }).catch(error => {
             toast.success(`Nous n'avons pas pu récupérer les commentaires`);

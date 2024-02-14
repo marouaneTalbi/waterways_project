@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import sendRequest from "../../services/axiosRequestFunction";
-import { Rating } from 'flowbite-react'; 
 
 const BoatRatingsSummary = ({ boatId }) => {
-  const [globalRating, setGlobalRating] = useState(null);
   const [ratings, setRatings] = useState({
     proprete: 0,
     confort: 0,

@@ -1,6 +1,5 @@
 import React, { useState, createContext } from 'react';
 import userModel from './models/userModel';
-import { jwtDecode } from "jwt-decode";
 
 export const UserContext = createContext(null);
 

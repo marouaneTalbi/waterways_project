@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ConfirmModal from '../Modal/ConfirmModal';
 import { ReservationContext } from "../../contexts/reservationContext";
 import { UserContext } from "../../contexts/userContext";
@@ -6,13 +6,13 @@ import { UserContext } from "../../contexts/userContext";
 const ReservationsItem = React.memo(({ reservation}) => {
     const { deleteReservation, getBoatFromReservation, getSlotsFromReservation, slotsList, boatList } = useContext(ReservationContext);
     const { getUser, user } = useContext(UserContext);
-    const [slotsDetails, setSlotsDetails] = useState({});
+    // const [slotsDetails, setSlotsDetails] = useState({});
     const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
     const fetchData = async () => {
         if(reservation) {
             try {
                 const boatId = reservation.boat.split('/').pop();
-                const getSlots = reservation.id;
+                // const getSlots = reservation.id;
                 await getBoatFromReservation(boatId);
                 await getSlotsFromReservation(reservation.id);
                 console.log(boatList);

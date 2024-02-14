@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react';
 import noteApi from './models/noteModel';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const NoteContext = createContext(null);

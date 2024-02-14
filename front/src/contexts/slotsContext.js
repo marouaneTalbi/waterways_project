@@ -1,6 +1,6 @@
-import React, { useState, createContext, useEffect } from 'react';
+import React, { useState, createContext } from 'react';
 import slotsModel from './models/slotsModel';
-import { getUserRole, isProvider } from '../services/axiosRequestFunction';
+import { getUserRole } from '../services/axiosRequestFunction';
 import slotsApi from "./models/slotsModel";
 import { isSameDay } from 'date-fns';
 
