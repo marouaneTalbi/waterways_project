@@ -23,7 +23,7 @@ jobs:
       run: |
           cd ApiPlatform
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
-          docker build  -t ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php -f Dockerfile .
+          docker build --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }}  -t ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php -f Dockerfile .
           docker push ${{ secrets.DOCKER_USERNAME }}/waterways-backend-php:latest
 
     - name: Deploy to EC2 Instance
