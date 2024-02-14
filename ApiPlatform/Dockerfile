@@ -56,7 +56,6 @@ COPY ./symfony.lock /srv/app/
 RUN composer install --no-dev --no-scripts
 
 COPY . /srv/app/
-RUN if [ -f .env ]; then echo ".env exists"; else echo ".env does not exist"; fi
 
 
 RUN APP_ENV=prod composer run auto-scripts
