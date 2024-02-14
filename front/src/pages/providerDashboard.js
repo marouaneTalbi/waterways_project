@@ -49,7 +49,12 @@ export default function ProviderDashboard() {
                     </svg>
                 </div>
                 <div className='flex flex-col'>
-                    <span className='text-4xl font-semibold'>{satisfaction == null ? <Loader /> : (satisfaction + '%')}</span>
+                    <span className='text-4xl font-semibold'>
+                        {satisfaction === null ? 
+                            <Loader /> :
+                            (satisfaction === 0 ? 'aucun' : (satisfaction + '%'))
+                        }
+                    </span>
                     <span className='text-lg text-gray-500'>Taux de satisfaction</span>
                 </div>
             </div>

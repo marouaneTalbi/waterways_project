@@ -67,13 +67,17 @@ class UserGetSatisfaction extends AbstractController {
         }
 
         $totalNotes = count($notes);
-        $averageProprete = ($totalProprete / (5 * $totalNotes)) * 5;
-        $averageConfort = ($totalConfort / (5 * $totalNotes)) * 5;
-        $averagePerformance = ($totalPerformance / (5 * $totalNotes)) * 5;
-        $averageEquipement = ($totalEquipement / (5 * $totalNotes)) * 5;
-
-        $overallAverage = (($averageProprete + $averageConfort + $averagePerformance + $averageEquipement) / 4) * 20;
-
-        return number_format($overallAverage, 2);
+        if($totalNotes > 0) {
+            $averageProprete = ($totalProprete / (5 * $totalNotes)) * 5;
+            $averageConfort = ($totalConfort / (5 * $totalNotes)) * 5;
+            $averagePerformance = ($totalPerformance / (5 * $totalNotes)) * 5;
+            $averageEquipement = ($totalEquipement / (5 * $totalNotes)) * 5;
+    
+            $overallAverage = (($averageProprete + $averageConfort + $averagePerformance + $averageEquipement) / 4) * 20;
+    
+            return number_format($overallAverage, 2);
+        } else {
+            return 0;
+        }
     }
 }
