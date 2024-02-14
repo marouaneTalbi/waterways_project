@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { AuthContext } from "../../contexts/authContext";
+import { Button, Card, Label, TextInput } from 'flowbite-react';
 
 export default function Login() {
     const [email, setemail] = useState("");
@@ -27,36 +28,27 @@ export default function Login() {
     };
 
     return (
-        <div className="bg-light-blue-100 p-4 rounded-lg shadow-md">
+        <div className="flex justify-center w-full">
             <ToastContainer />
-            <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-                <div className="flex flex-col">
-                    <label htmlFor="email">Email</label>
-                    <input
-                        id="email"
-                        type="text"
-                        placeholder="Nom d'utilisateur"
-                        value={email}
-                        onChange={(e) => setemail(e.target.value)}
-                        className="p-2 border rounded"
-                    />
-                </div>
-                <div className="flex flex-col">
-                    <label htmlFor="password">Mot de passe</label>
-                    <input
-                        id="password"
-                        type="password"
-                        placeholder="Mot de passe"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="p-2 border rounded"
-                    />
-                </div>
-                <a href="/mdpResetEmail" onClick={() => navigate(('/mdpResetEmail'))}>Mot de passe oublié</a>
-                <button  type="submit" className="bg-red-500 text-black p-2 rounded hover:bg-red-600">
-                    Se connecter
-                </button>
-            </form>
+            <Card className="h-fit w-[95%] sm:w-[90%] md:w-[80%]">
+                <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+                    <h3 className="font-semibold text-2xl">Se connecter</h3>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="email" value="Votre email" />
+                        </div>
+                        <TextInput id="email" type="email" placeholder="Email" value={email} onChange={(e) => setemail(e.target.value)} required />
+                    </div>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="password" value="Votre mot de passe" />
+                        </div>
+                        <TextInput id="password" type="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    </div>
+                    {/* <a href="/mdpResetEmail" onClick={() => navigate(('/mdpResetEmail'))}>Mot de passe oublié</a> */}
+                    <Button type="submit" color="blue">Connexion</Button>
+                </form>
+            </Card>
         </div>
     )
 
