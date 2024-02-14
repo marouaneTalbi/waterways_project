@@ -121,7 +121,7 @@ export default function BoatInfo() {
                     <NoteCard title="Equipement" icon={faWrench} percentage={ratings && getPercentage(ratings.equipement)} />
                 </div>
             </div>
-            <div className="col-span-2 row-span-2 md:row-start-3 md:col-start-3 row-start-8 bg-white rounded border-2 border-gray-100 p-4">
+            <div className="col-span-2 row-span-2 h-[300px] md:h-auto md:row-start-3 md:col-start-3 row-start-8 bg-white rounded border-2 border-gray-100 p-4">
                 {
                     boat && (
                         <EstablishmentProvider>
