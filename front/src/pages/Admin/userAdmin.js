@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import sendRequest from "../../services/axiosRequestFunction";
 import CommentProvider from "../../contexts/commentContext";
-import CommentsList from "../../components/Comment/CommentList";
 import CommentsDashboardList from "../../components/Comment/CommentDashboardList";
 import BoatProvider from "../../contexts/boatContext";
 

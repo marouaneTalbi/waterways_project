@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import 'flowbite';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import sendRequest from "../../services/axiosRequestFunction";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -21,7 +20,6 @@ const KabisRequests = () => {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filterStatus, setFilterStatus] = useState('0');
-    const [usersInfo, setUsersInfo] = useState({});
     const [showInput, setShowInput] = useState(false);
     const [complementText, setComplementText] = useState('');
     const [activeRequestId, setActiveRequestId] = useState(null); 
@@ -60,7 +58,8 @@ const KabisRequests = () => {
     };
     const handleStatusChange = async (id, newStatus) => {
         try {
-            const response = await sendRequest(`/api/kbis/${id}`, 'PUT', { status: newStatus });
+            await sendRequest(`/api/kbis/${id}`, 'PUT', { status: newStatus });
+          
             setRequests(requests.map(request => 
                 request.id === id ? { ...request, status: newStatus } : request
             ));
@@ -86,7 +85,7 @@ const KabisRequests = () => {
     const handleSubmitComplement = async () => {
         try {
           //await sendComplementEmail(activeRequestId, complementText);
-          const response = await sendRequest('/api/notifications', 'POST', {title:"Demande de complement", message:complementText});
+          await sendRequest('/api/notifications', 'POST', {title:"Demande de complement", message:complementText});
         } catch (error) {
           console.error("Erreur lors de l'envoi du complément :", error);
           notify('Erreur lors de la demande de complément.', 'error');

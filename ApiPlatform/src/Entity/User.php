@@ -29,6 +29,7 @@ use Symfony\Config\ApiPlatform\SwaggerConfig;
 use App\Controller\GetFavoriteController;
 use App\Controller\UserGetController;
 use App\Controller\UserBoatEstablishmentController;
+use App\Controller\UserGetSatisfaction;
 use App\Controller\UserSearchController;
 
 #[ApiResource(
@@ -37,6 +38,12 @@ use App\Controller\UserSearchController;
             name: 'searchProvider',
             uriTemplate: '/user/search',
             controller: UserSearchController::class
+        ),
+        new Get(
+            name: 'getProviderSatisfaction',
+            uriTemplate: '/user/{id}/satisfaction',
+            security: "is_granted('ROLE_PROVIDER')",
+            controller: UserGetSatisfaction::class
         ),
         new GetCollection(
             security: "is_granted('ROLE_ADMIN')",

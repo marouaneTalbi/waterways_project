@@ -9,8 +9,8 @@ export default function BoatItem({ boat }) {
                 {boat.name}
             </Table.Cell>
             <Table.Cell>{boat.establishment.name}</Table.Cell>
-            <Table.Cell>{boat.modele}</Table.Cell>
-            <Table.Cell>{boat.capacity}</Table.Cell>
+            <Table.Cell className='sm:table-cell hidden'>{boat.modele}</Table.Cell>
+            <Table.Cell className='sm:table-cell hidden'>{boat.capacity}</Table.Cell>
             <Table.Cell>
                 <Link to={`/provider/boat/${boat.id}`} className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
                     GERER

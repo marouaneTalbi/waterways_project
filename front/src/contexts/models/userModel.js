@@ -15,6 +15,9 @@ const userApi = {
     },
     search: async function (search) {
         return sendRequest(`/api/user/search`, 'get', {}, true, search);
+    },
+    satisfaction: async function (userId) {
+        return sendRequest(`api/user/${userId}/satisfaction`, 'get', {}, true)
     }
 };
 

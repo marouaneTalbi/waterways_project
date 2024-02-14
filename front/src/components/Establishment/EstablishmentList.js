@@ -26,9 +26,9 @@ export default function EstablishmentList() {
                      <Table.Head>
                          <Table.HeadCell>Nom</Table.HeadCell>
                          <Table.HeadCell>Address</Table.HeadCell>
-                         <Table.HeadCell>City</Table.HeadCell>
-                         <Table.HeadCell>Start Date</Table.HeadCell>
-                         <Table.HeadCell>Start End</Table.HeadCell>
+                         <Table.HeadCell className='sm:table-cell hidden'>City</Table.HeadCell>
+                         <Table.HeadCell className='sm:table-cell hidden'>Start Date</Table.HeadCell>
+                         <Table.HeadCell className='sm:table-cell hidden'>Start End</Table.HeadCell>
                          <Table.HeadCell>
                              <span className="sr-only">GERER</span>
                          </Table.HeadCell>

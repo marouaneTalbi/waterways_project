@@ -1,8 +1,7 @@
 
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
-import { useNavigate, Params } from 'react-router';
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+const API_BASE_URL = 'http://localhost:8888';
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL
@@ -120,7 +119,7 @@ async function refreshToken() {
  
 export async function checkIfRequestExists() {
   try {
-    const response = await sendRequest('/api/kbis/me');
+    await sendRequest('/api/kbis/me');
     return true;
   } catch (error) {
     if (error.response && error.response.status === 404) {

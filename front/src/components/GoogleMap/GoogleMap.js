@@ -49,7 +49,7 @@ export default function GoogleMapComponent() {
         if (isLoaded) {
             if (results.length > 0) {
                 loadMarkers(results);
-            } else if (establishmentResults.length > 0) {
+            } else if (establishmentResults) {
                 loadMarkers(establishmentResults);
             } else if (userResults) {
                 loadMarkers(userResults);

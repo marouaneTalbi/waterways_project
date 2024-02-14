@@ -10,6 +10,8 @@ use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Controller\ReservationBoatController;
+use App\Controller\ReservationSlotController;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ApiResource(
@@ -29,6 +31,20 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Get(
             security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
             normalizationContext: ['groups' => ['reservation:read']],
+        ),
+        new GetCollection(
+            uriTemplate: '/reservation/{id}/boat',
+            controller: ReservationBoatController::class,
+            paginationEnabled: false,
+            security: "is_granted('ROLE_USER')",
+            normalizationContext: ['groups' => ['boat:read']],
+        ),
+        new GetCollection(
+            uriTemplate: '/reservation/{id}/slots',
+            controller: ReservationSlotController::class,
+            paginationEnabled: false,
+            security: "is_granted('ROLE_USER')",
+            normalizationContext: ['groups' => ['slots:read']],
         ),
         /*   new Get(
                security: "is_granted('ROLE_ADMIN')",
@@ -57,6 +73,7 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['reservation:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]

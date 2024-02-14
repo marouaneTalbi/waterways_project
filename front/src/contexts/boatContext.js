@@ -66,6 +66,14 @@ const BoatProvider = ({ children }) => {
     }
 
     const getBoatList = async (id) => {
+        return boatModel.getList().then(response => {
+            setBoatList(response);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    const getBoatListUser = async (id) => {
         return boatModel.getMyListBoats(id).then(response => {
             setBoatList(response);
             console.log(boatList);

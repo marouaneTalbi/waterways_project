@@ -66,6 +66,8 @@ export default function Header() {
                 </Dropdown.Header>
                 <Dropdown.Item href="/profile">Profile</Dropdown.Item>
                 <Dropdown.Divider />
+                <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
+                <Dropdown.Divider />
                 <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
                 <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
                 </Dropdown>

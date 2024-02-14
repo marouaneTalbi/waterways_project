@@ -3,6 +3,8 @@ import UserInfos from '../components/User/UserInfos'
 import GenericModal from '../components/GenericModal/GenericModal'
 import UserForm from '../components/User/UserForm';
 import BoatProvider from '../contexts/boatContext';
+import ReservationProvider from '../contexts/reservationContext';
+import ReservationList from '../components/Reservation/ReservationList';
 import UserFavorisList from '../components/User/UserFavorisList';
 
 export default function Profile() {
@@ -45,7 +47,11 @@ export default function Profile() {
                         <h4 className="text-xl font-medium">Réservation(s)</h4>
                     </div>
                     <div className="flex flex-wrap py-6 gap-20 gap-y-10">
-                        {/* USER RESERVATIONS LIST */}
+                        <BoatProvider>
+                            <ReservationProvider>
+                                <ReservationList />
+                            </ReservationProvider>
+                        </BoatProvider>
                     </div>  
                 </header>
             </div>

@@ -45,7 +45,7 @@ const RequestProvider = () => {
     formData.append('file', file);
 
     try {
-      const response = await sendRequest('/api/kbis', 'POST', formData);
+      await sendRequest('/api/kbis', 'POST', formData);
       setIsLoading(false); 
       setIsUploadSuccess(true);
       notify('File successfully uploaded', 'success');

@@ -9,8 +9,13 @@ const ReservationApi = {
     },
     delete: async function (id) {
         return sendRequest(`/api/reservation/${id}`, 'delete', {}, true);
+    },
+    getSlots: async function (id) {
+        return sendRequest(`/api/reservation/${id}/slots`, 'get', {}, true);
+    },
+    getBoat: async function (id) {
+        return sendRequest(`/api/reservation/${id}/boat`, 'get', {}, true);
     }
-
 }
 
 export default ReservationApi;
