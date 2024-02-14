@@ -4,10 +4,11 @@ import { jwtDecode } from "jwt-decode";
 const API_BASE_URL = 'http://localhost:8888';
 
 const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-});
+  baseURL: API_BASE_URL
+}); 
 
-const  urlsWithoutAuth = ['/api/token/refresh', '/api/users', '/api/mdpresetemail', '/api/resetmdp', '/auth'];
+const urlsWithoutAuth = ['/api/token/refresh', '/api/users', '/api/mdpresetemail', '/api/resetmdp', '/auth'];
+
 
 export function getUserRole() {
   if(!localStorage.getItem('token')) {

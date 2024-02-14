@@ -7,7 +7,7 @@ use App\State\UserPasswordHasher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Entity\User;
+use App\Entity\User;      
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -15,11 +15,11 @@ class EmailSendForResetMdpController extends AbstractController
 {
     private $entityManager;
 
-    private $passwordEncoder;
+    private $passwordEncoder;  
     private $mailer;
 
     private  $userRepository;
-
+     
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -37,7 +37,7 @@ class EmailSendForResetMdpController extends AbstractController
     public function __invoke(Request $request): Response
     {
 
-        $data = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true); 
         $email = $data['email'] ?? null;
         if (!$email) {
             return new Response('Email is required', Response::HTTP_BAD_REQUEST);

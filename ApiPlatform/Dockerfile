@@ -1,5 +1,9 @@
-#<<<<<<<<<<Start: PHP-FPM Image Target>>>>>>>>>>#
+# #<<<<<<<<<<Start: PHP-FPM Image Target>>>>>>>>>>#
 FROM php:8.2-fpm-alpine as php
+
+ARG DATABASE_URL
+
+ENV DATABASE_URL=${DATABASE_URL}
 
 RUN apk update
 RUN apk add curl
@@ -23,13 +27,13 @@ RUN apk add --update yaml-dev \
 RUN apk add libpq-dev && \
     docker-php-ext-install pdo pdo_pgsql && \
     docker-php-ext-enable pdo_pgsql
-
+ 
 # zip
 RUN apk add libzip-dev && apk add zip && \
     docker-php-ext-install zip
 
 # Installing Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.6.6 /usr/bin/composer /usr/bin/composer
 
 RUN mkdir /srv/app/
 
@@ -53,15 +57,12 @@ RUN composer install --no-dev --no-scripts
 
 COPY . /srv/app/
 
-RUN APP_ENV=prod composer run auto-scripts
 
-COPY --link --chmod=755 docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
-ENTRYPOINT ["docker-entrypoint"]
-CMD ["php-fpm"]
+RUN APP_ENV=prod composer run auto-scripts
 
 #<<<<<<<<<<End: PHP-FPM Image Target>>>>>>>>>>#
 
-#<<<<<<<<<<Start: PHP-FPM Image For the Dev Environment Target>>>>>>>>>>#
+#<<<<<<<<<<Start: PHP-FPM Image For the Dev Environment Target>>>>>>>>>># 
 FROM php as php_dev
 
 # xdebug
@@ -70,12 +71,10 @@ RUN apk --no-cache add pcre-dev ${PHPIZE_DEPS} && \
     pecl install xdebug && \
     docker-php-ext-enable xdebug
 
+
+COPY --from=php /srv/app /srv/app
+
+
 #<<<<<<<<<<End: PHP-FPM Image For the Dev Environment Target>>>>>>>>>>#
 
-#<<<<<<<<<<Start: Server Image Target>>>>>>>>>>#
-FROM httpd:2 as server
 
-COPY ./.docker/httpd/httpd.conf /usr/local/apache2/conf/httpd.conf
-
-COPY --from=php /srv/app/public /srv/app/public
-#<<<<<<<<<<End: Server Image Target>>>>>>>>>>#

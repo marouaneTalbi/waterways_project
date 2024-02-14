@@ -59,6 +59,7 @@ const KabisRequests = () => {
     const handleStatusChange = async (id, newStatus) => {
         try {
             await sendRequest(`/api/kbis/${id}`, 'PUT', { status: newStatus });
+          
             setRequests(requests.map(request => 
                 request.id === id ? { ...request, status: newStatus } : request
             ));

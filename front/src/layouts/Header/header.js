@@ -17,6 +17,7 @@ export default function Header() {
 
     useEffect(() => {
         if (token) {
+            console.log(token)
             const decoded = jwtDecode(token);
             setUserRole(decoded.roles[0])
             const provider =  decoded.roles.find(role => role === 'ROLE_PROVIDER')
@@ -68,12 +69,14 @@ export default function Header() {
                 <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
+                <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
             </div>
             <Navbar.Collapse>
-                {
-                    (!token && !isValidToken) && (
+            {
+                    (!token ) && (
+
                         <>
                             <Navbar.Link href="/Login">Login</Navbar.Link>
                             <Navbar.Link href="/Register">Register</Navbar.Link>
