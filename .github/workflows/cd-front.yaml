@@ -39,8 +39,8 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: eu-north-1
 
-    - name: Bypass eslint warnings and build
+    - name: Build with ESLint (without treating warnings as errors)
       run: |
         cd front
         npm install --legacy-peer-deps --no-audit
-        npm run build -- --no-verify
+        npm run build -- --max-warnings=10000
