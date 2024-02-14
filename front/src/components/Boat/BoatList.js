@@ -34,8 +34,8 @@ export default function BoatList({showList}) {
                         <Table.Head>
                             <Table.HeadCell>Nom</Table.HeadCell>
                             <Table.HeadCell>Etablissement</Table.HeadCell>
-                            <Table.HeadCell>Modèle</Table.HeadCell>
-                            <Table.HeadCell>Places</Table.HeadCell>
+                            <Table.HeadCell className='sm:table-cell hidden'>Modèle</Table.HeadCell>
+                            <Table.HeadCell className='sm:table-cell hidden'>Places</Table.HeadCell>
                             <Table.HeadCell>
                                 <span className="sr-only">GERER</span>
                             </Table.HeadCell>

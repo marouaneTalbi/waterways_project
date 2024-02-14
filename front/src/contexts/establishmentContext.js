@@ -19,7 +19,7 @@ const EstablishmentProvider = ({ children }) => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [showToast, setShowToast] = useState(false);
-    const [establishmentResults, setEstablishmentResults] = useState([]);
+    const [establishmentResults, setEstablishmentResults] = useState(null);
     const currentUser = getUserRole();
     const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
     const { user } = useContext(UserContext);
@@ -90,7 +90,7 @@ const EstablishmentProvider = ({ children }) => {
 
     const getEstablishment = async (establishmentId) => {
         if (isProvider) {
-           return EstablishmentApi.getOne(establishmentId).then(response => {
+            return EstablishmentApi.getOne(establishmentId).then(response => {
                 return response;
             })
         } else {

@@ -43,7 +43,7 @@ const NoteProvider = ({ children }) => {
         console.log(ratings);
         const maxRating = 5;
         const percent = (ratings / maxRating) * 100;
-        return percent;
+        return percent.toFixed(2);
     }
 
     function getBoatSumNote(ratings) {

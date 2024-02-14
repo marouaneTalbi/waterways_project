@@ -8,6 +8,7 @@ const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [highestRole, SethighestRole] = useState(null);
     const [userResults, setUserResults] = useState(null);
+    const [satisfaction, setSatisfaction] = useState(null)
 
     const getUser = async () => {
         return userModel.get().then(res =>{
@@ -65,8 +66,16 @@ const UserProvider = ({ children }) => {
         })
     }
 
+    const getProviderSatisfaction = async (userId) => {
+        return userModel.satisfaction(userId).then(response => {
+            setSatisfaction(response)
+        }).catch(error => {
+            console.error(error);
+        })
+    }
+
     return (
-        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById, searchUser, userResults }}>
+        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById, searchUser, userResults, getProviderSatisfaction, satisfaction }}>
             {children}
         </UserContext.Provider>
     );

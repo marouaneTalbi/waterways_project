@@ -45,7 +45,7 @@ use App\Controller\RemoveFavoriteController;
         ),
         new Post(
             uriTemplate: '/addboat',
-            security: "is_granted('ROLE_ADMIN')",
+            security: "is_granted('ROLE_PROVIDER')",
             controller: BoatController::class,
             deserialize: false, 
             // normalizationContext: ['groups' => ['boat:create']],
@@ -137,6 +137,7 @@ class Boat
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorite')]
     #[Groups(['boat:read', 'boat:create', 'boat:update'])]
     private Collection $usersFavorites;
+    
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update'])]
     private ?string $description = null;
@@ -151,6 +152,10 @@ class Boat
     #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update', 'user:read'])]
     private ?float $price = 0;
 
+    #[ORM\OneToMany(mappedBy: 'boat', targetEntity: Note::class)]
+    #[Groups(['user:read'])]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->slots = new ArrayCollection();
@@ -158,6 +163,7 @@ class Boat
         $this->usersFavorites = new ArrayCollection();
         $this->createdBy = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -468,6 +474,36 @@ class Boat
     public function setPrice(?float $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setBoat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getBoat() === $this) {
+                $note->setBoat(null);
+            }
+        }
 
         return $this;
     }
