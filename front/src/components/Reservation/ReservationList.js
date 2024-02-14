@@ -1,40 +1,33 @@
-import React, {useContext, useEffect} from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import { ReservationContext } from '../../contexts/reservationContext';
-import { Table } from 'flowbite-react';
-import ReservationItem from './ReservationItem'
-import {BoatContext} from "../../contexts/boatContext";
-import {SlotsContext} from "../../contexts/slotsContext";
-
+import ReservationItem from './ReservationItem';
 
 export default function ReservationList() {
-    const { reservationList, getReservationList } = React.useContext(ReservationContext);
-    const { getBoatList, boatList } = useContext(BoatContext);
-    //const { slotsList, getSlotsList } = React.useContext(SlotsContext);
+    const { reservationList, getReservationList } = useContext(ReservationContext);
+    const [uniqueReservationIds, setUniqueReservationIds] = useState(new Set());
 
     useEffect(() => {
         getReservationList();
-        console.log(reservationList)
-    }, [getReservationList, reservationList])
+    }, []);
+
+    useEffect(() => {
+        const uniqueIds = new Set(reservationList.map(reservation => reservation.id));
+        setUniqueReservationIds(uniqueIds);
+    }, [reservationList]);
 
     return (
         <>
-        <span className='text-gray-500 text-sm mb-4'>
-                {
-                    reservationList && reservationList.length > 0 ? reservationList.length : 0
-                }
-            {
-                reservationList && reservationList.length > 1 ? " horaires trouvé" : " horaires trouvé"
-            }
+            <span className='text-gray-500 text-sm mb-4'>
+                {uniqueReservationIds.size} {uniqueReservationIds.size > 1 ? 'réservations trouvées' : 'réservation trouvée'}
             </span>
             <div className="overflow-x-auto">
                 <div className='mt-4 h-[200px]'>
-                    {
-                        reservationList && reservationList.map((reservation) => (
-                            <ReservationItem key={reservation.id} reservation={reservation} />
-                        ))
-                    }
+                    {Array.from(uniqueReservationIds).map(reservationId => {
+                        const reservation = reservationList.find(reservation => reservation.id === reservationId);
+                        return <ReservationItem key={reservationId} reservation={reservation} />;
+                    })}
                 </div>
             </div>
         </>
-    )
+    );
 }

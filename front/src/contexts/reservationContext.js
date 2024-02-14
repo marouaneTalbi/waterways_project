@@ -10,8 +10,8 @@ export const ReservationContext = createContext(null);
 const ReservationProvider = ({ children }) => {
     const [reservationList, setReservationList] = useState([]);
     const [reservation, setReservation] = useState({});
-    const [boat, setBoat] = useState({});
-    const [slots, setSlots] = useState([]);
+    const [boatList, setBoat] = useState([]);
+    const [slotsList, setSlots] = useState([]);
     const currentUser = getUserRole();
     const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
@@ -65,25 +65,27 @@ const ReservationProvider = ({ children }) => {
     }
 
     const getBoatFromReservation = async (id) => {
-        return ReservationApi.getBoat(id).then(response => {
-            setBoat(response)
-        }).catch(error => {
-            console.log(error)
-        })
+        try {
+            const response = await ReservationApi.getBoat(id);
+            setBoat(prevBoatList => [...prevBoatList, response]);
+        } catch (error) {
+            console.error("Error fetching boat:", error);
+        }
     }
 
     const getSlotsFromReservation = async (id) => {
-        return ReservationApi.getSlots(id).then(response => {
-            setSlots(response);
-        }).catch(error => {
-            console.log(error)
-        })
+        try {
+            const response = await ReservationApi.getSlots(id);
+            setSlots(prevSlotsList => [...prevSlotsList, response]);
+        } catch (error) {
+            console.error("Error fetching slots:", error);
+        }
     }
 
 
 
     return (
-        <ReservationContext.Provider value={{ getReservationList, reservationList, reservation, setReservation, addReservation, deleteReservation, getBoatFromReservation, getSlotsFromReservation, boat, slots }}>
+        <ReservationContext.Provider value={{ getReservationList, reservationList, reservation, setReservation, addReservation, deleteReservation, getBoatFromReservation, getSlotsFromReservation, boatList, slotsList }}>
             {children}
         </ReservationContext.Provider>
     );
