@@ -19,9 +19,9 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Create .env file
+    - name: Setup .env file
       run: |
-           touch .env && echo "${{ secrets.ENV_FILE }}" > ApiPlatform/.env
+        echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
 
     - name: Build and Push PHP Docker Image
       run: |
