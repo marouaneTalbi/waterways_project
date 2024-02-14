@@ -17,6 +17,7 @@ export default function BoatForm({ onCloseModal }) {
     const [startTime, setStartTime] = useState(slots && slots.startTime ? slots.startTime : '');
     const [endTime, setEndTime] = useState(slots && slots.endTime ? slots.endTime : '');
     const { user } = useContext(UserContext);
+    const [slotDuration, setSlotDuration] = useState('');
 
     useEffect(() => {
         getEstablishmentList();
@@ -85,11 +86,31 @@ export default function BoatForm({ onCloseModal }) {
                 } else {
                     formData.append('establishment', boat.establishment);
                     const idBoat = await addBoat(formData);
-                    
+
                     const formattedStartTime = startTime ? startTime : "00:00";
                     const formattedEndTime = endTime ? endTime : "00:00";
-    
-                    await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate);
+
+                    // Utilisez la durée de découpage des créneaux
+                    const durationInMinutes = parseInt(slotDuration, 10);
+
+                    // Calculer la fin de chaque créneau en ajoutant la durée spécifiée à l'heure de début
+                    let currentSlotStart = new Date(slots.startBookingDate);
+                    const endDateTime = new Date(slots.endBookingDate);
+
+                    const slotsToAdd = [];
+                    while (currentSlotStart < endDateTime) {
+                        const currentSlotEnd = new Date(currentSlotStart.getTime() + durationInMinutes * 60000); // Convertir en millisecondes
+                        slotsToAdd.push({ start: new Date(currentSlotStart), end: new Date(currentSlotEnd) });
+                        currentSlotStart = new Date(currentSlotEnd); // Déplacer le début du créneau au début du créneau suivant
+                    }
+
+                    // Envoyer les créneaux à votre backend ou faire autre chose avec eux
+                    console.log("Slots to add:", slotsToAdd);
+
+                    // Réinitialiser l'état de la durée des créneaux
+                    setSlotDuration('');
+
+                    await addMultipleSlots(idBoat, formattedStartTime, formattedEndTime, slots.startBookingDate, slots.endBookingDate, slotDuration);
                     onCloseModal();
                 }
             }
@@ -254,6 +275,16 @@ export default function BoatForm({ onCloseModal }) {
                    onChange={(event) => setEndTime(event.target.value)}
                    pattern="[0-9]{2}:[0-9]{2}"
                    placeholder="HH:mm"
+                   required
+               />
+               <div className="mb-2 block">
+                   <Label htmlFor="endTime" value="Découpage" />
+               </div>
+               <TextInput
+                   id="slotDuration"
+                   value={slotDuration}
+                   onChange={(event) => setSlotDuration(event.target.value)}
+                   type="integer"
                    required
                />
            </>
