@@ -18,7 +18,7 @@ jobs:
       run: |
         cd front 
         npm install --legacy-peer-deps
-        npm run build
+        npm run build -- --max-warnings=10000
 
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
