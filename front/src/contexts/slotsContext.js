@@ -57,8 +57,10 @@ const SlotsProvider = ({ children }) => {
                     await addSlots(boatId, startDateTime, endDateTime);
                 }
 
-                for (const slot of slotsToAdd) {
-                    await addSlots(boatId, slot.start, slot.end);
+                if(slotsToAdd.length > 0) {
+                    for (const slot of slotsToAdd) {
+                        await addSlots(boatId, slot.start, slot.end);
+                    }
                 }
                 startDate.setDate(startDate.getDate() + 1);
             }
