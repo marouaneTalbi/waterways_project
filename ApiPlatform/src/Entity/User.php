@@ -59,6 +59,11 @@ use App\Controller\UserGetInfo;
             normalizationContext: ['groups' => ['user:read']],
         ),
         new Put(
+            processor: UserPasswordHasher::class,
+            normalizationContext: ['groups' => ['user:read']],
+            securityMessage: "Only authenticated users can modify users."
+        ),
+        new Put(
             name: 'getUserInfo',
             uriTemplate: '/user/{id}',
             controller: UserGetInfo::class
@@ -84,7 +89,7 @@ use App\Controller\UserGetInfo;
             normalizationContext: ['groups' => ['user:read']]
         ),
     ],
-    normalizationContext: ['groups' => ['user:read', 'establishment:read']],
+    normalizationContext: ['groups' => ['user:read', 'establishment:read', 'reservation:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -96,7 +101,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
-    #[Groups(['user:read','comment:read', 'reservation:read','slots:read'])]
+    #[Groups(['user:read', 'reservation:read', 'comment:read', 'slots:read'])]
     private ?int $id = null;
 
     #[Assert\NotBlank]

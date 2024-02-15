@@ -1,26 +1,9 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import ConfirmModal from '../Modal/ConfirmModal';
-import { ReservationContext } from "../../contexts/reservationContext";
+import { HistoryContext } from "../../contexts/historyContext";
 import { Button } from 'flowbite-react';
-import { UserContext } from '../../contexts/userContext'
 
-const ReservationsItem = React.memo(({ reservation}) => {
-    const { deleteReservation } = useContext(ReservationContext);
-    const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
-
-    const handleDelete = (id) => {
-        setConfirmModalOpen(true);
-    };
-
-    const handleConfirmDelete = (id) => {
-        deleteReservation(id);
-        setConfirmModalOpen(false);
-    };
-
-    const handleCancelDelete = () => {
-        setConfirmModalOpen(false);
-    };
-
+const HistoryClientItem = React.memo(({ reservation}) => {
 
     return (
         <>
@@ -52,13 +35,6 @@ const ReservationsItem = React.memo(({ reservation}) => {
                         <span className='text-white font-semibold'>{reservation.slots.boat?.address + ', ' + reservation.slots.boat?.city}</span>
                     </div>
                 </div>
-                <Button size="xs" color='failure' className='self-start mt-2' onClick={() => handleDelete(reservation.reservation)}>Annuler</Button>
-                <ConfirmModal
-                    isOpen={isConfirmModalOpen}
-                    onRequestClose={handleCancelDelete}
-                    onConfirm={handleConfirmDelete}
-                    message="Êtes-vous sûr de vouloir supprimer cette réservation ?"
-                />
             </div>
         ): null}
         </>
@@ -66,4 +42,4 @@ const ReservationsItem = React.memo(({ reservation}) => {
 })
 
 
-export default ReservationsItem;
+export default HistoryClientItem;

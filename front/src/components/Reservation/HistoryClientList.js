@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ReservationContext } from '../../contexts/reservationContext';
-import ReservationItem from './ReservationItem';
+import { HistoryContext } from '../../contexts/historyContext';
+import HistoryClientItem from './HistoryClientItem';
 import {UserContext} from "../../contexts/userContext";
 
+
 export default function ReservationList() {
-    const { getSlotsFromReservation, reservationSlotsList} = useContext(ReservationContext);
+    const { getSlotsFromHistory, historySlotsList} = useContext(HistoryContext);
     const [loading, setLoading] = useState(true);
     const { user, getUser, getRoleLabel, highestRole } = useContext(UserContext);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await getSlotsFromReservation(user.id);
+                await getSlotsFromHistory(user.id);
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -31,13 +32,13 @@ export default function ReservationList() {
     return (
         <>
             <span className='text-gray-500 text-sm mb-4'>
-                {reservationSlotsList && reservationSlotsList.length > 0 ? reservationSlotsList.length : 0}
-                {reservationSlotsList && reservationSlotsList.length > 1 ? " horaires trouvés" : " horaire trouvé"}
+                {historySlotsList && historySlotsList.length > 0 ? historySlotsList.length : 0}
+                {historySlotsList && historySlotsList.length > 1 ? " horaires trouvés" : " horaire trouvé"}
             </span>
             <div className="overflow-x-auto">
                 <div className='mt-4 h-[200px]'>
-                    {reservationSlotsList && reservationSlotsList.map((reservation, index) => (
-                        <ReservationItem key={index} reservation={reservation} />
+                    {historySlotsList && historySlotsList.map((reservation, index) => (
+                        <HistoryClientItem key={index} reservation={reservation} />
                     ))}
                 </div>
             </div>

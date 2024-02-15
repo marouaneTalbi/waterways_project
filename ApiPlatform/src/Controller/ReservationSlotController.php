@@ -17,6 +17,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[AsController]
 class ReservationSlotController extends AbstractController
 {
+    private SlotRepository $slotRepository;
+
+    public function __construct(SlotRepository $slotRepository)
+    {
+        $this->slotRepository = $slotRepository;
+    }
+
     public function __invoke(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer, $id): JsonResponse
     {
         $reservation = $entityManager->getRepository(Reservation::class)->find($id);
@@ -25,7 +32,7 @@ class ReservationSlotController extends AbstractController
             throw new NotFoundHttpException('Reservation not found.');
         }
 
-        $slots = $reservation->getSlots();
+        $slots = $this->slotRepository->findSlotsForReservation($reservation, new \DateTime());
         $data = $serializer->serialize($slots, 'json', ['groups' => ['slots:read']]);
 
         return new JsonResponse($data, JsonResponse::HTTP_OK, [], true);

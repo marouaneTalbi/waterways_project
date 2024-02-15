@@ -6,6 +6,8 @@ import BoatProvider from '../contexts/boatContext';
 import ReservationProvider from '../contexts/reservationContext';
 import ReservationList from '../components/Reservation/ReservationList';
 import UserFavorisList from '../components/User/UserFavorisList';
+import HistoryClientList from "../components/Reservation/HistoryClientList";
+import HistoryProvider from "../contexts/historyContext";
 
 export default function Profile() {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -62,7 +64,11 @@ export default function Profile() {
                     </div>
                 </header>
                 <div className="flex flex-wrap py-6 gap-20 gap-y-10">
-                    {/* USER HISTORIC RESERVATIONS LIST */}
+                    <BoatProvider>
+                        <HistoryProvider>
+                            <HistoryClientList />
+                        </HistoryProvider>
+                    </BoatProvider>
                 </div>  
             </div>
 

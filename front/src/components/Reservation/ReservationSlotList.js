@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
     Scheduler,
     WeekView,
@@ -21,26 +21,51 @@ import 'moment/locale/fr';
 import { UserContext } from '../../contexts/userContext'
 
 const ReservationSlotList = () => {
-    const { slotsList, getSlotsList, getOneSlots, slots } = useContext(SlotsContext);
-    const { reservationList, getReservationList, addReservation } = React.useContext(ReservationContext);
+    const { slotsList, getSlotsList } = React.useContext(SlotsContext);
+    const { reservationList, getReservationList } = React.useContext(ReservationContext);
     const { id: idBoat } = useParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const [selectedReservation, setSelectedReservation] = useState(null);
-    const { user, getUser } = useContext(UserContext);
+    const [selectedReservation, setSelectedReservation] = useState(null);
 
     useEffect(() => {
         getSlotsList();
-    }, []);
-
-    useEffect(() => {
-        getUser()
-    }, [])
-
-    useEffect(() => {
         getReservationList();
     }, []);
 
+    const Appointment = ({
+                             children,
+                             style,
+                             data,
+                             ...restProps
+                         }) => {
+
+        const { reservationList } = useContext(ReservationContext);
+        const isReserved = reservationList.some(reservation => `/api/slots/${reservation.slots.id}` === `/api/slots/${data.id}`);
+
+        const appointmentData = {
+            id: data.id,
+            isReserved: isReserved,
+        };
+
+        return (
+            <Appointments.Appointment
+                {...restProps}
+                data={appointmentData}
+                style={{
+                    ...style,
+                    backgroundColor: isReserved ? '#ccc' : '#FFC107',
+                    borderRadius: '8px',
+                }}
+            >
+                {children}
+            </Appointments.Appointment>
+        );
+    };
+
     const MyAppointmentTooltip = ({ children, appointmentData, ...restProps }) => {
+        const { addReservation } = useContext(ReservationContext);
+        const { id: idBoat } = useParams();
+        const { user, getUser, getRoleLabel, highestRole } = useContext(UserContext);
         const handleClick = () => {
             getUser()
             if(user) {
@@ -55,21 +80,21 @@ const ReservationSlotList = () => {
                 <div style={{ backgroundColor: isReserved ? '#ccc' : 'transparent' }}>
                     {children}
                 </div>
-                {!isReserved && <button onClick={handleClick}>RÃ©server</button>}
+                {!isReserved && <button onClick={handleClick}>Réserver</button>}
             </AppointmentTooltip.Content>
         );
     };
 
 
 
-    // const isSlotReserved = (slotId) => {
-    //     return reservationList.some(reservation => reservation.slots === `/api/boat/${slotId}`);
-    // };
+    const isSlotReserved = (slotId) => {
+        return reservationList.some(reservation => reservation.slots === `/api/boat/${slotId}`);
+    };
 
     const reservations = slotsList?.flatMap(function (slot) {
         const dailyReservations = [];
         const slotBoat = slot.boat;
-        //const slotId = slot.id;
+        const slotId = slot.id;
 
         if (slotBoat === `/api/boat/${idBoat}`) {
             const startDate = new Date(slot.startBookingDate);
@@ -109,50 +134,22 @@ const ReservationSlotList = () => {
         return dailyReservations;
     }) || [];
 
-    const Appointment = ({
-        children,
-        style,
-        data,
-        ...restProps
-    }) => {
-        const isReserved = reservationList.some(reservation => reservation.slots.id === data.id);
-        const appointmentData = {
-            id: data.id,
-            isReserved: isReserved,
-        };
-
-        return (
-            <Appointments.Appointment
-                {...restProps}
-                data={appointmentData}
-                style={{
-                    ...style,
-                    backgroundColor: isReserved ? '#ccc' : '#FFC107',
-                    borderRadius: '8px',
-                }}
-            >
-                {children}
-            </Appointments.Appointment>
-        );
+    const openModal = (reservation) => {
+        setSelectedReservation(reservation);
+        setIsModalOpen(true);
     };
-    // const openModal = (reservation) => {
-    //     setSelectedReservation(reservation);
-    //     setIsModalOpen(true);
-    // };
 
     let currentDate = new Date();
 
     return (
         <div>
-            {(user && slotsList.length > 0) && (slotsList[0].boat?.establishment?.createdby?.id === user.id) ? (
-                <Button onClick={() => setIsModalOpen(true)}>CRENEAUX HORAIRES</Button>
-    
-            ) : (<></>)}
-                {isModalOpen && (
-                    <div>
-                        <SlotsList></SlotsList>
-                    </div>
-                )}
+            <Button onClick={() => setIsModalOpen(true)}>CRENEAUX HORAIRES</Button>
+
+            {isModalOpen && (
+                <div>
+                    <SlotsList></SlotsList>
+                </div>
+            )}
             <Scheduler
                 data={reservations}
                 height={660}
@@ -180,6 +177,5 @@ const ReservationSlotList = () => {
         </div>
     );
 };
-
 
 export default ReservationSlotList;

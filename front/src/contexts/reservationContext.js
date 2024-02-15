@@ -9,7 +9,8 @@ const ReservationProvider = ({ children }) => {
     const [reservationList, setReservationList] = useState([]);
     const [reservation, setReservation] = useState({});
     const [boatList, setBoat] = useState([]);
-    const [slotsList, setSlots] = useState([]);
+    const [reservationSlotsList, setReservationSlotsList] = useState([]);
+    const [historySlotsList, setHistorySlotsList] = useState([]);
     const currentUser = getUserRole();
     const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
@@ -34,7 +35,6 @@ const ReservationProvider = ({ children }) => {
     const deleteReservation = async (id) => {
         try {
             await ReservationApi.delete(id);
-            await getReservationList();
         } catch (error) {
             console.error("Error deleting slot", error);
         }
@@ -72,18 +72,24 @@ const ReservationProvider = ({ children }) => {
     }
 
     const getSlotsFromReservation = async (id) => {
-        try {
-            const response = await ReservationApi.getSlots(id);
-            setSlots(prevSlotsList => [...prevSlotsList, response]);
-        } catch (error) {
-            console.error("Error fetching slots:", error);
-        }
+
+        return ReservationApi.getSlots(id).then(response => {
+            setReservationSlotsList(response);
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
-
+    const getSlotsFromHistory = async (id) => {
+        return ReservationApi.getHistory(id).then(response => {
+            setHistorySlotsList(response);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 
     return (
-        <ReservationContext.Provider value={{ getReservationList, reservationList, reservation, setReservation, addReservation, deleteReservation, getBoatFromReservation, getSlotsFromReservation, boatList, slotsList }}>
+        <ReservationContext.Provider value={{ getReservationList, reservationList, reservation, setReservation, addReservation, deleteReservation, getBoatFromReservation, getSlotsFromReservation, boatList, reservationSlotsList, historySlotsList, getSlotsFromHistory, setReservationSlotsList }}>
             {children}
         </ReservationContext.Provider>
     );
