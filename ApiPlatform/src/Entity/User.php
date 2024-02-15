@@ -96,7 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','comment:read'])]
     private ?int $id = null;
 
     #[Assert\NotBlank]
@@ -127,7 +127,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $token = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'user:create', 'user:update','media_object:read'])]
+    #[Groups(['user:read', 'user:create', 'user:update','media_object:read', 'comment:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255, nullable: true)]

@@ -8,7 +8,7 @@ const commentApi = {
         return sendRequest('/api/comments');
     },
     delete: async function (id) {
-        return sendRequest(`/api/comments/${id}`, 'delete', {}, true);
+        return sendRequest(`/api/comment/${id}`, 'delete', {}, true);
     }
 }
 
