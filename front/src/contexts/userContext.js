@@ -1,12 +1,13 @@
 import React, { useState, createContext } from 'react';
 import userModel from './models/userModel';
-import { jwtDecode } from "jwt-decode";
 
 export const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [highestRole, SethighestRole] = useState(null);
+    const [userResults, setUserResults] = useState(null);
+    const [satisfaction, setSatisfaction] = useState(null)
 
     const getUser = async () => {
         return userModel.get().then(res =>{
@@ -56,8 +57,24 @@ const UserProvider = ({ children }) => {
         }
     };
 
+    const searchUser = async (payload) => {
+        return userModel.search(payload).then(response => {
+            setUserResults(response);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    const getProviderSatisfaction = async (userId) => {
+        return userModel.satisfaction(userId).then(response => {
+            setSatisfaction(response)
+        }).catch(error => {
+            console.error(error);
+        })
+    }
+
     return (
-        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById }}>
+        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById, searchUser, userResults, getProviderSatisfaction, satisfaction }}>
             {children}
         </UserContext.Provider>
     );

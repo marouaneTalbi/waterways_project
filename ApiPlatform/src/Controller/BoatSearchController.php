@@ -48,16 +48,16 @@ class BoatSearchController extends AbstractController {
             $result[] = $boat;
         }
         
-        $boatOwner = $this->userRepository->findUsersByNameAndRole($request->query->get('search'));
-        if($boatOwner) {
-            $establishments = $boatOwner->getEstablishments();
-            foreach ($establishments as $establishment) {
-                $boats = $establishment->getBoats();
-                foreach ($boats as $boat) {
-                    $result[] = $boat;
-                }
-            }
-        }
+        // $boatOwner = $this->userRepository->findUsersByNameAndRole($request->query->get('search'));
+        // if($boatOwner) {
+        //     $establishments = $boatOwner->getEstablishments();
+        //     foreach ($establishments as $establishment) {
+        //         $boats = $establishment->getBoats();
+        //         foreach ($boats as $boat) {
+        //             $result[] = $boat;
+        //         }
+        //     }
+        // }
 
         $uniqueResult = $this->uniqueObjectsById($result);
 

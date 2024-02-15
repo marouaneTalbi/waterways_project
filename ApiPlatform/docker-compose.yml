@@ -13,11 +13,12 @@ services:
     links:
       - php
     ports:
-      - '8888:80'
+      - '8888:80' 
   php:
+    user: root
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    build:
+    build: 
       context: .
       dockerfile: ./Dockerfile
       target: php_dev

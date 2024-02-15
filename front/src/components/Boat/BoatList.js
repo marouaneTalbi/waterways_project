@@ -5,18 +5,18 @@ import BoatItem from './BoatItem'
 import { UserContext } from '../../contexts/userContext';
 
 export default function BoatList({showList}) {
-    const { user, getUser} = useContext(UserContext);
-    const {boat, boatList, getBoatListUser } = React.useContext(BoatContext);
+    const { user, getUser } = useContext(UserContext);
+    const { boatList, getBoatListUser } = useContext(BoatContext);
 
     useEffect(() => {
         getUser()
     }, [])
 
     useEffect(() => {
-        if(user && showList) {
+        if(user) {
             getBoatListUser(user.id)
         }
-    }, [user, boat, boatList])
+    }, [user])
 
     return (
         <>
@@ -34,8 +34,8 @@ export default function BoatList({showList}) {
                         <Table.Head>
                             <Table.HeadCell>Nom</Table.HeadCell>
                             <Table.HeadCell>Etablissement</Table.HeadCell>
-                            <Table.HeadCell>Modèle</Table.HeadCell>
-                            <Table.HeadCell>Places</Table.HeadCell>
+                            <Table.HeadCell className='sm:table-cell hidden'>Modèle</Table.HeadCell>
+                            <Table.HeadCell className='sm:table-cell hidden'>Places</Table.HeadCell>
                             <Table.HeadCell>
                                 <span className="sr-only">GERER</span>
                             </Table.HeadCell>

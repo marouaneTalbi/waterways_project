@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import sendRequest from "../../services/axiosRequestFunction";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { Button, Card, Label, TextInput } from 'flowbite-react';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -59,29 +60,62 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h2>Page d'inscription</h2>
-      <ToastContainer />
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nom :</label>
-          <input type="text" value={firstname} onChange={(e) => setFirstname(e.target.value)} />
+    <div className="flex justify-center w-full">
+            <ToastContainer />
+            <Card className="h-fit w-[95%] sm:w-[90%] md:w-[80%]">
+                <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+                    <h3 className="font-semibold text-2xl">S'inscrire</h3>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="firstname" value="Votre prénom" />
+                        </div>
+                        <TextInput id='firstname' placeholder='Prénom' type="text" value={firstname} onChange={(e) => setFirstname(e.target.value)} required />
+                    </div>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="lastname" value="Votre nom" />
+                        </div>
+                        <TextInput id="lastname" placeholder='Nom' type="text" value={lastname} onChange={(e) => setLastname(e.target.value)} required />
+                    </div>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="email" value="Votre email" />
+                        </div>
+                        <TextInput id="email" placeholder='Email' type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    </div>
+                    <div>
+                        <div className="mb-2 block">
+                            <Label htmlFor="password" value="Votre mot de passe" />
+                        </div>
+                        <TextInput id="password" placeholder='Mot de passe' type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    </div>
+                    <Button type="submit" color="blue">Inscription</Button>
+                </form>
+            </Card>
         </div>
-        <div>
-          <label>Prenom :</label>
-          <input type="text" value={lastname} onChange={(e) => setLastname(e.target.value)} />
-        </div>
-        <div>
-          <label>Email :</label>
-          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <div>
-          <label>Mot de passe :</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <button type="submit">S'inscrire</button>
-      </form>
-    </div>
+    // <div>
+    //   <h2>Page d'inscription</h2>
+    //   <ToastContainer />
+    //   <form onSubmit={handleSubmit}>
+    //     <div>
+    //       <label>Nom :</label>
+    //       <input type="text" value={firstname} onChange={(e) => setFirstname(e.target.value)} />
+    //     </div>
+    //     <div>
+    //       <label>Prenom :</label>
+    //       <input type="text" value={lastname} onChange={(e) => setLastname(e.target.value)} />
+    //     </div>
+    //     <div>
+    //       <label>Email :</label>
+    //       <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+    //     </div>
+    //     <div>
+    //       <label>Mot de passe :</label>
+    //       <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+    //     </div>
+    //     <button type="submit">S'inscrire</button>
+    //   </form>
+    // </div>
   );
 };
 

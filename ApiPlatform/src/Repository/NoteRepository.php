@@ -21,6 +21,15 @@ class NoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Note::class);
     }
 
+    public function getProviderBoatNotes(int $boatId)
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.boat = :boat')
+            ->setParameter('boat', $boatId)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Note[] Returns an array of Note objects
 //     */

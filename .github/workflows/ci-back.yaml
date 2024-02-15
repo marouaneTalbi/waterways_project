@@ -1,13 +1,9 @@
-name: Continuous Integration
+name: CI BACKEND
 
 on:
   push:
     branches:
       - dev
-  pull_request:
-    branches:
-      - dev
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest

@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
-import EstablishmentProvider, { EstablishmentContext } from "../../contexts/establishmentContext";
+import React from 'react';
+import EstablishmentProvider from "../../contexts/establishmentContext";
 import EstablishmentItem from '../../components/Establishment/establishmentItem';
 import BoatProvider from '../../contexts/boatContext';
 import SlotsProvider from '../../contexts/slotsContext';

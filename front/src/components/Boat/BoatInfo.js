@@ -55,7 +55,7 @@ export default function BoatInfo() {
                     </SlotsProvider>
                 </EstablishmentProvider>
             </GenericModal>
-            <div className="col-span-2 row-span-4 md:row-span-4 bg-white rounded border-2 border-gray-100 p-4 relative">
+            <div className="col-span-2 row-span-4 md:row-span-4 row-start-4 bg-white rounded border-2 border-gray-100 p-4 relative">
                 <header className='flex flex-row justify-between'>
                     {boat == null ? <Loader /> : (
                         <h3 className='font-semibold text-xl'>{boat.name}</h3>
@@ -90,7 +90,7 @@ export default function BoatInfo() {
                     <Link to={`/boat/${id}`} className="font-semibold p-3 text-center">Voir la page du bateau</Link>
                 </div>
             </div>
-            <div className="md:col-start-3 md:row-start-1 row-start-3 p-6 md:p-8 bg-white rounded border-2 border-gray-100 flex flex-row gap-4 md:gap-6 items-center" title="Nombre d'utilisateurs ayant ce bateau en favoris">
+            <div className="md:col-start-3 md:row-start-1 row-start-1 col-span-2 md:col-span-1 p-6 md:p-8 bg-white rounded border-2 border-gray-100 flex flex-row gap-4 md:gap-6 items-center" title="Nombre d'utilisateurs ayant ce bateau en favoris">
                 <div className='bg-[#FFF5FB] w-20 h-20 flex justify-center items-center rounded-full'>
                     <svg width="25" height="23" viewBox="0 0 23 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M17.3333 1C13.6 1 11.5 4.11111 11.5 5.66667C11.5 4.11111 9.4 1 5.66667 1C1.93333 1 1 4.11111 1 5.66667C1 13.8333 11.5 19.6667 11.5 19.6667C11.5 19.6667 22 13.8333 22 5.66667C22 4.11111 21.0667 1 17.3333 1Z" stroke="#FFB6E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -101,7 +101,7 @@ export default function BoatInfo() {
                     <span className='text-lg text-gray-500'>Favoris</span>
                 </div>
             </div>
-            <div className="md:col-start-4 md:row-start-1 row-start-3 p-6 md:p-8 bg-white rounded border-2 border-gray-100 flex flex-row gap-4 md:gap-6 items-center">
+            <div className="md:col-start-4 md:row-start-1 row-start-2 col-span-2 md:col-span-1 p-6 md:p-8 bg-white rounded border-2 border-gray-100 flex flex-row gap-4 md:gap-6 items-center">
                 <div className='bg-[#FFF6EB] w-20 h-20 flex justify-center items-center rounded-full'>
                     <svg width="30" height="30" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.33333 10.5H18.6667M9.33333 14H18.6667M9.33333 17.5H12.8333M24.5 14C24.5 19.799 19.799 24.5 14 24.5C11.9338 24.5 10.0069 23.9032 8.38246 22.8725L3.5 24.5L5.12749 19.6175C4.09682 17.9931 3.5 16.0662 3.5 14C3.5 8.20101 8.20101 3.5 14 3.5C19.799 3.5 24.5 8.20101 24.5 14Z" stroke="#FEAC50" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -112,19 +112,21 @@ export default function BoatInfo() {
                     <span className='text-lg text-gray-500'>Commentaires</span>
                 </div>
             </div>
-            <div className="col-span-2 md:col-start-3 md:row-start-2 row-start-4 bg-white rounded border-2 border-gray-100 p-4">
+            <div className="col-span-2 md:col-start-3 md:row-start-2 row-start-3 bg-white rounded border-2 border-gray-100 p-4">
                 <h5 className='font-semibold text-xl'>Notes</h5>
-                <div className='flex flex-row items-center justify-between mx-4 mt-6'>
+                <div className='flex flex-col gap-6 md:gap-0 md:flex-row items-center justify-between mx-4 mt-6'>
                     <NoteCard title="Propreté" icon={faWandMagicSparkles} percentage={ratings && getPercentage(ratings.proprete)} />
                     <NoteCard title="Confort" icon={faBath} percentage={ratings && getPercentage(ratings.confort)} />
                     <NoteCard title="Performance" icon={faRocket} percentage={ratings && getPercentage(ratings.performance)} />
                     <NoteCard title="Equipement" icon={faWrench} percentage={ratings && getPercentage(ratings.equipement)} />
                 </div>
             </div>
-            <div className="col-span-2 row-span-2 md:row-start-3 md:col-start-3 row-start-5 bg-white rounded border-2 border-gray-100 p-4">
+            <div className="col-span-2 row-span-2 h-[300px] md:h-auto md:row-start-3 md:col-start-3 row-start-8 bg-white rounded border-2 border-gray-100 p-4">
                 {
                     boat && (
-                        <GoogleMapComponent />
+                        <EstablishmentProvider>
+                            <GoogleMapComponent />
+                        </EstablishmentProvider>
                     )
                 }
             </div>

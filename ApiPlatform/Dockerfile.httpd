@@ -1,0 +1,12 @@
+# #<<<<<<<<<<Start: Server Image Target>>>>>>>>>>#
+# FROM httpd:2 as server
+
+# COPY ./.docker/httpd/httpd.conf /usr/local/apache2/conf/httpd.conf
+
+# #<<<<<<<<<<End: Server Image Target>>>>>>>>>>#
+
+FROM nginx:latest
+
+COPY ./.docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+# COPY ./.docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+

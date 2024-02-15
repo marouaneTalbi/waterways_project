@@ -6,7 +6,6 @@ import { isTokenExpired, checkIfRequestExists } from '../../services/axiosReques
 import NotificationIcon from './notif';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext';
-import LanguageSwitcher from '../../services/languageSwitcher';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
@@ -18,6 +17,7 @@ export default function Header() {
 
     useEffect(() => {
         if (token) {
+            console.log(token)
             const decoded = jwtDecode(token);
             setUserRole(decoded.roles[0])
             const provider =  decoded.roles.find(role => role === 'ROLE_PROVIDER')
@@ -66,14 +66,17 @@ export default function Header() {
                 </Dropdown.Header>
                 <Dropdown.Item href="/profile">Profile</Dropdown.Item>
                 <Dropdown.Divider />
+                <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
+                <Dropdown.Divider />
                 <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
                 <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
             </div>
             <Navbar.Collapse>
-                {
-                    (!token && !isValidToken) && (
+            {
+                    (!token ) && (
+
                         <>
                             <Navbar.Link href="/Login">Login</Navbar.Link>
                             <Navbar.Link href="/Register">Register</Navbar.Link>

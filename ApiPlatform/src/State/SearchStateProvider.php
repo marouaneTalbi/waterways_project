@@ -47,16 +47,16 @@ class SearchStateProvider implements ProcessorInterface
             $result[] = $boat;
         }
 
-        $boatOwner = $this->userRepository->findUsersByNameAndRole($data->getSearch());
-        if($boatOwner) {
-            $establishments = $boatOwner->getEstablishments();
-            foreach ($establishments as $establishment) {
-                $boats = $establishment->getBoats();
-                foreach ($boats as $boat) {
-                    $result[] = $boat;
-                }
-            }
-        }
+        // $boatOwner = $this->userRepository->findUsersByNameAndRole($data->getSearch());
+        // if($boatOwner) {
+        //     $establishments = $boatOwner->getEstablishments();
+        //     foreach ($establishments as $establishment) {
+        //         $boats = $establishment->getBoats();
+        //         foreach ($boats as $boat) {
+        //             $result[] = $boat;
+        //         }
+        //     }
+        // }
 
         $uniqueResult = $this->uniqueObjectsById($result);
 

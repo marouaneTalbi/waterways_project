@@ -20,6 +20,7 @@ export default function EstablishmentItem() {
     const handleCloseBoatModal = () => {
         setBoatModalOpen(false);
     };
+    
     const handleOpenBoatModal = () => {
         setBoatModalOpen(true);
     }

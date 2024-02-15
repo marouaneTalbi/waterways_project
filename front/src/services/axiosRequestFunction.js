@@ -4,11 +4,13 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate, Params } from 'react-router';
 const API_BASE_URL = process.env.REAT_APP_API_BASE_URL
 
-const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-});
 
-const  urlsWithoutAuth = ['/api/token/refresh', '/api/users', '/api/mdpresetemail', '/api/resetmdp', '/auth'];
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL
+}); 
+
+const urlsWithoutAuth = ['/api/token/refresh', '/api/users', '/api/mdpresetemail', '/api/resetmdp', '/auth'];
+
 
 export function getUserRole() {
   if(!localStorage.getItem('token')) {
@@ -119,7 +121,7 @@ async function refreshToken() {
  
 export async function checkIfRequestExists() {
   try {
-    const response = await sendRequest('/api/kbis/me');
+    await sendRequest('/api/kbis/me');
     return true;
   } catch (error) {
     if (error.response && error.response.status === 404) {

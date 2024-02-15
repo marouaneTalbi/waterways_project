@@ -10,6 +10,7 @@ import { NoteContext } from '../../contexts/noteContext';
 import AddNote from '../notes/Addnotes';
 import BoatRatingsSummary from '../notes/Shownotes';
 
+
 export default function BoatPublic() {
     const { id } = useParams();
     const { getBoat, boat, addFavorite, favorites, getFavorite, removeFavorite } = useContext(BoatContext);

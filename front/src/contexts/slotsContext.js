@@ -1,6 +1,6 @@
-import React, { useState, createContext, useEffect } from 'react';
+import React, { useState, createContext } from 'react';
 import slotsModel from './models/slotsModel';
-import { getUserRole, isProvider } from '../services/axiosRequestFunction';
+import { getUserRole } from '../services/axiosRequestFunction';
 import slotsApi from "./models/slotsModel";
 import { isSameDay } from 'date-fns';
 
@@ -28,7 +28,7 @@ const SlotsProvider = ({ children }) => {
     };
 
 
-    const addMultipleSlots = async (boatId, startTime, endTime, startBookingDate, endBookingDate) => {
+    const addMultipleSlots = async (boatId, startTime, endTime, startBookingDate, endBookingDate, duration) => {
         let startDate = new Date(startBookingDate);
         const endDate = new Date(endBookingDate);
 
@@ -42,7 +42,26 @@ const SlotsProvider = ({ children }) => {
                 const endDateTime = currentDate + ' ' + endTime;
                 slots.startBookingDate = startDate;
                 slots.endBookingDate = startDate;
-                await addSlots(boatId, startDateTime, endDateTime);
+                const slotsToAdd = [];
+
+                if (duration && duration >= 10) {
+                    let currentSlotStart = new Date(currentDate + ' ' + startTime);
+                    const slotEndTime = new Date(currentDate + ' ' + endTime);
+
+                    while (currentSlotStart < slotEndTime) {
+                        const currentSlotEnd = new Date(currentSlotStart.getTime() + duration * 60000);
+                        slotsToAdd.push({ start: currentSlotStart, end: currentSlotEnd });
+                        currentSlotStart = currentSlotEnd;
+                    }
+                }else{
+                    await addSlots(boatId, startDateTime, endDateTime);
+                }
+
+                if(slotsToAdd.length > 0) {
+                    for (const slot of slotsToAdd) {
+                        await addSlots(boatId, slot.start, slot.end);
+                    }
+                }
                 startDate.setDate(startDate.getDate() + 1);
             }
         } else {
@@ -51,7 +70,26 @@ const SlotsProvider = ({ children }) => {
             const endDateTime = currentDate + ' ' + endTime;
             slots.startBookingDate = startDate;
             slots.endBookingDate = endDate;
-            await addSlots(boatId, startDateTime, endDateTime);
+            const slotsToAdd = [];
+
+            if (duration && duration >= 30 && duration <= 60) {
+                let currentSlotStart = new Date(currentDate + ' ' + startTime);
+                const slotEndTime = new Date(currentDate + ' ' + endTime);
+
+                while (currentSlotStart < slotEndTime) {
+                    const currentSlotEnd = new Date(currentSlotStart.getTime() + duration * 60000);
+                    slotsToAdd.push({ start: currentSlotStart, end: currentSlotEnd });
+                    currentSlotStart = currentSlotEnd;
+                }
+
+                if(slotsToAdd.length > 0) {
+                    for (const slot of slotsToAdd) {
+                        await addSlots(boatId, slot.start, slot.end);
+                    }
+                }
+            }else{
+                await addSlots(boatId, startDateTime, endDateTime);
+            }
         }
     };
 

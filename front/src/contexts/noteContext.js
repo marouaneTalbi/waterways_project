@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react';
 import noteApi from './models/noteModel';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const NoteContext = createContext(null);
@@ -43,7 +43,7 @@ const NoteProvider = ({ children }) => {
         console.log(ratings);
         const maxRating = 5;
         const percent = (ratings / maxRating) * 100;
-        return percent;
+        return percent.toFixed(2);
     }
 
     function getBoatSumNote(ratings) {

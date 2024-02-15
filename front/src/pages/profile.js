@@ -3,6 +3,8 @@ import UserInfos from '../components/User/UserInfos'
 import GenericModal from '../components/GenericModal/GenericModal'
 import UserForm from '../components/User/UserForm';
 import BoatProvider from '../contexts/boatContext';
+import ReservationProvider from '../contexts/reservationContext';
+import ReservationList from '../components/Reservation/ReservationList';
 import UserFavorisList from '../components/User/UserFavorisList';
 
 export default function Profile() {
@@ -39,15 +41,19 @@ export default function Profile() {
                     <a href="/requestProvider" className="text-dark-orange p-3 bg-light-orange rounded-lg">Deviens Prestataire</a>
                 </div>
             </div>
-            <div className="row-span-2 col-span-4 col-start-1 row-start-1 md:col-span-2 md:col-start-4 md:row-start-1 bg-white rounded border-2 border-gray-100 p-4">
+            <div className="row-span-2 col-span-4 col-start-1 row-start-1 md:col-span-2 md:col-start-4 md:row-start-1 bg-white rounded border-2 border-gray-100 p-4 w-full">
                 <header className="flex flex-row justify-between">
                     <div className="flex flex-col gap-2">
                         <h4 className="text-xl font-medium">Réservation(s)</h4>
                     </div>
-                    <div className="flex flex-wrap py-6 gap-20 gap-y-10">
-                        {/* USER RESERVATIONS LIST */}
-                    </div>  
                 </header>
+                <div className="flex flex-wrap w-full">
+                    <BoatProvider>
+                        <ReservationProvider>
+                            <ReservationList />
+                        </ReservationProvider>
+                    </BoatProvider>
+                </div>  
             </div>
             <div className="col-span-4 row-span-2 col-start-1 row-start-5 md:row-start-3 md:col-start-1 md:col-span-2 bg-white rounded border-2 border-gray-100 p-4">
                 <header className="flex flex-row justify-between">
