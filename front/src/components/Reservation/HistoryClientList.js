@@ -3,15 +3,16 @@ import { ReservationContext } from '../../contexts/reservationContext';
 import ReservationItem from './ReservationItem';
 import {UserContext} from "../../contexts/userContext";
 
+
 export default function ReservationList() {
-    const { getSlotsFromReservation, reservationSlotsList} = useContext(ReservationContext);
+    const { getSlotsFromHistory, historySlotsList} = useContext(ReservationContext);
     const [loading, setLoading] = useState(true);
     const { user, getUser, getRoleLabel, highestRole } = useContext(UserContext);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await getSlotsFromReservation(user.id);
+                await getSlotsFromHistory(user.id);
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -31,12 +32,12 @@ export default function ReservationList() {
     return (
         <>
             <span className='text-gray-500 text-sm mb-4'>
-                {/* {reservationSlotsList && reservationSlotsList.length > 0 ? reservationSlotsList.length : 0}
-                {reservationSlotsList && reservationSlotsList.length > 1 ? " horaires trouvés" : " horaire trouvé"} */}
+                {historySlotsList && historySlotsList.length > 0 ? historySlotsList.length : 0}
+                {historySlotsList && historySlotsList.length > 1 ? " horaires trouvés" : " horaire trouvé"}
             </span>
             <div className="overflow-x-auto">
                 <div className='mt-4 h-[200px]'>
-                    {reservationSlotsList && reservationSlotsList.map((reservation, index) => (
+                    {historySlotsList && historySlotsList.map((reservation, index) => (
                         <ReservationItem key={index} reservation={reservation} />
                     ))}
                 </div>
