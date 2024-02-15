@@ -10,39 +10,39 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
 
-        console.log('test')
-        const response = await axios.post('/auth', {
-            email: email,
-            password: password,
-          });
-          console.log('========> ',response);
+        // console.log('test')
+        // const response = await axios.post('/auth', {
+        //     email: email,
+        //     password: password,
+        //   });
+        //   console.log('========> ',response);
 
-          
-        // try {
-        //     return sendRequest(
-        //         '/auth',
-        //         'post',
-        //         {
-        //             email: email,
-        //             password: password,
-        //         },
-        //          false
-        //     ).then((response) => {
-        //         console.log('======>>>',response)
-        //         if(response) {
-        //             setToken(response.token)
-        //             setUser(response);
-        //             localStorage.setItem('token', response.token);
-        //             localStorage.setItem('refresh_token', response.refresh_token);
-        //             localStorage.setItem('user', JSON.stringify(response));
-        //             return true;
-        //         } else {
-        //             return false;
-        //         }
-        //     })
-        // } catch (error) {
-        //     console.log(error)
-        // }
+
+        try {
+            return sendRequest(
+                '/auth',
+                'post',
+                {
+                    email: email,
+                    password: password,
+                },
+                 false
+            ).then((response) => {
+                console.log('======>>>',response)
+                if(response) {
+                    setToken(response.token)
+                    setUser(response);
+                    localStorage.setItem('token', response.token);
+                    localStorage.setItem('refresh_token', response.refresh_token);
+                    localStorage.setItem('user', JSON.stringify(response));
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
     };
 
 
