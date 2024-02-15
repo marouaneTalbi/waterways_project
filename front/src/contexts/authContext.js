@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
                 },
                  false
             ).then((response) => {
+                console.log(response)
                 if(response) {
                     setToken(response.token)
                     setUser(response);
