@@ -27,6 +27,13 @@ const SlotsProvider = ({ children }) => {
         }
     };
 
+    const getOneSlots = async (id) => {
+        return slotsApi.getOne(id).then(response => {
+            setSlots(response);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 
     const addMultipleSlots = async (boatId, startTime, endTime, startBookingDate, endBookingDate, duration) => {
         let startDate = new Date(startBookingDate);
@@ -126,7 +133,7 @@ const SlotsProvider = ({ children }) => {
     }
 
     return (
-        <SlotsContext.Provider value={{ getSlotsList, slotsList, slots, setSlots, addSlots, addMultipleSlots, deleteSlot }}>
+        <SlotsContext.Provider value={{ getSlotsList, slotsList, slots, setSlots, addSlots, addMultipleSlots, deleteSlot, getOneSlots }}>
             {children}
         </SlotsContext.Provider>
     );
