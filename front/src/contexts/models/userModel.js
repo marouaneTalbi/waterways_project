@@ -5,7 +5,7 @@ const userApi = {
         return sendRequest(`/api/user/${id}`, 'get', {}, true);
     },
     update: async function (userId, user) {
-        return sendRequest(`/api/users/${userId}`, 'put', user, true);
+        return sendRequest(`/api/user/${userId}`, 'put', user, true);
     },
     get: async function () {
         return sendRequest(`/api/user`, 'get', {}, true);
