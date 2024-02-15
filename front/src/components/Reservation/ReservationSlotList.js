@@ -33,6 +33,10 @@ const ReservationSlotList = () => {
     }, []);
 
     useEffect(() => {
+        getUser()
+    }, [])
+
+    useEffect(() => {
         getReservationList();
     }, []);
 
@@ -140,13 +144,15 @@ const ReservationSlotList = () => {
 
     return (
         <div>
-            <Button onClick={() => setIsModalOpen(true)}>CRENEAUX HORAIRES</Button>
-
-            {isModalOpen && (
-                <div>
-                    <SlotsList></SlotsList>
-                </div>
-            )}
+            {(user && slotsList.length > 0) && (slotsList[0].boat?.establishment?.createdby?.id === user.id) ? (
+                <Button onClick={() => setIsModalOpen(true)}>CRENEAUX HORAIRES</Button>
+    
+            ) : (<></>)}
+                {isModalOpen && (
+                    <div>
+                        <SlotsList></SlotsList>
+                    </div>
+                )}
             <Scheduler
                 data={reservations}
                 height={660}

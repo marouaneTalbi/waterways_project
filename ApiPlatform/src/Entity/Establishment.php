@@ -92,11 +92,11 @@ class Establishment
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['establishment:read', 'boat:read'])]
+    #[Groups(['establishment:read', 'boat:read', 'reservation:read', 'slots:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'establishment:create', 'establishment:update', 'boat:read', 'boat:create'])]
+    #[Groups(['establishment:read', 'establishment:create', 'establishment:update', 'boat:read', 'boat:create', 'reservation:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -117,7 +117,7 @@ class Establishment
 
     #[ORM\ManyToOne(inversedBy: 'establishments')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['media_object:read'])]
+    #[Groups(['media_object:read', 'reservation:read','slots:read'])]
     private ?User $createdby = null;
 
     #[ORM\Column(length: 100)]

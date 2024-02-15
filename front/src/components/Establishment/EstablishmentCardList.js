@@ -7,7 +7,7 @@ export default function EstablishmentCardList() {
     const { establishmentResults } = useContext(EstablishmentContext);
 
     return (
-        <ul className='flex flex-col gap-6 overflow-y-scroll mt-5'>
+        <ul className='flex flex-col gap-6 overflow-y-scroll mt-5 h-[700px]'>
         {
             establishmentResults && establishmentResults.map((establishment, index) => {
                 return (

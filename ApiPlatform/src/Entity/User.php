@@ -96,7 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
-    #[Groups(['user:read','comment:read'])]
+    #[Groups(['user:read','comment:read', 'reservation:read','slots:read'])]
     private ?int $id = null;
 
     #[Assert\NotBlank]

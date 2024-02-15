@@ -6,6 +6,7 @@ import { getUserRole } from '../services/axiosRequestFunction';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from './userContext';
+import { useNavigate } from 'react-router-dom';
 
 export const EstablishmentContext = createContext(null);
 
@@ -23,6 +24,7 @@ const EstablishmentProvider = ({ children }) => {
     const currentUser = getUserRole();
     const isProvider = currentUser && currentUser.roles.find(role => role === 'ROLE_PROVIDER');
     const { user } = useContext(UserContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(user) {
@@ -44,7 +46,9 @@ const EstablishmentProvider = ({ children }) => {
             return establishmentModel.getList(user.id).then(response => {
                 setEstablishmentList(response);
             }).catch(error => {
-                console.log(error)
+                if(error.request.status === 403) {
+                    navigate('/403')
+                }
             })
         }
     }

@@ -82,7 +82,9 @@ const UserProvider = ({ children }) => {
         return userModel.satisfaction(userId).then(response => {
             setSatisfaction(response)
         }).catch(error => {
-            console.error(error);
+            if(error.request.status === 403) {
+                navigate('/403')
+            }
         })
     }
 

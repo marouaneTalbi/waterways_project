@@ -61,7 +61,9 @@ const BoatProvider = ({ children }) => {
             setShowslots(false);
             setShowEstablishment(false);
         }).catch(error => {
-            console.log(error)
+            if(error.request.status === 403) {
+                navigate('/403')
+            }
         })
     }
 
@@ -81,7 +83,9 @@ const BoatProvider = ({ children }) => {
         return boatModel.getMyListBoats(id).then(response => {
             setBoatList(response);
         }).catch(error => {
-            console.log(error)
+            if(error.request.status === 403) {
+                navigate('/403')
+            }
         })
     }
 
