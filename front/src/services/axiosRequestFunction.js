@@ -45,6 +45,20 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
       });
       return response.data;
     } catch (error) {
+      console.error('Error with the request:', error.response?.data || error.message);
+      throw error;
+    }
+  } else {
+    try {
+      const response = await axiosInstance({
+        url: endpoint,
+        method,
+        data,
+        params,
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error with the request:', error.response?.data || error.message);
       throw error;
     }
   }
