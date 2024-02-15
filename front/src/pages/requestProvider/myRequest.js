@@ -40,7 +40,7 @@ const MyRequest = () => {
                             <Timeline.Content>
                                 <Timeline.Title>Demande recu le {response.created_at.split('T')[0]}</Timeline.Title>
                                 <Timeline.Body>
-                                    Votre <a href={`http://localhost:8888/uploads/kbis/${response.name}`} download>Kbis</a> a été reçue.
+                                    Votre <a href={`${process.env.REACT_APP_SERVER}uploads/kbis/${response.name}`} download>Kbis</a> a été reçue.
                                 </Timeline.Body>
                             </Timeline.Content>
                             <Timeline.Point />

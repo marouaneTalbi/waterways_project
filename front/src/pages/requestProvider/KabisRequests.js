@@ -124,7 +124,7 @@ const KabisRequests = () => {
                         <li key={request.id} className="mb-3 p-3 border rounded shadow-sm hover:shadow-md transition duration-300">
                             <label className="font-medium">
                                 <p className="text-white bg-blue-500 hover:bg-blue-700 transition duration-200 rounded px-4 py-2 mr-2">Staut : {mapStatusToText(request.status)}</p>
-                                <a href={`http://localhost:8888/uploads/kbis/${request.name}`} download>
+                                <a href={`${process.env.REACT_APP_SERVER}/uploads/kbis/${request.name}`} download>
                                     <FontAwesomeIcon icon={faFilePdf} /> DOWNLOAD KBIS
                                 </a>
                                 <p>
