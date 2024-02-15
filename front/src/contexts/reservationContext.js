@@ -35,7 +35,6 @@ const ReservationProvider = ({ children }) => {
     const deleteReservation = async (id) => {
         try {
             await ReservationApi.delete(id);
-            await getReservationList();
         } catch (error) {
             console.error("Error deleting slot", error);
         }

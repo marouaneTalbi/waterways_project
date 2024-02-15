@@ -5,15 +5,15 @@ import { Button } from 'flowbite-react';
 import { UserContext } from '../../contexts/userContext'
 
 const ReservationsItem = React.memo(({ reservation}) => {
-    const { deleteReservation, getSlotsFromReservation, reservationSlotsList } = useContext(ReservationContext);
+    const { deleteReservation } = useContext(ReservationContext);
     const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
 
-    const handleDelete = () => {
+    const handleDelete = (id) => {
         setConfirmModalOpen(true);
     };
 
-    const handleConfirmDelete = () => {
-        deleteReservation(reservation.id);
+    const handleConfirmDelete = (id) => {
+        deleteReservation(id);
         setConfirmModalOpen(false);
     };
 
@@ -52,7 +52,7 @@ const ReservationsItem = React.memo(({ reservation}) => {
                         <span className='text-white font-semibold'>{reservation.slots.boat?.address + ', ' + reservation.slots.boat?.city}</span>
                     </div>
                 </div>
-                <Button size="xs" color='failure' className='self-start mt-2' onClick={handleDelete}>Annuler</Button>
+                <Button size="xs" color='failure' className='self-start mt-2' onClick={() => handleDelete(reservation.reservation)}>Annuler</Button>
                 <ConfirmModal
                     isOpen={isConfirmModalOpen}
                     onRequestClose={handleCancelDelete}

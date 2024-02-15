@@ -14,6 +14,7 @@ use App\Controller\ReservationBoatController;
 use App\Controller\ReservationSlotController;
 use App\Controller\UserReservationController;
 use App\Controller\HistoryReservationController;
+use ApiPlatform\Metadata\Delete;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ApiResource(
@@ -28,7 +29,11 @@ use App\Controller\HistoryReservationController;
             name: 'Reservation',
             uriTemplate: '/reservation',
             normalizationContext: ['groups' => ['reservation:create']],
-
+        ),
+        new Delete(
+            uriTemplate: '/reservation/{id}',
+            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
+            normalizationContext: ['groups' => ['reservation:delete']],
         ),
         new Get(
             security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
@@ -74,7 +79,7 @@ use App\Controller\HistoryReservationController;
 
     ],
     normalizationContext: ['groups' => ['reservation:read', 'user:read']],
-    denormalizationContext: ['groups' => ['reservation:create', 'reservation:update']],
+    denormalizationContext: ['groups' => ['reservation:create', 'reservation:update', 'reservation:delete']],
 
 )]
 class Reservation

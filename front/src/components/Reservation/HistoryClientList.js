@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ReservationContext } from '../../contexts/reservationContext';
-import ReservationItem from './ReservationItem';
+import { HistoryContext } from '../../contexts/historyContext';
+import HistoryClientItem from './HistoryClientItem';
 import {UserContext} from "../../contexts/userContext";
 
 
 export default function ReservationList() {
-    const { getSlotsFromHistory, historySlotsList} = useContext(ReservationContext);
+    const { getSlotsFromHistory, historySlotsList} = useContext(HistoryContext);
     const [loading, setLoading] = useState(true);
     const { user, getUser, getRoleLabel, highestRole } = useContext(UserContext);
 
@@ -38,7 +38,7 @@ export default function ReservationList() {
             <div className="overflow-x-auto">
                 <div className='mt-4 h-[200px]'>
                     {historySlotsList && historySlotsList.map((reservation, index) => (
-                        <ReservationItem key={index} reservation={reservation} />
+                        <HistoryClientItem key={index} reservation={reservation} />
                     ))}
                 </div>
             </div>
