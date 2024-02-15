@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FileInput, Label } from 'flowbite-react';
 import PdfIcon from '../../assets/png/pdf-icon.png';
 import sendRequest from "../../services/axiosRequestFunction";
-import { TranslationContext } from '../../contexts/translationContext';
 
 
 const notify = (message, type) => {
@@ -21,14 +20,13 @@ const RequestProvider = () => {
   const [isLoading, setIsLoading] = useState(false); 
   const [selectedFileName, setSelectedFileName] = useState(null);
   const [isUploadSuccess, setIsUploadSuccess] = useState(false);
-  const { translations  } = useContext(TranslationContext);
 
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       if (selectedFile.size > 10000000) { 
-        notify(translations.file_max_size_message, 'error');
+        notify("File is too large. Maximum size is 10MB.", 'error');
         return;
       }
       setFile(selectedFile);
@@ -39,7 +37,7 @@ const RequestProvider = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!file) {
-      notify(translations.select_file_message, 'error');
+      notify("Please select a file first!", 'error');
       return;
     }
 
@@ -51,9 +49,9 @@ const RequestProvider = () => {
       await sendRequest('/api/kbis', 'POST', formData);
       setIsLoading(false); 
       setIsUploadSuccess(true);
-      notify(translations.file_success_message, 'success');
+      notify(" File successfully uploaded", 'success');
     } catch (error) {
-      notify(translations.file_error_message + error.message, 'error');
+      notify("Upload error"+ error.message, 'error');
       setIsLoading(false); 
       setIsUploadSuccess(false);
     }
@@ -65,9 +63,9 @@ const RequestProvider = () => {
         <ToastContainer />
       </div>
       <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-4 text-center">{translations.become_provider}</h1>
+        <h1 className="text-3xl font-bold mb-4 text-center">BECOM PROVIDER</h1>
         <p className='text-md text-gray-500 text-center'>
-          {translations.add_kbis_demande}
+          You must provide us with a Kbis, so that we can process your request.
         </p>
         <form onSubmit={handleSubmit} className="px-8 pt-6 pb-8 mb-4 flex flex-col items-center gap-8">
           <div className="w-full">
@@ -93,7 +91,7 @@ const RequestProvider = () => {
                     />
                   </svg>
                   <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold">{translations.click_upload}</span> {translations.drag_drop}
+                    <span className="font-semibold">Click to upload</span>  or drag and drop
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">Format supporté : PDF</p>
                 </div>
@@ -119,13 +117,13 @@ const RequestProvider = () => {
               disabled={isLoading}
               className={`bg-dark-orange text-white font-bold py-3 px-20 rounded-lg focus:outline-none focus:shadow-outline ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-            {isLoading ? translations.uploading: translations.send}
+            {isLoading ?"UPLOADING":"SEND"}
           </button>
         </form>
         {
           isUploadSuccess && (
             <div className="text-center mt-4">
-              <a href="/myrequest" className="text-dark-orange font-bold">{translations.folow_request}</a>
+              <a href="/myrequest" className="text-dark-orange font-bold">Suivre votre demande</a>
             </div>
           )
         }

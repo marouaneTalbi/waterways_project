@@ -6,7 +6,7 @@ import { isTokenExpired, checkIfRequestExists } from '../../services/axiosReques
 import NotificationIcon from './notif';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext';
-import { TranslationContext } from '../../contexts/translationContext.js';
+import { UserContext } from '../../contexts/userContext';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
@@ -15,15 +15,8 @@ export default function Header() {
     const navigate = useNavigate();
     const { token } = useContext(AuthContext);
     const [hasPendingRequest, setHasPendingRequest] = useState(false);
-    const { translations, setLanguage  } = useContext(TranslationContext);
 
-    useEffect(() => {
-        setLanguage('fr')
-    }, []);
 
-    const handleLanguageChange = (value) => {
-        setLanguage(value);
-    };
 
     useEffect(() => {
         if (token) {
@@ -70,17 +63,13 @@ export default function Header() {
                     }
                 >
                 <Dropdown.Header>
-                    <button  onClick={()=>handleLanguageChange('fr')}>
                         <span className="mr-3 h-6 sm:h-9 text-xl" >🇫🇷</span>
-                    </button>
-                    <button onClick={()=>handleLanguageChange('en')}>
                         <span className="mr-3 h-6 sm:h-9 text-xl" >🇬🇧</span>
-                    </button>
                 </Dropdown.Header>
-                <Dropdown.Item href="/profile">{translations && translations.profile}</Dropdown.Item>
+                <Dropdown.Item href="/profile">PROFILE</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
-                <Dropdown.Item onClick={logout}>{translations && translations.logout}</Dropdown.Item>
+                <Dropdown.Item onClick={logout}>LOGOUT</Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
             </div>
@@ -90,8 +79,8 @@ export default function Header() {
                     (!token ) && (
 
                         <>
-                            <Navbar.Link href="/Login">{translations && translations.login}</Navbar.Link>
-                            <Navbar.Link href="/Register">{translations && translations.register}</Navbar.Link>
+                            <Navbar.Link href="/Login">LOGIN</Navbar.Link>
+                            <Navbar.Link href="/Register">SIGN IN</Navbar.Link>
                         </>
                     )
                 }
@@ -99,24 +88,24 @@ export default function Header() {
                     userRole === 'ROLE_ADMIN' && !isValidToken && (
                         <>
                         <Navbar.Link href="/admin">Admin</Navbar.Link>
-                        <Navbar.Link href="/Kabisrequests">{translations && translations.requests}</Navbar.Link>
+                        <Navbar.Link href="/Kabisrequests">Requests</Navbar.Link>
                         </>
                     )
                 }
                 {
                     userProvider === 'ROLE_PROVIDER' && !isValidToken && (
-                        <Navbar.Link href="/provider"> {translations && translations.provider}</Navbar.Link>
+                        <Navbar.Link href="/provider"> PROVIDER</Navbar.Link>
                     )
                 }
                 {
                     userRole && !isValidToken && (
                         <>
-                            <Navbar.Link href="/">{translations && translations.menu}</Navbar.Link>
-                            <Navbar.Link href="/search">{translations && translations.search}</Navbar.Link>
+                            <Navbar.Link href="/">MENU</Navbar.Link>
+                            <Navbar.Link href="/search">SEARCH</Navbar.Link>
                             {
                             hasPendingRequest ?
-                            <Navbar.Link href="/myrequest">{translations && translations.follow_my_request}</Navbar.Link> :
-                            <Navbar.Link href="/requestProvider">{translations && translations.request_provider}</Navbar.Link>
+                            <Navbar.Link href="/myrequest">Follow my request</Navbar.Link> :
+                            <Navbar.Link href="/requestProvider">Request Provider</Navbar.Link>
                             }
                         </>
                     )

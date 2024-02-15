@@ -3,11 +3,10 @@ import sendRequest from "../../services/axiosRequestFunction";
 import CommentProvider from "../../contexts/commentContext";
 import CommentsDashboardList from "../../components/Comment/CommentDashboardList";
 import BoatProvider from "../../contexts/boatContext";
-import { TranslationContext } from "../../contexts/translationContext";
 
 export default function UserAdmin() {
     const [users, setUsers] = useState([]);
-    const { translations  } = useContext(TranslationContext);
+
 
     useEffect(() => {
         sendRequest(
@@ -28,19 +27,19 @@ export default function UserAdmin() {
                         <thead>
                         <tr>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                {translations.email}
+                                EMAIL
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                {translations.lastname}
+                                LASTNAME
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                {translations.firstname}
+                                FIRSTNAME
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                               {translations.createdat}
+                                USER
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                {translations.verified}
+                                VERIFY
                             </th>
                         </tr>
                         </thead>
@@ -81,7 +80,7 @@ export default function UserAdmin() {
             </div>
             <CommentProvider>
                 <BoatProvider>
-                    <CommentsDashboardList />
+                    {/* <CommentsDashboardList /> */}
                 </BoatProvider>
             </CommentProvider>
         

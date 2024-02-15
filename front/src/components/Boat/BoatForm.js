@@ -8,7 +8,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import fr from 'date-fns/locale/fr';
 import { ToastContainer, toast } from 'react-toastify';
 import { UserContext } from '../../contexts/userContext';
-import { TranslationContext } from '../../contexts/translationContext';
 
 
 export default function BoatForm({ onCloseModal }) {
@@ -19,7 +18,6 @@ export default function BoatForm({ onCloseModal }) {
     const [endTime, setEndTime] = useState(slots && slots.endTime ? slots.endTime : '');
     const { user } = useContext(UserContext);
     const [slotDuration, setSlotDuration] = useState('');
-    const { translations  } = useContext(TranslationContext);
     
     useEffect(() => {
         getEstablishmentList();
@@ -39,13 +37,13 @@ export default function BoatForm({ onCloseModal }) {
         if (file && validTypes.includes(file.type)) {
             setBoat((prevBoat) => ({ ...prevBoat, image: file }));
         } else {
-            toast.error(translations.only_alow_files, {
+            toast.error('Only JPEG & PNG are allowed', {
                 position: toast.POSITION.TOP_RIGHT
             });
         }
 
         if (file?.size > 1048576) { 
-            toast.error(translations.file_havy, {
+            toast.error('The file is filr_havy', {
                 position: toast.POSITION.TOP_RIGHT
             });
             return;
@@ -68,7 +66,7 @@ export default function BoatForm({ onCloseModal }) {
         formData.append('price', boat.price);
         
         if (!isDateValid) {
-            toast.error(translations.check_date_hour, {
+            toast.error('Please check date and hour', {
                 position: toast.POSITION.TOP_RIGHT
             });
             return;
@@ -80,7 +78,7 @@ export default function BoatForm({ onCloseModal }) {
                     editBoat(formData, boat.id).then((res) => {
                         onCloseModal();
                     }).catch((error) => {
-                        toast.error(translations.update_error_message, {
+                        toast.error('Error while modifing', {
                             position: toast.POSITION.TOP_RIGHT
                         });
                     })
@@ -119,7 +117,7 @@ export default function BoatForm({ onCloseModal }) {
         <form onSubmit={handleSubmit}>
             <ToastContainer />
             <div className="mb-2 block">
-                <Label htmlFor="name" value={translations.name} />
+                <Label htmlFor="name" value="NAME" />
             </div>
             <TextInput
                 id="name"
@@ -129,7 +127,7 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
-                <Label htmlFor="address" value={translations.address} />
+                <Label htmlFor="address" value="ADDRESS" />
             </div>
             <TextInput
                 id="address"
@@ -139,7 +137,7 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
-                <Label htmlFor="city" value={translations.city} />
+                <Label htmlFor="city" value="CITY" />
             </div>
             <TextInput
                 id="city"
@@ -149,7 +147,7 @@ export default function BoatForm({ onCloseModal }) {
             />
             
             <div className="mb-2 block">
-                <Label htmlFor="modele" value={translations.model}  />
+                <Label htmlFor="modele" value="MODEL" />
             </div>
             <TextInput
                 id="modele"
@@ -159,7 +157,7 @@ export default function BoatForm({ onCloseModal }) {
             />
             
             <div className="mb-2 block">
-                <Label htmlFor="size" value={translations.size} />
+                <Label htmlFor="size" value="SIZE" />
             </div>
             <TextInput
                 id="size"
@@ -170,7 +168,7 @@ export default function BoatForm({ onCloseModal }) {
             />
             
             <div className="mb-2 block">
-                <Label htmlFor="capacity" value={translations.capacity}  />
+                <Label htmlFor="capacity" value="CAPACITY"  />
             </div>
             <TextInput
                 id="capacity"
@@ -181,7 +179,7 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mt-5 block">
-                <Label htmlFor="timeNumber" value={translations.min_time_book}  />
+                <Label htmlFor="timeNumber" value="Min time for booking" />
             </div>
 
             <TextInput
@@ -193,7 +191,7 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
-            <Label htmlFor="description" value={translations.description} />
+            <Label htmlFor="description" value="DESCRIPTION" />
             </div>
             <TextInput
                 id="description"
@@ -204,7 +202,7 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
-            <Label htmlFor="price" value={translations.price} />
+            <Label htmlFor="price" value="PRICE" />
             </div>
             <TextInput
                 id="price"
@@ -228,7 +226,7 @@ export default function BoatForm({ onCloseModal }) {
                
                <>
                <div className="mb-2 block">
-                   <Label htmlFor="startBookingDate" value={translations.start_date} />
+                   <Label htmlFor="startBookingDate" value="Start Date"/>
                </div>
                <DatePicker
                    locale={fr}
@@ -238,7 +236,7 @@ export default function BoatForm({ onCloseModal }) {
                />
 
                <div className="mb-2 block">
-                   <Label htmlFor="endBookingDate" value={translations.end_date} />
+                   <Label htmlFor="endBookingDate" value="End Date"/>
                </div>
                <DatePicker
                    locale={fr}
@@ -248,7 +246,7 @@ export default function BoatForm({ onCloseModal }) {
                />
 
                <div className="mb-2 block">
-                   <Label htmlFor="startTime" value={translations.end_hour}  />
+                   <Label htmlFor="startTime" value="START HOUR"/>
                </div>
                <input
                    id="startTime"
@@ -261,7 +259,7 @@ export default function BoatForm({ onCloseModal }) {
                />
 
                <div className="mb-2 block">
-                   <Label htmlFor="endTime" value={translations.end_hour}  />
+                   <Label htmlFor="endTime" value="END HOUR" />
                </div>
                <input
                    id="endTime"
@@ -292,7 +290,7 @@ export default function BoatForm({ onCloseModal }) {
                 ) : (
                     <>
                         <div className="mb-2 block">
-                            <Label htmlFor="Establishment" value={translations.establishment}/>
+                            <Label htmlFor="Establishment" value="Establishment"/>
                         </div>
                         <Select
                             id="establishment"
@@ -303,16 +301,16 @@ export default function BoatForm({ onCloseModal }) {
                             }}
                             required
                         >
-                            <h3 className="flex items-center justify-center mt-10">{translations.avaliable_date}</h3>
+                            <h3 className="flex items-center justify-center mt-10">Avaliable date</h3>
             
                             <div>
                                 <div className="mb-2 block">
-                                    <Label htmlFor="dateAvailable" value={translations.start_date}  />
+                                    <Label htmlFor="dateAvailable" value="START DATE" />
                                 </div>
             
                             </div>
             
-                            <option value="" disabled>{translations.chose_establishment}</option>
+                            <option value="" disabled>CHOSE Establishment</option>
                             {establishmentList.map((establishment) => (
                                 <option key={establishment.id} value={establishment.id}>
                                     {establishment.name}

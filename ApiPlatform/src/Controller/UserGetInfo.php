@@ -14,6 +14,8 @@ class UserGetInfo extends AbstractController
 {
     public function __invoke(Request $request, EntityManagerInterface $entityManager, $id): User
     {
+
+        dd('test');
         $user = $entityManager->getRepository(User::class)->find($id);
 
         if (!$user) {

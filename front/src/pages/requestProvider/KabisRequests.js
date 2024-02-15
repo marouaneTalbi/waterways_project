@@ -6,7 +6,6 @@ import { faFilePdf, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid
 import { toast } from 'react-toastify';
 import sendRequest from "../../services/axiosRequestFunction";
 import 'react-toastify/dist/ReactToastify.css';
-import { TranslationContext } from '../../contexts/translationContext';
 
 
 const notify = (message, type) => {
@@ -25,7 +24,6 @@ const KabisRequests = () => {
     const [showInput, setShowInput] = useState(false);
     const [complementText, setComplementText] = useState('');
     const [activeRequestId, setActiveRequestId] = useState(null); 
-    const { translations  } = useContext(TranslationContext);
 
 
     useEffect(() => {
@@ -34,7 +32,7 @@ const KabisRequests = () => {
                 const response = await sendRequest('/api/kbis');
                 setRequests(response);
             } catch (error) {
-                console.error( translations.request_error, error);
+                console.error( "Error retrieving requests", error);
             } finally {
                 setLoading(false);
             }
@@ -51,13 +49,13 @@ const KabisRequests = () => {
     function mapStatusToText(status) {
         switch (status) {
             case 1:
-                return translations.confirm;
+                return "Validated"
             case 2:
-                return translations.additional_info;
+                return " Request additional information";
             case 3:
-                return translations.refused_request;
+                return " Refused Request"
             default:
-                return translations.wating_valiation;
+                return " Wating for validation";
         }
     };
     const handleStatusChange = async (id, newStatus) => {
@@ -67,9 +65,9 @@ const KabisRequests = () => {
             setRequests(requests.map(request => 
                 request.id === id ? { ...request, status: newStatus } : request
             ));
-            notify(translations.status_success, 'success');
+            notify("SUCCESS", 'success');
         } catch (error) {
-            notify(translations.status_error, 'error');
+            notify("ERROR", 'error');
         }
     };
     const sendEmailToUser = (email) => {
@@ -91,7 +89,7 @@ const KabisRequests = () => {
           await sendRequest('/api/notifications', 'POST', {title:"Demande de complement", message:complementText});
         } catch (error) {
           console.error("Erreur lors de l'envoi du complément :", error);
-          notify(translations.additional_info_error, 'error');
+          notify("Error while Request additional information", 'error');
         } finally {
           setShowInput(false); 
           setComplementText(''); 
@@ -101,20 +99,20 @@ const KabisRequests = () => {
       
     return (
         <div className="container mx-auto p-4">
-                <h1 className="text-2xl font-bold mb-4">{translations.list_provider_request}</h1>
+                <h1 className="text-2xl font-bold mb-4">List of requests to become a service provider</h1>
                 <div className="mb-4">
-                <label htmlFor="statusFilter" className="mr-2">{translations.filter_status}</label>
+                <label htmlFor="statusFilter" className="mr-2">Filter by status</label>
                   <select
                     id="statusFilter"
                     className="border rounded p-2"
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value)}
                   >
-                    <option value="">{translations.all}</option>
-                    <option value="1">{translations.validated}</option>
-                    <option value="2">{translations.aditional_compliment}</option>
-                    <option value="3">{translations.refused}</option>
-                    <option value="0">{translations.wating}</option>
+                    <option value="">All</option>
+                    <option value="1">Validated</option>
+                    <option value="2">Compliment request</option>
+                    <option value="3">Refused</option>
+                    <option value="0">Wating</option>
                   </select>
                 </div>
                 <ul>
@@ -123,7 +121,7 @@ const KabisRequests = () => {
                             <label className="font-medium">
                                 <p className="text-white bg-blue-500 hover:bg-blue-700 transition duration-200 rounded px-4 py-2 mr-2">Staut : {mapStatusToText(request.status)}</p>
                                 <a href={`http://localhost:8888/uploads/kbis/${request.name}`} download>
-                                    <FontAwesomeIcon icon={faFilePdf} /> {translations.downlod_kbis}
+                                    <FontAwesomeIcon icon={faFilePdf} /> DOWNLOAD KBIS
                                 </a>
                                 <p>
                                 {request.createdby.firstname} {request.createdby.lastname}
@@ -138,27 +136,27 @@ const KabisRequests = () => {
                                     <button onClick={async () => {
                                       await handleStatusChange(request.id, 2);
                                       sendEmailToUser(request.createdby.email);
-                                    }} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2">{translations.compliment_request}</button> 
+                                    }} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2">Compliment request</button> 
                                     
                                     <button onClick={() => {
                                      setShowInput(true);
                                      setActiveRequestId(request.id);
                                      handleStatusChange(request.id, 2);
-                                    }} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2"> {translations.compliment_request} 2</button>
+                                    }} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2"> Compliment request2</button>
                                    
-                                    <button onClick={() => handleStatusChange(request.id, 3)} className="text-white bg-red-500 hover:bg-red-700 transition duration-200 rounded px-4 py-2">{translations.refuse}</button>
+                                    <button onClick={() => handleStatusChange(request.id, 3)} className="text-white bg-red-500 hover:bg-red-700 transition duration-200 rounded px-4 py-2">REFUSE</button>
                                 </div>
                             )}
                             {request.status === 2 && (
                                 <div className="mt-2">
-                                    <button onClick={() => handleStatusChange(request.id, 1)} className="text-white bg-green-500 hover:bg-green-700 transition duration-200 rounded px-4 py-2 mr-2">{translations.accept}</button>
-                                    <button onClick={() => handleStatusChange(request.id, 3)} className="text-white bg-red-500 hover:bg-red-700 transition duration-200 rounded px-4 py-2">{translations.refuse}</button>
+                                    <button onClick={() => handleStatusChange(request.id, 1)} className="text-white bg-green-500 hover:bg-green-700 transition duration-200 rounded px-4 py-2 mr-2">ACCEPT</button>
+                                    <button onClick={() => handleStatusChange(request.id, 3)} className="text-white bg-red-500 hover:bg-red-700 transition duration-200 rounded px-4 py-2">REFUSE</button>
                                 </div>
                             )}
                             {showInput && activeRequestId === request.id && (
                 <div>
                     <p>
-                        {translations.aditional_compliment_message}
+                        Compliment request message
                     </p>
                    <textarea
                      type="text"
@@ -167,7 +165,7 @@ const KabisRequests = () => {
                      className="border rounded p-2"
                    />
                    <button onClick={handleSubmitComplement} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    {translations.send}
+                    SEND
                    </button>
                 </div>
                 )}

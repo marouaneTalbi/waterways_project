@@ -2,10 +2,8 @@ import React, { useContext } from 'react'
 import { Button } from 'flowbite-react'
 import { HiStar } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
-import { TranslationContext } from '../../contexts/translationContext';
 
 export default function BoatCard({ boat }) {
-    const { translations  } = useContext(TranslationContext);
 
     return (
         <div className='flex flex-row gap-4'>
@@ -23,14 +21,14 @@ export default function BoatCard({ boat }) {
                         </div>
                         <div className='flex flex-col'>
                             <span className='text-dark-orange text-2xl font-medium'>€{boat.price}</span>
-                            <span className='text-gray-400'>{translations.houre}</span>
+                            <span className='text-gray-400'>HOUR</span>
                         </div>
                     </div>
                 </div>
                 <div className='flex flex-row justify-between items-center'>
                     <span className='text-gray-400'>Martine Delacroix</span>
                     <Button className='bg-light-orange text-dark-orange'>
-                        <Link to={`/boat/${boat.id}`}>{translations.book}</Link>
+                        <Link to={`/boat/${boat.id}`}>BOOK</Link>
                     </Button>
                 </div>
             </div>

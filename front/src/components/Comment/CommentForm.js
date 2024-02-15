@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Textarea, Button, Label } from 'flowbite-react';
 import { UserContext } from '../../contexts/userContext'
 import { CommentContext } from '../../contexts/commentContext';
-import { TranslationContext } from '../../contexts/translationContext';
 
 const AddCommentForm = ({ boatId }) => {
   const [commentData, setCommentData] = useState({
@@ -14,7 +13,6 @@ const AddCommentForm = ({ boatId }) => {
 
   const { addComment } = useContext(CommentContext);
   const { user, getUser } = useContext(UserContext);
-  const { translations  } = useContext(TranslationContext);
 
 
   useEffect(() => {
@@ -52,10 +50,10 @@ const AddCommentForm = ({ boatId }) => {
   return (
     <form onSubmit={handleSubmit} className='flex flex-col mt-auto'>
       <div className="mb-2 block">
-        <Label htmlFor="comment" value={translations.your_comment}/>
+        <Label htmlFor="comment" value="YOUR COMMENT"/>
       </div>
-      <Textarea id='comment' value={commentData.comment} onChange={handleChange} rows={4} className="resize-none" placeholder={translations.your_comment} required />
-      <Button className='w-full mt-2' color='blue' type='submit'>{translations.send}/</Button>
+      <Textarea id='comment' value={commentData.comment} onChange={handleChange} rows={4} className="resize-none" placeholder="YOUR COMMENT" required />
+      <Button className='w-full mt-2' color='blue' type='submit'>SEND/</Button>
     </form>
   );
 };

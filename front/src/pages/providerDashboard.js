@@ -8,11 +8,9 @@ import GenericModal from '../components/GenericModal/GenericModal'
 import Establishments from '../components/Establishment/establishments'
 import { UserContext } from '../contexts/userContext'
 import Loader from '../components/Loader/Loader'
-import { TranslationContext } from '../contexts/translationContext'
 
 export default function ProviderDashboard() {
     const [isBoatModalOpen, setBoatModalOpen] = useState(false);
-    const { translations  } = useContext(TranslationContext);
 
 
     const { getUser, user, getProviderSatisfaction, satisfaction } = useContext(UserContext);
@@ -78,7 +76,7 @@ export default function ProviderDashboard() {
                 </GenericModal>
                 <header className="flex flex-row justify-between">
                     <div className="flex flex-col gap-2">
-                        <h4 className="text-xl font-medium">{translations.boats}</h4>
+                        <h4 className="text-xl font-medium">BOATS</h4>
                     </div>
                     <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenBoatModal}>AJOUTER</button>
                 </header>

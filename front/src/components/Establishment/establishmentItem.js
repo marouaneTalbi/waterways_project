@@ -7,12 +7,10 @@ import BoatItem from '../Boat/BoatItem'
 import BoatProvider, { BoatContext } from '../../contexts/boatContext';
 import BoatList from '../Boat/BoatList';
 import BoatForm from '../Boat/BoatForm';
-import { TranslationContext } from '../../contexts/translationContext';
 
 export default function EstablishmentItem() {
     const { getCurrentEstablishment, getEstablishmentItem } = useContext(EstablishmentContext);
     const {getboatsOfEstablishment,  boatList } = useContext(BoatContext);
-    const { translations  } = useContext(TranslationContext);
 
 
     const [establishment, setEstablishment] = useState({});
@@ -52,9 +50,9 @@ export default function EstablishmentItem() {
             <div className="col-span-2 row-span-2 bg-white rounded border-2 border-gray-100 p-4">
                 <header className="flex flex-row justify-between">
                     <div className="flex flex-col gap-2">
-                        <h4 className="text-xl font-medium">{translations.info}</h4>
+                        <h4 className="text-xl font-medium">INFORMATION</h4>
                     </div>
-                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenModal}>{translations.add}</button>
+                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenModal}>ADD</button>
                 </header>
                 <div className="flex flex-wrap py-6 gap-10 gap-y-10">
                     <EstablishmentInfos establishment={establishment} />
@@ -63,9 +61,9 @@ export default function EstablishmentItem() {
             <div className="col-span-2 row-span-2 md:col-start-1 row-start-3 bg-white rounded border-2 border-gray-100 p-4">
                 <header className="flex flex-row justify-between">
                     <div className="flex flex-col gap-2">
-                        <h4 className="text-xl font-medium">{translations.boats}</h4>
+                        <h4 className="text-xl font-medium">BOATS</h4>
                     </div>
-                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenBoatModal}>{translations.update}</button>
+                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenBoatModal}>BOATS</button>
                 </header>
                { boatList && establishment && <BoatList showList={false} /> }
     
