@@ -4,7 +4,6 @@ import sendRequest from "../../services/axiosRequestFunction";
 export default function CommentItem({ comment={} }) {
     const [userName, setUserName] = useState('');
     useEffect(() => {
-        console.log(comment)
         const fetchUserName = async () => {
             const userId = comment.createdby.split('/').pop();
             try {

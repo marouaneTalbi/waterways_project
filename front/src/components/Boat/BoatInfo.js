@@ -13,12 +13,14 @@ import GoogleMapComponent from '../GoogleMap/GoogleMap';
 import { CommentContext } from '../../contexts/commentContext';
 import NoteCard from '../notes/NoteCard';
 import { NoteContext } from '../../contexts/noteContext';
+import { TranslationContext } from '../../contexts/translationContext';
 
 export default function BoatInfo() {
     const { id } = useParams()
     const { getBoat, boat } = useContext(BoatContext);
     const { getBoatComments, boatComments } = useContext(CommentContext);
     const { getBoatNotes, getPercentage, ratings } = useContext(NoteContext);
+    const { translations  } = useContext(TranslationContext);
 
     const [isModalOpen, setModalOpen] = useState(false);
 
@@ -60,7 +62,7 @@ export default function BoatInfo() {
                     {boat == null ? <Loader /> : (
                         <h3 className='font-semibold text-xl'>{boat.name}</h3>
                     )}
-                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenModal}>MODIFIER</button>
+                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenModal}>{translations.update}</button>
                 </header>
                 <div className='mt-4 flex flex-col mg:mb-10 mb-[100px]'>
                     {boat == null ? (

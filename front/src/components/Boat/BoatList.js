@@ -3,10 +3,12 @@ import { BoatContext } from '../../contexts/boatContext';
 import { Table } from 'flowbite-react';
 import BoatItem from './BoatItem'
 import { UserContext } from '../../contexts/userContext';
+import { TranslationContext } from '../../contexts/translationContext';
 
 export default function BoatList({showList}) {
     const { user, getUser} = useContext(UserContext);
     const {boat, boatList, getBoatListUser } = React.useContext(BoatContext);
+    const { translations  } = useContext(TranslationContext);
 
     useEffect(() => {
         getUser()
@@ -16,7 +18,7 @@ export default function BoatList({showList}) {
         if(user && showList) {
             getBoatListUser(user.id)
         }
-    }, [user, boat, boatList])
+    }, [user, boat])
 
     return (
         <>
@@ -25,19 +27,19 @@ export default function BoatList({showList}) {
                     boatList && boatList.length > 0 ? boatList.length : 0
                 }
                 {
-                    boatList && boatList.length > 1 ? " bateaux trouvés" : " bateau trouvé"
+                    boatList && boatList.length > 1 ? " "+ translations.boats_found: " "+translations.boat_found
                 }
             </span>
             <div className="overflow-x-auto">
                 <div className='mt-4 h-[200px]'>
                     <Table hoverable>
                         <Table.Head>
-                            <Table.HeadCell>Nom</Table.HeadCell>
-                            <Table.HeadCell>Etablissement</Table.HeadCell>
-                            <Table.HeadCell>Modèle</Table.HeadCell>
-                            <Table.HeadCell>Places</Table.HeadCell>
+                            <Table.HeadCell>{translations.name}</Table.HeadCell>
+                            <Table.HeadCell>{translations.establishment}</Table.HeadCell>
+                            <Table.HeadCell>{translations.model}</Table.HeadCell>
+                            <Table.HeadCell>{translations.places}</Table.HeadCell>
                             <Table.HeadCell>
-                                <span className="sr-only">GERER</span>
+                                <span className="sr-only">{translations.action}</span>
                             </Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y overflow-y-scroll w-full" style={{height: '50px'}}>

@@ -11,3 +11,102 @@ logout: "Log out"
 languange_change: "Change language"
 frensh: "Frensh"
 english: "English"
+email: Email
+lastname: Last Name
+firstname: First name
+createdat: Creation Date
+verified: Verified
+delete: Delete
+boat: boat
+comment: comment
+date: date
+user: user
+confirm: Validated
+additional_info: Request additional information
+refused_request: Refused Request
+wating_valiation: Wating for validation
+request_error: Error retrieving requests
+status_success: Status Updated
+status_error: Error updating status
+failed_update: updaate failed
+additional_info_error: Error while Request additional information
+list_provider_request: List of requests to become a service provider
+filter_status: Filter by status
+all: All
+validated: Validated
+aditional_compliment: Compliment request
+refused: Refused
+accept: Accept
+refuse: Refuse
+wating: wating
+downlod_kbis: Download KABIS
+send: Send
+aditional_compliment_message: Compliment request message
+compliment_request: Compliment request
+localisation: Location
+nbpersonne: Number of people
+boatname: Boat name
+houre: Per hour
+book: book
+name: Name
+address: Address
+city: City
+start_date: Start date
+end_date: End Date
+action: Acion
+establishments: Establishments
+establishment_found: Establisment found
+establishments_found: Establisments found
+boat_found: Boat found
+boats_found: Boats found
+establishment: Establishment
+model: Model
+places: Places
+boats: Boats
+info: Informations
+add: Add
+update: Update
+file_max_size_message: File is too large. Maximum size is 10MB.
+select_file_message: Please select a file first!
+file_success_message: File successfully uploaded
+file_error_message: Upload error
+become_provider: Deviens prestataire
+add_kbis_demande: You must provide us with a Kbis, so that we can process your request.
+click_upload: Click to upload
+drag_drop: or drag and drop
+folow_request: Suivre votre demande
+uploading: Uploading
+description: Description
+capacity: Capacity
+min_time_book: Min time for booking
+start_hour: Start hour
+end_hour: End hour
+chose_establishment: Chose establishment
+only_alow_files: Only JPEG & PNG are allowed
+file_havy: The file is filr_havy
+check_date_hour: Please check date and hour
+update_error_message: Error while modifing
+size: Size
+price: Price
+avaliable_date: Avaliable date
+person: Person
+delete_favorites: Delete fvorites
+add_favorites: Add fvorites
+comments: Comments
+add_note: Add note
+hour: Hour
+your_comment: Your Comment
+check_planing: Check the planing
+see_boats: See boats
+
+
+
+
+
+
+
+
+
+
+
+

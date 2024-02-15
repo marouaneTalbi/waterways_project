@@ -7,10 +7,13 @@ import BoatItem from '../Boat/BoatItem'
 import BoatProvider, { BoatContext } from '../../contexts/boatContext';
 import BoatList from '../Boat/BoatList';
 import BoatForm from '../Boat/BoatForm';
+import { TranslationContext } from '../../contexts/translationContext';
 
 export default function EstablishmentItem() {
     const { getCurrentEstablishment, getEstablishmentItem } = useContext(EstablishmentContext);
     const {getboatsOfEstablishment,  boatList } = useContext(BoatContext);
+    const { translations  } = useContext(TranslationContext);
+
 
     const [establishment, setEstablishment] = useState({});
     const [isModalOpen, setModalOpen] = useState(false);
@@ -48,9 +51,9 @@ export default function EstablishmentItem() {
             <div className="col-span-2 row-span-2 bg-white rounded border-2 border-gray-100 p-4">
                 <header className="flex flex-row justify-between">
                     <div className="flex flex-col gap-2">
-                        <h4 className="text-xl font-medium">Mes informations</h4>
+                        <h4 className="text-xl font-medium">{translations.info}</h4>
                     </div>
-                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenModal}>MODIFIER</button>
+                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenModal}>{translations.add}</button>
                 </header>
                 <div className="flex flex-wrap py-6 gap-10 gap-y-10">
                     <EstablishmentInfos establishment={establishment} />
@@ -59,9 +62,9 @@ export default function EstablishmentItem() {
             <div className="col-span-2 row-span-2 md:col-start-1 row-start-3 bg-white rounded border-2 border-gray-100 p-4">
                 <header className="flex flex-row justify-between">
                     <div className="flex flex-col gap-2">
-                        <h4 className="text-xl font-medium">Bateau(x)</h4>
+                        <h4 className="text-xl font-medium">{translations.boats}</h4>
                     </div>
-                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenBoatModal}>AJOUTER</button>
+                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenBoatModal}>{translations.update}</button>
                 </header>
                { boatList && establishment && <BoatList showList={false} /> }
     
@@ -72,30 +75,5 @@ export default function EstablishmentItem() {
             </div>
             <div className="md:col-span-2 md:row-span-4 md:col-start-3 md:row-start-1 bg-white rounded border-2 border-gray-100 p-4 hidden md:block">3</div>
         </div>
-    //     <div className="grid grid-cols-2 grid-rows-4 gap-4">
-    //     <div className="col-span-2 row-span-2">1</div>
-    //     <div className="col-span-2 row-span-2 row-start-3">2</div>
-    // </div>
-        // <div className="flex-1 grid md:grid-cols-4 grid-cols-2">
-        //     <GenericModal
-        //         isOpen={isModalOpen}
-        //         onClose={handleCloseModal}
-        //         title="Modifier mes informations"
-        //     >
-        //         <EstablishmentForm onCloseModal={handleCloseModal}/>
-        //     </GenericModal>
-        //     <div className="col-span-12 md:col-span-2 bg-white rounded border-2 border-gray-100 p-4 relative">
-        //         <header className="flex flex-row justify-between">
-        //             <div className="flex flex-col gap-2">
-        //                 <h4 className="text-xl font-medium">Mes informations</h4>
-        //             </div>
-        //             <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenModal}>MODIFIER</button>
-        //         </header>
-        //         <div className="flex flex-wrap py-6 gap-20 gap-y-10">
-        //             <EstablishmentInfos establishment={establishment} />
-        //         </div>  
-        //     </div>
-            
-        // </div>
     );
 }
