@@ -30,16 +30,18 @@ class HistoryReservationController extends AbstractController
     public function __invoke(int $id): array
     {
         $reservations = $this->entityManager->getRepository(Reservation::class)->findBy(['consumer' => $id]);
-        $slots = [];
+        //dd($reservations);
+        $response = [];
 
         foreach ($reservations as $reservation) {
-            $request = $this->slotRepository->findSlotsForHistory($reservation, new \DateTime());
-            if(count($request) > 0){
-                foreach ($request as $object){
-                    array_push($slots, $object);
-                }
-            }
+            $slots = $this->slotRepository->findSlotsForHistory($reservation, new \DateTime());
+            $response[] = [
+                'reservation'=>$reservation->getId(),
+                'reservationDate'=>$reservation->getReservationDate(),
+                'slots'=>array_shift($slots)
+            ];
         }
-        return $slots;
+        //dd($response);
+        return $response;
     }
 }
