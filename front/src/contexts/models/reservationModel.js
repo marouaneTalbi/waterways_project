@@ -14,7 +14,7 @@ const ReservationApi = {
         return sendRequest(`/api/reservation/display/${id}`, 'get', {}, true);
     },
     getHistory: async function (id) {
-        return sendRequest(`/api/history/${id}`, 'get', {}, true);
+        return sendRequest(`/api/reservation/history/${id}`, 'get', {}, true);
     },
     getBoat: async function (id) {
         return sendRequest(`/api/reservation/${id}/boat`, 'get', {}, true);
