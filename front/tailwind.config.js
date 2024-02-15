@@ -8,7 +8,11 @@ module.exports = {
         'dark-orange': '#FE7768',
         'light-orange': '#FFF3F2',
       },
-      extend: {},
+      extend: {
+        backgroundImage: {
+          'hero-pattern': "url('/public/background.png')",
+        }
+      },
     },
     plugins: [
       require('flowbite/plugin')

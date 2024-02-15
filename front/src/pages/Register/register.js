@@ -60,9 +60,9 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center w-full">
+    <div className="flex justify-center bg-hero-pattern absolute top-0 left-0 w-screen h-screen bg-cover bg-bottom bg-no-repeat pt-10">
             <ToastContainer />
-            <Card className="h-fit w-[95%] sm:w-[90%] md:w-[80%]">
+            <Card className="h-fit w-[90%] sm:w-[80%] md:w-[60%] bg-opacity-70">
                 <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                     <h3 className="font-semibold text-2xl">S'inscrire</h3>
                     <div>

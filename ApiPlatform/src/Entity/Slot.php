@@ -73,7 +73,7 @@ class Slot
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['slots:read', 'slots:create'])]
+    #[Groups(['slots:read', 'slots:create', 'reservation:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'slots')]
@@ -82,22 +82,22 @@ class Slot
     private ?Boat $boat = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['slots:read', 'slots:create', 'slots:update'])]
+    #[Groups(['slots:read', 'slots:create', 'slots:update', 'reservation:read'])]
     private ?\DateTimeInterface $startBookingDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['slots:read', 'slots:create', 'slots:update'])]
+    #[Groups(['slots:read', 'slots:create', 'slots:update', 'reservation:read'])]
     private ?\DateTimeInterface $endBookingDate = null;
 
     #[ORM\OneToMany(mappedBy: 'slots', targetEntity: Reservation::class)]
     private Collection $reservations;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    #[Groups(['slots:read', 'slots:create', 'slots:update'])]
+    #[Groups(['slots:read', 'slots:create', 'slots:update', 'reservation:read'])]
     private ?\DateTimeInterface $startTime = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    #[Groups(['slots:read', 'slots:create', 'slots:update'])]
+    #[Groups(['slots:read', 'slots:create', 'slots:update', 'reservation:read'])]
     private ?\DateTimeInterface $endTime = null;
 
     public function __construct()
