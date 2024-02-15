@@ -1,5 +1,6 @@
 import React, { useState, createContext } from 'react';
 import userModel from './models/userModel';
+import { useNavigate } from 'react-router-dom';
 
 export const UserContext = createContext(null);
 
@@ -7,7 +8,9 @@ const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [highestRole, SethighestRole] = useState(null);
     const [userResults, setUserResults] = useState(null);
-    const [satisfaction, setSatisfaction] = useState(null)
+    const [satisfaction, setSatisfaction] = useState(null);
+    const [users, setUsers] = useState(null);
+    const navigate = useNavigate();
 
     const getUser = async () => {
         return userModel.get().then(res =>{
@@ -17,6 +20,16 @@ const UserProvider = ({ children }) => {
                 fullName: `${currentUser.lastname} ${currentUser.firstname}`
             });
             SethighestRole(getHighestRole(currentUser.roles));
+        })
+    }
+
+    const getUsers = async() => {
+        return userModel.getAll().then(response => {
+            setUsers(response);
+        }).catch(error => {
+            if(error.request.status === 403) {
+                navigate('/403')
+            };
         })
     }
 
@@ -74,7 +87,7 @@ const UserProvider = ({ children }) => {
     }
 
     return (
-        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById, searchUser, userResults, getProviderSatisfaction, satisfaction }}>
+        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById, searchUser, userResults, getProviderSatisfaction, satisfaction, users, getUsers }}>
             {children}
         </UserContext.Provider>
     );
