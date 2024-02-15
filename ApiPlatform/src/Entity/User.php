@@ -84,7 +84,7 @@ use App\Controller\UserGetInfo;
             normalizationContext: ['groups' => ['user:read']]
         ),
     ],
-    normalizationContext: ['groups' => ['user:read', 'establishment:read']],
+    normalizationContext: ['groups' => ['user:read', 'establishment:read', 'reservation:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]

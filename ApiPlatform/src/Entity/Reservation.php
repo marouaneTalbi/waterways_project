@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\ReservationBoatController;
 use App\Controller\ReservationSlotController;
+use App\Controller\UserReservationController;
+use App\Controller\HistoryReservationController;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ApiResource(
@@ -38,11 +40,11 @@ use App\Controller\ReservationSlotController;
             normalizationContext: ['groups' => ['boat:read']],
         ),
         new GetCollection(
-            uriTemplate: '/reservation/{id}/slots',
-            controller: ReservationSlotController::class,
+            uriTemplate: '/reservation/history/{id}',
+            controller: HistoryReservationController::class,
             paginationEnabled: false,
             security: "is_granted('ROLE_USER')",
-            normalizationContext: ['groups' => ['slots:read']],
+            normalizationContext: ['groups' => ['slots:read', 'reservation:read', 'user:read']],
         ),
         /*   new Get(
                security: "is_granted('ROLE_ADMIN')",
@@ -62,7 +64,7 @@ use App\Controller\ReservationSlotController;
            ),*/
 
     ],
-    normalizationContext: ['groups' => ['reservation:read']],
+    normalizationContext: ['groups' => ['reservation:read', 'user:read']],
     denormalizationContext: ['groups' => ['reservation:create', 'reservation:update']],
 
 )]
