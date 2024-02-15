@@ -46,6 +46,13 @@ use App\Controller\HistoryReservationController;
             security: "is_granted('ROLE_USER')",
             normalizationContext: ['groups' => ['slots:read', 'reservation:read', 'user:read']],
         ),
+        new GetCollection(
+            uriTemplate: '/reservation/display/{id}',
+            controller: UserReservationController::class,
+            paginationEnabled: false,
+            security: "is_granted('ROLE_USER')",
+            normalizationContext: ['groups' => ['slots:read', 'reservation:read', 'user:read']],
+        ),
         /*   new Get(
                security: "is_granted('ROLE_ADMIN')",
                normalizationContext: ['groups' => ['establishment:read']],

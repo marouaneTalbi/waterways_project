@@ -34,8 +34,11 @@ class HistoryReservationController extends AbstractController
 
         foreach ($reservations as $reservation) {
             $request = $this->slotRepository->findSlotsForHistory($reservation, new \DateTime());
-            if(count($request) > 0)
-                array_push($slots, $request);
+            if(count($request) > 0){
+                foreach ($request as $object){
+                    array_push($slots, $object);
+                }
+            }
         }
         return $slots;
     }
