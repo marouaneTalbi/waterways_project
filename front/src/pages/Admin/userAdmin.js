@@ -1,8 +1,11 @@
+'use client';
 import React, {useEffect, useContext} from "react";
 import CommentProvider from "../../contexts/commentContext";
 import BoatProvider from "../../contexts/boatContext";
 import { UserContext } from "../../contexts/userContext";
 import Loader from "../../components/Loader/Loader";
+import { Table } from 'flowbite-react';
+import CommentsDashboardList from '../../components/Comment/CommentDashboardList';
 
 export default function UserAdmin() {
     const { getUsers, users } = useContext(UserContext)
@@ -12,10 +15,18 @@ export default function UserAdmin() {
     }, []);
 
     return (
-        <>
-            <div className="mt-8 mx-4">
-                {
-                    <table className="min-w-full leading-normal">
+        // <>
+        //     <CommentProvider>
+        //         <BoatProvider>
+        //             {/* <CommentsDashboardList /> */}
+        //         </BoatProvider>
+        //     </CommentProvider>
+        
+        // </>
+        <div className="grid md:grid-cols-4 grid-cols-1 md:grid-rows-4 grid-rows-8 gap-4 w-full h-[1900px] md:h-auto">
+            <div className="col-span-2 row-span-2 bg-white rounded border-2 border-gray-100 p-4">
+                <div className="overflow-x-auto mt-4">
+                <table className="min-w-full leading-normal">
                         <thead>
                         <tr>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -74,15 +85,24 @@ export default function UserAdmin() {
                         }
                         </tbody>
                     </table>
-                }
+                </div>
             </div>
-            <CommentProvider>
-                <BoatProvider>
-                    {/* <CommentsDashboardList /> */}
-                </BoatProvider>
-            </CommentProvider>
-        
-        </>
+            <div className="col-span-2 row-span-2 col-start-3 bg-white rounded border-2 border-gray-100 p-4">
+              <div className="overflow-x-auto">
+                <CommentProvider>
+                  <BoatProvider>
+                     <CommentsDashboardList />
+                 </BoatProvider>
+              </CommentProvider>
+              </div>
+            </div>
+            <div className="col-span-2 row-span-2 row-start-3 bg-white rounded border-2 border-gray-100 p-4">
+                {/* RESERVATION LIST */}
+            </div>
+            <div className="col-span-2 row-span-2 col-start-3 row-start-3-4 bg-white rounded border-2 border-gray-100 p-4">
+                {/* I DON'T KNOW */}
+            </div>
+        </div>
     );
 
 
