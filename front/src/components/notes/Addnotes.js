@@ -14,6 +14,7 @@ const notify = (message, type) => {
 
 const AddNoteForm = ({ boatId }) => {
   const { user, getUser } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [note, setNote] = useState({
     proprete: 0,
@@ -34,14 +35,7 @@ const AddNoteForm = ({ boatId }) => {
       }));
     }
   }, [user]); 
-  
 
-  // const handleChange = (e) => {
-  //   setNote({
-  //     ...note,
-  //     [e.target.name]: parseInt(e.target.value),
-  //   });
-  // };
 
   const handleRatingChange = (filled, newValue) => {
     setNote(prevNote => ({
@@ -52,9 +46,11 @@ const AddNoteForm = ({ boatId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); 
     try {
        await sendRequest('/api/notes', 'POST', note);
       notify(" add note success", 'success');
+      setIsLoading(false); 
     } catch (error) {
       console.error('Erreur lors de l\'envoi de la note', error);
       notify(" Error while adding note", 'error');
@@ -80,7 +76,9 @@ const AddNoteForm = ({ boatId }) => {
           </Rating>
         </div>
       ))}
-      <Button type="submit" color='blue' className="mt-4 mb-6">Ajouter une Note</Button>
+          <Button className='w-full mt-2' color='blue' type='submit' disabled={isLoading}>
+            {isLoading ? 'Chargement...' : 'Ajouter une Note'}
+        </Button>
     </form>
   );
 };

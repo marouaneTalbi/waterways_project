@@ -29,13 +29,17 @@ use App\Controller\GetKbis;
             controller: KbisUpdateController::class,
             deserialize: false,
         ),
-        new GetCollection(),
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')",
+        ),
         new GetCollection(
             uriTemplate: "/kbis/me",
             controller: GetKbis::class,
             name: 'getmydemand'
         ),
-        new Get,
+        new Get(
+            security: "is_granted('ROLE_ADMIN')",
+        ),
     ]
 )]
 class Kbis

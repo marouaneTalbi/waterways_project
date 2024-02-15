@@ -88,7 +88,7 @@ export default function Header() {
                     userRole === 'ROLE_ADMIN' && !isValidToken && (
                         <>
                         <Navbar.Link href="/admin">Admin</Navbar.Link>
-                        <Navbar.Link href="/Kabisrequests">Requests</Navbar.Link>
+                        <Navbar.Link href="/admin/Kbisrequests">Requests</Navbar.Link>
                         </>
                     )
                 }

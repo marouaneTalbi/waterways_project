@@ -13,6 +13,7 @@ const AddCommentForm = ({ boatId }) => {
 
   const { addComment } = useContext(CommentContext);
   const { user, getUser } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   useEffect(() => {
@@ -21,7 +22,7 @@ const AddCommentForm = ({ boatId }) => {
     } else {
       setCommentData(prevData => ({
         ...prevData,
-        createdby: `/api/users/${user.id}`,
+        // createdby: `/api/users/${user.id}`,
       }));
     }
   }, [user, getUser, boatId]); 
@@ -34,18 +35,17 @@ const AddCommentForm = ({ boatId }) => {
   };
 
   const handleSubmit = async (e) => {
+    setIsLoading(true); 
     e.preventDefault();
-    addComment(commentData);
     setCommentData(prevData => ({ ...prevData, comment: '' }));
-    // try {
-    //   await sendRequest(`/api/comments`, 'POST', commentData);
-    //   notify('Commentaire ajoutée avec succès', 'success');
-    //   setCommentData(prevData => ({ ...prevData, comment: '' }));
-    // } catch (error) {
-    //   console.error('Erreur lors de l’ajout du commentaire :', error);
-    //   notify('Erreur lors de l\'envoi du commentaire', 'error');
-    // }
+    try {
+        await addComment(commentData);
+    } finally {
+        setIsLoading(false);
+    }
   };
+
+
 
   return (
     <form onSubmit={handleSubmit} className='flex flex-col mt-auto'>
@@ -53,7 +53,9 @@ const AddCommentForm = ({ boatId }) => {
         <Label htmlFor="comment" value="YOUR COMMENT"/>
       </div>
       <Textarea id='comment' value={commentData.comment} onChange={handleChange} rows={4} className="resize-none" placeholder="YOUR COMMENT" required />
-      <Button className='w-full mt-2' color='blue' type='submit'>SEND/</Button>
+        <Button className='w-full mt-2' color='blue' type='submit' disabled={isLoading}>
+            {isLoading ? 'Chargement...' : 'SEND'}
+        </Button>
     </form>
   );
 };

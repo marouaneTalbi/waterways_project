@@ -6,6 +6,7 @@ import { faFilePdf, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid
 import { toast } from 'react-toastify';
 import sendRequest from "../../services/axiosRequestFunction";
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 
 const notify = (message, type) => {
@@ -24,7 +25,7 @@ const KabisRequests = () => {
     const [showInput, setShowInput] = useState(false);
     const [complementText, setComplementText] = useState('');
     const [activeRequestId, setActiveRequestId] = useState(null); 
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchRequests = async () => {
@@ -32,6 +33,9 @@ const KabisRequests = () => {
                 const response = await sendRequest('/api/kbis');
                 setRequests(response);
             } catch (error) {
+                if(error.request.status === 403) {
+                    navigate('/403')
+                };
                 console.error( "Error retrieving requests", error);
             } finally {
                 setLoading(false);

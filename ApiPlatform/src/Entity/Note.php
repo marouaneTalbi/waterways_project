@@ -30,7 +30,7 @@ class Note
 
     #[ORM\ManyToOne(inversedBy: 'createdBy')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?boat $boat = null;
+    private ?Boat $boat = null;
 
     #[ORM\ManyToOne(inversedBy: 'notes')]
     #[ORM\JoinColumn(nullable: false)]
@@ -89,12 +89,12 @@ class Note
         return $this;
     }
 
-    public function getBoat(): ?boat
+    public function getBoat(): ?Boat
     {
         return $this->boat;
     }
 
-    public function setBoat(?boat $boat): static
+    public function setBoat(?Boat $boat): static
     {
         $this->boat = $boat;
 

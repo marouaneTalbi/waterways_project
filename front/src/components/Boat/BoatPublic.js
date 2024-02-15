@@ -17,6 +17,9 @@ export default function BoatPublic() {
     const { getBoatNotes, ratings, getBoatSumNote } = useContext(NoteContext);
     const [newFavorites, setNewFavorites] = useState([]);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+
 
 
     useEffect(() => {
@@ -35,12 +38,22 @@ export default function BoatPublic() {
         getBoat(id)
     }, [id])
 
-    const removeBoatFromFavorite = () => {
-        removeFavorite(boat)
+    const removeBoatFromFavorite = async () => {
+        setIsLoadingDelete(true); 
+        try {
+          await removeFavorite(boat)
+        } finally {
+            setIsLoadingDelete(false);
+        }
     }
 
-    const addBoatToFavorite = () => {
-        addFavorite(boat);
+    const addBoatToFavorite = async () => {
+        setIsLoading(true); 
+        try {
+          await addFavorite(boat);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     const handleOpenModal = () => {
@@ -118,18 +131,35 @@ export default function BoatPublic() {
                             {
                                 (boat && favorites) && favorites.some(favorite => favorite.id === boat.id) ? (
                                     <Button onClick={removeBoatFromFavorite} className='border-red-500 text-red-500'>
-                                        <svg className="w-6 h-6 text-red-500 dark:text-white mr-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                        {/* <svg className="w-6 h-6 text-red-500 dark:text-white mr-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="m12.7 20.7 6.2-7.1c2.7-3 2.6-6.5.8-8.7A5 5 0 0 0 16 3c-1.3 0-2.7.4-4 1.4A6.3 6.3 0 0 0 8 3a5 5 0 0 0-3.7 1.9c-1.8 2.2-2 5.8.8 8.7l6.2 7a1 1 0 0 0 1.4 0Z"/>
-                                        </svg>
-                                        DELETE FAVORITES
+                                        </svg> */}
+                                        
+
+                                        {
+                                            isLoadingDelete ? 'Chargement...' : 
+                                            // (
+                                            //     <svg className='mr-4' width="23" height="23" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            //     <path d="M17.4863 4.21619C14.2863 4.21619 12.4863 6.88285 12.4863 8.21619C12.4863 6.88285 10.6863 4.21619 7.48633 4.21619C4.28633 4.21619 3.48633 6.88285 3.48633 8.21619C3.48633 15.2162 12.4863 20.2162 12.4863 20.2162C12.4863 20.2162 21.4863 15.2162 21.4863 8.21619C21.4863 6.88285 20.6863 4.21619 17.4863 4.21619Z" stroke="#929595" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                            //     </svg>
+                                            // ) + 
+                                            'DELETE FAVORITES'
+                                        }
                                     </Button>
                                 ) : (
-                                    <Button className='text-gray-500' color='gray' onClick={addBoatToFavorite}>
-                                        <svg className='mr-4' width="23" height="23" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M17.4863 4.21619C14.2863 4.21619 12.4863 6.88285 12.4863 8.21619C12.4863 6.88285 10.6863 4.21619 7.48633 4.21619C4.28633 4.21619 3.48633 6.88285 3.48633 8.21619C3.48633 15.2162 12.4863 20.2162 12.4863 20.2162C12.4863 20.2162 21.4863 15.2162 21.4863 8.21619C21.4863 6.88285 20.6863 4.21619 17.4863 4.21619Z" stroke="#929595" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                        </svg>
-                                        ADD FAVORITES
-                                    </Button>
+                                   
+                                        <Button  className='text-gray-500' color='gray' onClick={addBoatToFavorite}disabled={isLoading}>
+                                            {
+                                                isLoading ? 'Chargement...' : 
+                                                // (
+                                                //     <svg className='mr-4' width="23" height="23" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                //     <path d="M17.4863 4.21619C14.2863 4.21619 12.4863 6.88285 12.4863 8.21619C12.4863 6.88285 10.6863 4.21619 7.48633 4.21619C4.28633 4.21619 3.48633 6.88285 3.48633 8.21619C3.48633 15.2162 12.4863 20.2162 12.4863 20.2162C12.4863 20.2162 21.4863 15.2162 21.4863 8.21619C21.4863 6.88285 20.6863 4.21619 17.4863 4.21619Z" stroke="#929595" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                                //     </svg>
+                                                // ) + 
+                                                'ADD FAVORITES'
+                                            }
+                                        </Button>
+                                        
                                 )
                             }
                         </div>
