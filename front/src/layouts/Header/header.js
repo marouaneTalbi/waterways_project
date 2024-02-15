@@ -7,7 +7,6 @@ import NotificationIcon from './notif';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext';
 import { TranslationContext } from '../../contexts/translationContext.js';
-import LanguageSwitcher from '../../services/languageSwitcher';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
@@ -28,7 +27,6 @@ export default function Header() {
 
     useEffect(() => {
         if (token) {
-            console.log(token)
             const decoded = jwtDecode(token);
             setUserRole(decoded.roles[0])
             const provider =  decoded.roles.find(role => role === 'ROLE_PROVIDER')
