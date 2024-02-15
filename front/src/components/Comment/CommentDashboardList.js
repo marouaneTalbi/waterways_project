@@ -3,11 +3,14 @@ import { CommentContext } from '../../contexts/commentContext';
 import { Table } from 'flowbite-react';
 import { UserContext } from '../../contexts/userContext';
 import { BoatContext } from '../../contexts/boatContext';
+import { TranslationContext } from '../../contexts/translationContext';
 
 const CommentsDashboardList = () => {
     const { getAllComments, allComments, deleteComment } = useContext(CommentContext)
     const { getUserById} = useContext(UserContext);
     const { getCurrentBoat } = useContext(BoatContext);
+    const { translations  } = useContext(TranslationContext);
+
     const [users, setUsers] = useState({});
     const [boats, setBoats] = useState({});
 
@@ -50,12 +53,13 @@ const CommentsDashboardList = () => {
                 <div className='mt-4 h-[200px]'>
                     <Table hoverable>
                         <Table.Head>
-                            <Table.HeadCell>Boat</Table.HeadCell>
-                            <Table.HeadCell>Comment</Table.HeadCell>
-                            <Table.HeadCell>Date</Table.HeadCell>
-                            <Table.HeadCell>User</Table.HeadCell>
+                                
+                            <Table.HeadCell>{translations.boat}</Table.HeadCell>
+                            <Table.HeadCell>{translations.comment}</Table.HeadCell>
+                            <Table.HeadCell>{translations.date}</Table.HeadCell>
+                            <Table.HeadCell>{translations.user}</Table.HeadCell>
                             <Table.HeadCell>
-                                <span className="sr-only">Supprimer</span>
+                                <span className="sr-only">{translations.delete}</span>
                             </Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y overflow-y-scroll w-full" style={{height: '50px'}}>

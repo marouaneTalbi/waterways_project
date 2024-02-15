@@ -3,6 +3,7 @@ import sendRequest from "../../services/axiosRequestFunction";
 import { UserContext } from '../../contexts/userContext';
 import {  toast } from 'react-toastify';
 import { Rating, Button } from 'flowbite-react';
+import { TranslationContext } from '../../contexts/translationContext';
 
 const notify = (message, type) => {
   if (type === 'success') {
@@ -14,6 +15,8 @@ const notify = (message, type) => {
 
 const AddNoteForm = ({ boatId }) => {
   const { user, getUser } = useContext(UserContext);
+  const { translations  } = useContext(TranslationContext);
+
   const [note, setNote] = useState({
     proprete: 0,
     confort: 0,
@@ -52,11 +55,11 @@ const AddNoteForm = ({ boatId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await sendRequest('/api/notes', 'POST', note);
-      notify('Note ajoutée avec succès', 'success');
+       await sendRequest('/api/notes', 'POST', note);
+      notify(translations.note_add_success, 'success');
     } catch (error) {
       console.error('Erreur lors de l\'envoi de la note', error);
-      notify('Erreur lors de l\'envoi de la note', 'error');
+      notify(translations.note_add_error, 'error');
     }
   };
 

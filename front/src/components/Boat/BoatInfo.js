@@ -13,12 +13,14 @@ import GoogleMapComponent from '../GoogleMap/GoogleMap';
 import { CommentContext } from '../../contexts/commentContext';
 import NoteCard from '../notes/NoteCard';
 import { NoteContext } from '../../contexts/noteContext';
+import { TranslationContext } from '../../contexts/translationContext';
 
 export default function BoatInfo() {
     const { id } = useParams()
     const { getBoat, boat } = useContext(BoatContext);
     const { getBoatComments, boatComments } = useContext(CommentContext);
     const { getBoatNotes, getPercentage, ratings } = useContext(NoteContext);
+    const { translations  } = useContext(TranslationContext);
 
     const [isModalOpen, setModalOpen] = useState(false);
 
@@ -60,7 +62,7 @@ export default function BoatInfo() {
                     {boat == null ? <Loader /> : (
                         <h3 className='font-semibold text-xl'>{boat.name}</h3>
                     )}
-                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenModal}>MODIFIER</button>
+                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenModal}>{translations.update}</button>
                 </header>
                 <div className='mt-4 flex flex-col mg:mb-10 mb-[100px]'>
                     {boat == null ? (
@@ -78,16 +80,16 @@ export default function BoatInfo() {
 
                     )}
                     <div className='flex flex-row flex-wrap h-max gap-8 mt-8 mb-8'>
-                        <DataCard title='etablissement' value={boat?.establishment.name} icon={faHouse} />
-                        <DataCard title='modele' value={boat?.modele} icon={faGears} />
-                        <DataCard title='prix' value={boat?.price+'€'} icon={faMoneyBill} />
-                        <DataCard title='personnes max' value={boat?.capacity} icon={faUser} />
-                        <DataCard title='description' value={boat?.description} icon={faFileLines} />
+                        <DataCard title={translations.stablishment} value={boat?.establishment.name} icon={faHouse} />
+                        <DataCard title={translations.model}  value={boat?.modele} icon={faGears} />
+                        <DataCard title={translations.price}  value={boat?.price+'€'} icon={faMoneyBill} />
+                        <DataCard title={translations.capacity}  value={boat?.capacity} icon={faUser} />
+                        <DataCard title={translations.description}  value={boat?.description} icon={faFileLines} />
                     </div>
                 </div>
                 <div className="py-6 border-t border-gray-100 absolute bottom-0 w-[calc(100%_-_2rem)] flex flex-row justify-between">
-                    <a href={`/reservation/${id}`} className="text-dark-orange p-3 bg-light-orange rounded-lg text-center">Consulter le planning</a>
-                    <Link to={`/boat/${id}`} className="font-semibold p-3 text-center">Voir la page du bateau</Link>
+                    <a href={`/reservation/${id}`} className="text-dark-orange p-3 bg-light-orange rounded-lg text-center">{translations.check_planing}</a>
+                    <Link to={`/boat/${id}`} className="font-semibold p-3 text-center">{translations.see_boats}</Link>
                 </div>
             </div>
             <div className="md:col-start-3 md:row-start-1 row-start-1 col-span-2 md:col-span-1 p-6 md:p-8 bg-white rounded border-2 border-gray-100 flex flex-row gap-4 md:gap-6 items-center" title="Nombre d'utilisateurs ayant ce bateau en favoris">
@@ -98,7 +100,7 @@ export default function BoatInfo() {
                 </div>
                 <div className='flex flex-col'>
                     <span className='text-4xl font-semibold'>{boat == null ? <Loader /> : (boat.usersFavorites.length)}</span>
-                    <span className='text-lg text-gray-500'>Favoris</span>
+                    <span className='text-lg text-gray-500'>{translations.favorites}</span>
                 </div>
             </div>
             <div className="md:col-start-4 md:row-start-1 row-start-2 col-span-2 md:col-span-1 p-6 md:p-8 bg-white rounded border-2 border-gray-100 flex flex-row gap-4 md:gap-6 items-center">
@@ -109,12 +111,12 @@ export default function BoatInfo() {
                 </div>
                 <div className='flex flex-col'>
                     <span className='text-4xl font-semibold'>{boatComments == null ? <Loader /> : (boatComments.length)}</span>
-                    <span className='text-lg text-gray-500'>Commentaires</span>
+                    <span className='text-lg text-gray-500'>{translations.comments}</span>
                 </div>
             </div>
-            <div className="col-span-2 md:col-start-3 md:row-start-2 row-start-3 bg-white rounded border-2 border-gray-100 p-4">
-                <h5 className='font-semibold text-xl'>Notes</h5>
-                <div className='flex flex-col gap-6 md:gap-0 md:flex-row items-center justify-between mx-4 mt-6'>
+            <div className="col-span-2 md:col-start-3 md:row-start-2 row-start-4 bg-white rounded border-2 border-gray-100 p-4">
+                <h5 className='font-semibold text-xl'>{translations.notes}</h5>
+                <div className='flex flex-row items-center justify-between mx-4 mt-6'>
                     <NoteCard title="Propreté" icon={faWandMagicSparkles} percentage={ratings && getPercentage(ratings.proprete)} />
                     <NoteCard title="Confort" icon={faBath} percentage={ratings && getPercentage(ratings.confort)} />
                     <NoteCard title="Performance" icon={faRocket} percentage={ratings && getPercentage(ratings.performance)} />

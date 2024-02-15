@@ -48,7 +48,7 @@ const ReservationsItem = React.memo(({ reservation}) => {
                     <span className='text-white font-semibold'>{reservation.boat?.address + ', ' + reservation.boat?.city}</span>
                 </div>
             </div>
-            <Button size="xs" color='failure' className='self-start mt-2' onClick={handleDelete}>Annuler</Button>
+            <Button size="xs" color='failure' className='self-start mt-2 z-0' onClick={handleDelete}>Annuler</Button>
             <ConfirmModal
                 isOpen={isConfirmModalOpen}
                 onRequestClose={handleCancelDelete}

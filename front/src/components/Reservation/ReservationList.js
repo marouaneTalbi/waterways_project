@@ -20,8 +20,8 @@ export default function ReservationList() {
                 }
                 {/* {uniqueReservationIds.size} {uniqueReservationIds.size > 1 ? 'réservations trouvées' : 'réservation trouvée'} */}
             </span>
-            <div className="overflow-x-auto w-full">
-                <div className='h-[400px] w-full'>
+            <div className="overflow-x-auto w-full h-[325px]">
+                <div className='w-full flex flex-col gap-4'>
                     {
                         reservationList && reservationList.map((reservation) => {
                             return <ReservationItem key={reservation.id} reservation={reservation} />

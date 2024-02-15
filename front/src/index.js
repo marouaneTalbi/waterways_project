@@ -26,14 +26,18 @@ import BoatProvider from './pages/Provider/boatPage';
 import NotFoundPage from './pages/httpErrors/404';
 import UnauthorizedPage from './pages/httpErrors/401';
 import ErrorPage from './pages/httpErrors/error';
+import { TranslationProvider } from './contexts/translationContext';
+import LandingPage from './pages/Langing/landingPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AuthProvider>
     <UserProvider>
+    <TranslationProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
+            <Route path='/' element={<LandingPage />} />
             <Route path="login" element={<Login />} />
             <Route path="mdpresetemail" element={<MdpRestEmail />} />
             <Route path="resetmdp/:token" element={<ResetMdp />} />
@@ -57,6 +61,7 @@ root.render(
           </Route>
         </Routes>
       </BrowserRouter>
+      </TranslationProvider>
     </UserProvider>
   </AuthProvider>
 );

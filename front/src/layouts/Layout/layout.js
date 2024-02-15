@@ -6,7 +6,7 @@ export default function layout() {
   return (
     <>
         <Header />
-        <main style={{height: "calc(100vh - 60px)"}} className="p-4 bg-[#F8FAF9] min-h-0 flex md:overflow-y-hidden md:h-auto">
+        <main style={{height: "calc(100vh - 60px)"}} className="p-4 bg-[#F8FAF9] min-h-0 flex md:overflow-y-hidden md:h-auto relative">
             <Outlet />
         </main>
     </>

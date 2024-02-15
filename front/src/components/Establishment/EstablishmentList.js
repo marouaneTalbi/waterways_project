@@ -4,9 +4,12 @@ import { Button } from 'flowbite-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Table } from 'flowbite-react';
 import EstablishmentListItem from './EstablishmentListItem';
+import { TranslationContext } from '../../contexts/translationContext';
 
 export default function EstablishmentList() {
     const {establishments} = useContext(EstablishmentContext);
+    const { translations  } = useContext(TranslationContext);
+
     const navigate = useNavigate();
 
     return (
@@ -16,7 +19,7 @@ export default function EstablishmentList() {
                 establishments && establishments.length > 0 ? establishments.length : 0
             }
             {
-                establishments && establishments.length > 1 ? " etablissements trouvés" : " etablissement trouvé"
+                establishments && establishments.length > 1 ? ' ' + translations.establishments_found: ' '+translations.establishment_found
             }
         </span>
 
@@ -24,13 +27,13 @@ export default function EstablishmentList() {
              <div className='mt-4 h-[200px]'>
                  <Table hoverable>
                      <Table.Head>
-                         <Table.HeadCell>Nom</Table.HeadCell>
-                         <Table.HeadCell>Address</Table.HeadCell>
-                         <Table.HeadCell className='sm:table-cell hidden'>City</Table.HeadCell>
-                         <Table.HeadCell className='sm:table-cell hidden'>Start Date</Table.HeadCell>
-                         <Table.HeadCell className='sm:table-cell hidden'>Start End</Table.HeadCell>
+                         <Table.HeadCell>{translations.name}</Table.HeadCell>
+                         <Table.HeadCell>{translations.address}</Table.HeadCell>
+                         <Table.HeadCell>{translations.city}</Table.HeadCell>
+                         <Table.HeadCell> {translations.start_date}</Table.HeadCell>
+                         <Table.HeadCell> {translations.end_date}</Table.HeadCell>
                          <Table.HeadCell>
-                             <span className="sr-only">GERER</span>
+                             <span className="sr-only">{translations.action}</span>
                          </Table.HeadCell>
                      </Table.Head>
                      <Table.Body className="divide-y overflow-y-scroll w-full" style={{height: '50px'}}>
