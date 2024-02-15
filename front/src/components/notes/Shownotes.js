@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import sendRequest from "../../services/axiosRequestFunction";
 import { Rating } from 'flowbite-react'; 
+import { TranslationContext } from '../../contexts/translationContext';
 
 const BoatRatingsSummary = ({ boatId }) => {
   const [globalRating, setGlobalRating] = useState(null);
+  const { translations  } = useContext(TranslationContext);
   const [ratings, setRatings] = useState({
     proprete: 0,
     confort: 0,
@@ -16,7 +18,6 @@ const BoatRatingsSummary = ({ boatId }) => {
         try {
             const notes = await sendRequest('/api/notes', 'GET');
             const filteredNotes = notes.filter(note => note.boat === `/api/boat/${boatId}`);
-            console.log(filteredNotes)
             const averages = filteredNotes.reduce((acc, note) => {
               acc.proprete += note.proprete;
               acc.confort += note.confort;
@@ -52,9 +53,9 @@ const BoatRatingsSummary = ({ boatId }) => {
   return (
     <div>
       <hr />
-      <h3 className='underline text-lg my-4'>Moyenne par catégories</h3>
+      <h3 className='underline text-lg my-4'>{translations.avrege_category}</h3>
       <div className='flex flex-row gap-2'>
-        Propreté : 
+        {translations.cleaning} : 
         <div className='flex flex-row'>
           {ratings.proprete}
           <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" aria-hidden="true" data-testid="flowbite-rating-star" className="w-5 h-5 text-yellow-400" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -63,7 +64,7 @@ const BoatRatingsSummary = ({ boatId }) => {
         </div>
       </div>
       <div className='flex flex-row gap-2'>
-        Confort : 
+        {translations.confort} : 
         <div className='flex flex-row'>
           {ratings.confort}
           <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" aria-hidden="true" data-testid="flowbite-rating-star" className="w-5 h-5 text-yellow-400" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -72,7 +73,7 @@ const BoatRatingsSummary = ({ boatId }) => {
         </div>
       </div>
       <div className='flex flex-row gap-2'>
-        Performance :
+        {translations.performence} :
         <div className='flex flex-row'>
           {ratings.performance}
           <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" aria-hidden="true" data-testid="flowbite-rating-star" className="w-5 h-5 text-yellow-400" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +82,7 @@ const BoatRatingsSummary = ({ boatId }) => {
         </div>
       </div>
       <div className='flex flex-row gap-2'>
-        Équipement : 
+        {translations.equipement} :
         <div className='flex flex-row'>
           {ratings.equipement}
           <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" aria-hidden="true" data-testid="flowbite-rating-star" className="w-5 h-5 text-yellow-400" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">

@@ -98,8 +98,16 @@ hour: Hour
 your_comment: Your Comment
 check_planing: Check the planing
 see_boats: See boats
-
-
+favorites: Favories
+notes: Notes
+avrege_category: Moyenne par catégories
+cleaning: Propreté
+confort: Confort
+performence: Performence
+equipement: Équipement
+people_satisfaing: of People are satisfied
+note_add_success: add note success
+note_add_error: Error while adding note
 
 
 
