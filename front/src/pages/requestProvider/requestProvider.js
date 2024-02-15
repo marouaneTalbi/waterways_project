@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FileInput, Label } from 'flowbite-react';
@@ -21,11 +21,12 @@ const RequestProvider = () => {
   const [selectedFileName, setSelectedFileName] = useState(null);
   const [isUploadSuccess, setIsUploadSuccess] = useState(false);
 
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       if (selectedFile.size > 10000000) { 
-        notify('File is too large. Maximum size is 10MB.', 'error');
+        notify("File is too large. Maximum size is 10MB.", 'error');
         return;
       }
       setFile(selectedFile);
@@ -36,7 +37,7 @@ const RequestProvider = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!file) {
-      notify('Please select a file first!', 'error');
+      notify("Please select a file first!", 'error');
       return;
     }
 
@@ -48,9 +49,9 @@ const RequestProvider = () => {
       await sendRequest('/api/kbis', 'POST', formData);
       setIsLoading(false); 
       setIsUploadSuccess(true);
-      notify('File successfully uploaded', 'success');
+      notify(" File successfully uploaded", 'success');
     } catch (error) {
-      notify('Upload error: ' + error.message, 'error');
+      notify("Upload error"+ error.message, 'error');
       setIsLoading(false); 
       setIsUploadSuccess(false);
     }
@@ -62,9 +63,9 @@ const RequestProvider = () => {
         <ToastContainer />
       </div>
       <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-4 text-center">Deviens prestataire</h1>
+        <h1 className="text-3xl font-bold mb-4 text-center">BECOM PROVIDER</h1>
         <p className='text-md text-gray-500 text-center'>
-          Vous devez nous fournir un Kbis, pour que l'on puisse traiter votre demande
+          You must provide us with a Kbis, so that we can process your request.
         </p>
         <form onSubmit={handleSubmit} className="px-8 pt-6 pb-8 mb-4 flex flex-col items-center gap-8">
           <div className="w-full">
@@ -90,7 +91,7 @@ const RequestProvider = () => {
                     />
                   </svg>
                   <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold">Click to upload</span> or drag and drop
+                    <span className="font-semibold">Click to upload</span>  or drag and drop
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">Format supporté : PDF</p>
                 </div>
@@ -116,7 +117,7 @@ const RequestProvider = () => {
               disabled={isLoading}
               className={`bg-dark-orange text-white font-bold py-3 px-20 rounded-lg focus:outline-none focus:shadow-outline ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-            {isLoading ? 'Uploading...' : 'Envoyer'}
+            {isLoading ?"UPLOADING":"SEND"}
           </button>
         </form>
         {

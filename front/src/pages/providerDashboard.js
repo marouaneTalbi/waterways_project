@@ -12,6 +12,7 @@ import Loader from '../components/Loader/Loader'
 export default function ProviderDashboard() {
     const [isBoatModalOpen, setBoatModalOpen] = useState(false);
 
+
     const { getUser, user, getProviderSatisfaction, satisfaction } = useContext(UserContext);
 
     useEffect(() => {
@@ -75,7 +76,7 @@ export default function ProviderDashboard() {
                 </GenericModal>
                 <header className="flex flex-row justify-between">
                     <div className="flex flex-col gap-2">
-                        <h4 className="text-xl font-medium">Bateau(x)</h4>
+                        <h4 className="text-xl font-medium">BOATS</h4>
                     </div>
                     <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenBoatModal}>AJOUTER</button>
                 </header>

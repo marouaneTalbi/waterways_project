@@ -81,11 +81,11 @@ class Boat
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['boat:read', 'boat:create', 'media_object:read', 'user:favorite', 'establishment:read'])]
+    #[Groups(['boat:read', 'boat:create', 'media_object:read', 'user:favorite', 'establishment:read', 'reservation:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['boat:read', 'boat:create', 'boat:update', 'media_object:read', 'user:favorite', 'user:read'], 'search')]
+    #[Groups(['boat:read', 'boat:create', 'boat:update', 'media_object:read', 'user:favorite', 'user:read', 'reservation:read'], 'search')]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -115,11 +115,11 @@ class Boat
     private Collection $reservations;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['boat:read', 'boat:create', 'boat:update', 'user:favorite', 'establishment:read'])]
+    #[Groups(['boat:read', 'boat:create', 'boat:update', 'user:favorite', 'establishment:read', 'reservation:read'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['boat:read', 'boat:create', 'boat:update', 'user:favorite', 'establishment:read'])]
+    #[Groups(['boat:read', 'boat:create', 'boat:update', 'user:favorite', 'establishment:read', 'reservation:read'])]
     private ?string $city = null;
 
     #[Vich\UploadableField(mapping: 'boat', fileNameProperty: 'image')]
@@ -149,7 +149,7 @@ class Boat
     private Collection $comments;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update', 'user:read'])]
+    #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update', 'user:read', 'reservation:read'])]
     private ?float $price = 0;
 
     #[ORM\OneToMany(mappedBy: 'boat', targetEntity: Note::class)]

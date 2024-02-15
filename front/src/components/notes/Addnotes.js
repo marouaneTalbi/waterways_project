@@ -14,6 +14,7 @@ const notify = (message, type) => {
 
 const AddNoteForm = ({ boatId }) => {
   const { user, getUser } = useContext(UserContext);
+
   const [note, setNote] = useState({
     proprete: 0,
     confort: 0,
@@ -52,11 +53,11 @@ const AddNoteForm = ({ boatId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await sendRequest('/api/notes', 'POST', note);
-      notify('Note ajoutée avec succès', 'success');
+       await sendRequest('/api/notes', 'POST', note);
+      notify(" add note success", 'success');
     } catch (error) {
       console.error('Erreur lors de l\'envoi de la note', error);
-      notify('Erreur lors de l\'envoi de la note', 'error');
+      notify(" Error while adding note", 'error');
     }
   };
 

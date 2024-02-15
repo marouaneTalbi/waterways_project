@@ -11,7 +11,7 @@
 nelmio_cors:
     defaults:
         origin_regex: true
-        allow_origin: ['^http://localhost:[0-9]+', '^http://waterways.challenge.s3-website.eu-north-1.amazonaws.com', '^https://challenge-waterways.com']
+        allow_origin: ['http://localhost:3000']
         allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
         allow_headers: ['Content-Type', 'Authorization']
         expose_headers: ['Link']

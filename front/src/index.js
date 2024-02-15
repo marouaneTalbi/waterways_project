@@ -24,16 +24,19 @@ import BoatComment from './components/Comment/CommentForm';
 import { AuthProvider } from './contexts/authContext';
 import BoatProvider from './pages/Provider/boatPage';
 import NotFoundPage from './pages/httpErrors/404';
-import UnauthorizedPage from './pages/httpErrors/401';
+import UnauthorizedPage from './pages/httpErrors/403';
 import ErrorPage from './pages/httpErrors/error';
+import LandingPage from './pages/Langing/landingPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <AuthProvider>
-    <UserProvider>
-      <BrowserRouter>
+
+  <BrowserRouter>
+    <AuthProvider>
+      <UserProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
+            <Route path='/' element={<LandingPage />} />
             <Route path="login" element={<Login />} />
             <Route path="mdpresetemail" element={<MdpRestEmail />} />
             <Route path="resetmdp/:token" element={<ResetMdp />} />
@@ -52,13 +55,16 @@ root.render(
             <Route path="notifications" element={<Notifications /> } />
             <Route path="addcomment" element={<BoatComment /> } />
             <Route path="NotFound" element={<NotFoundPage /> } />
-            <Route path="Unauthorized" element={<UnauthorizedPage /> } />
+            <Route path="403" element={<UnauthorizedPage /> } />
             <Route path="Error" element={<ErrorPage /> } />
+            <Route path='*' element={<NotFoundPage/>} />
           </Route>
         </Routes>
-      </BrowserRouter>
-    </UserProvider>
-  </AuthProvider>
+        </UserProvider>
+    </AuthProvider>
+  </BrowserRouter>
+
+
 );
 
 // If you want to start measuring performance in your app, pass a function

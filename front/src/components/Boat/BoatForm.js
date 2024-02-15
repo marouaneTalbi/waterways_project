@@ -18,6 +18,7 @@ export default function BoatForm({ onCloseModal }) {
     const [endTime, setEndTime] = useState(slots && slots.endTime ? slots.endTime : '');
     const { user } = useContext(UserContext);
     const [slotDuration, setSlotDuration] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         getEstablishmentList();
@@ -37,13 +38,13 @@ export default function BoatForm({ onCloseModal }) {
         if (file && validTypes.includes(file.type)) {
             setBoat((prevBoat) => ({ ...prevBoat, image: file }));
         } else {
-            toast.error("Seuls les fichiers JPEG et PNG sont autorisés.", {
+            toast.error('Only JPEG & PNG are allowed', {
                 position: toast.POSITION.TOP_RIGHT
             });
         }
 
         if (file?.size > 1048576) { 
-            toast.error("Le fichier est trop volumineux.", {
+            toast.error('The file is filr_havy', {
                 position: toast.POSITION.TOP_RIGHT
             });
             return;
@@ -52,7 +53,7 @@ export default function BoatForm({ onCloseModal }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        setIsLoading(true);
         const formData = new FormData();
         formData.append('name', boat.name);
         formData.append('modele', boat.modele);
@@ -66,7 +67,7 @@ export default function BoatForm({ onCloseModal }) {
         formData.append('price', boat.price);
         
         if (!isDateValid) {
-            toast.error("Veuillez vérifier les dates et heures.", {
+            toast.error('Please check date and hour', {
                 position: toast.POSITION.TOP_RIGHT
             });
             return;
@@ -78,7 +79,7 @@ export default function BoatForm({ onCloseModal }) {
                     editBoat(formData, boat.id).then((res) => {
                         onCloseModal();
                     }).catch((error) => {
-                        toast.error("Erreur lors de la modification", {
+                        toast.error('Error while modifing', {
                             position: toast.POSITION.TOP_RIGHT
                         });
                     })
@@ -117,7 +118,7 @@ export default function BoatForm({ onCloseModal }) {
         <form onSubmit={handleSubmit}>
             <ToastContainer />
             <div className="mb-2 block">
-                <Label htmlFor="name" value="Nom" />
+                <Label htmlFor="name" value="NAME" />
             </div>
             <TextInput
                 id="name"
@@ -127,7 +128,7 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
-                <Label htmlFor="address" value="Adresse" />
+                <Label htmlFor="address" value="ADDRESS" />
             </div>
             <TextInput
                 id="address"
@@ -137,7 +138,7 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
-                <Label htmlFor="city" value="Ville" />
+                <Label htmlFor="city" value="CITY" />
             </div>
             <TextInput
                 id="city"
@@ -147,7 +148,7 @@ export default function BoatForm({ onCloseModal }) {
             />
             
             <div className="mb-2 block">
-                <Label htmlFor="modele" value="Modèle" />
+                <Label htmlFor="modele" value="MODEL" />
             </div>
             <TextInput
                 id="modele"
@@ -157,7 +158,7 @@ export default function BoatForm({ onCloseModal }) {
             />
             
             <div className="mb-2 block">
-                <Label htmlFor="size" value="Taille" />
+                <Label htmlFor="size" value="SIZE" />
             </div>
             <TextInput
                 id="size"
@@ -168,7 +169,7 @@ export default function BoatForm({ onCloseModal }) {
             />
             
             <div className="mb-2 block">
-                <Label htmlFor="capacity" value="Capacité" />
+                <Label htmlFor="capacity" value="CAPACITY"  />
             </div>
             <TextInput
                 id="capacity"
@@ -179,7 +180,7 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mt-5 block">
-                <Label htmlFor="timeNumber" value="Temps minimum de réservation" />
+                <Label htmlFor="timeNumber" value="Min time for booking" />
             </div>
 
             <TextInput
@@ -191,7 +192,7 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
-            <Label htmlFor="description" value="Description" />
+            <Label htmlFor="description" value="DESCRIPTION" />
             </div>
             <TextInput
                 id="description"
@@ -202,7 +203,7 @@ export default function BoatForm({ onCloseModal }) {
             />
 
             <div className="mb-2 block">
-            <Label htmlFor="price" value="Prix" />
+            <Label htmlFor="price" value="PRICE" />
             </div>
             <TextInput
                 id="price"
@@ -226,7 +227,7 @@ export default function BoatForm({ onCloseModal }) {
                
                <>
                <div className="mb-2 block">
-                   <Label htmlFor="startBookingDate" value="Date de début" />
+                   <Label htmlFor="startBookingDate" value="Start Date"/>
                </div>
                <DatePicker
                    locale={fr}
@@ -236,7 +237,7 @@ export default function BoatForm({ onCloseModal }) {
                />
 
                <div className="mb-2 block">
-                   <Label htmlFor="endBookingDate" value="Date de fin" />
+                   <Label htmlFor="endBookingDate" value="End Date"/>
                </div>
                <DatePicker
                    locale={fr}
@@ -246,7 +247,7 @@ export default function BoatForm({ onCloseModal }) {
                />
 
                <div className="mb-2 block">
-                   <Label htmlFor="startTime" value="Horaire de début" />
+                   <Label htmlFor="startTime" value="START HOUR"/>
                </div>
                <input
                    id="startTime"
@@ -259,7 +260,7 @@ export default function BoatForm({ onCloseModal }) {
                />
 
                <div className="mb-2 block">
-                   <Label htmlFor="endTime" value="Horaire de fin" />
+                   <Label htmlFor="endTime" value="END HOUR" />
                </div>
                <input
                    id="endTime"
@@ -290,7 +291,7 @@ export default function BoatForm({ onCloseModal }) {
                 ) : (
                     <>
                         <div className="mb-2 block">
-                            <Label htmlFor="Establishment" value="establishment" />
+                            <Label htmlFor="Establishment" value="Establishment"/>
                         </div>
                         <Select
                             id="establishment"
@@ -301,16 +302,16 @@ export default function BoatForm({ onCloseModal }) {
                             }}
                             required
                         >
-                            <h3 className="flex items-center justify-center mt-10">Date de disponibilité</h3>
+                            <h3 className="flex items-center justify-center mt-10">Avaliable date</h3>
             
                             <div>
                                 <div className="mb-2 block">
-                                    <Label htmlFor="dateAvailable" value="date de début" />
+                                    <Label htmlFor="dateAvailable" value="START DATE" />
                                 </div>
             
                             </div>
             
-                            <option value="" disabled>Choisir un établissement</option>
+                            <option value="" disabled>CHOSE Establishment</option>
                             {establishmentList.map((establishment) => (
                                 <option key={establishment.id} value={establishment.id}>
                                     {establishment.name}
@@ -321,13 +322,18 @@ export default function BoatForm({ onCloseModal }) {
                 )
             }
 
-            <div className="w-full mt-4">
-                {boat && boat?.id ? (
-                    <Button color='red' type='submit'>Modifier</Button>
-                ) : (
-                    <Button color='red' type='submit'>Ajouter</Button>
-                )}
-            </div>
+<div className="w-full mt-4">
+    {boat && boat.id ? (
+        <Button color='red' type='submit' disabled={isLoading}>
+            {isLoading ? "Chargement..." : "Modifier"}
+        </Button>
+    ) : (
+        <Button color='red' type='submit' disabled={isLoading}>
+            {isLoading ? "Chargement..." : "Ajouter"}
+        </Button>
+    )}
+</div>
+
         </form>
     )
 }

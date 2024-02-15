@@ -8,6 +8,7 @@ const CommentsDashboardList = () => {
     const { getAllComments, allComments, deleteComment } = useContext(CommentContext)
     const { getUserById} = useContext(UserContext);
     const { getCurrentBoat } = useContext(BoatContext);
+
     const [users, setUsers] = useState({});
     const [boats, setBoats] = useState({});
 
@@ -50,12 +51,13 @@ const CommentsDashboardList = () => {
                 <div className='mt-4 h-[200px]'>
                     <Table hoverable>
                         <Table.Head>
-                            <Table.HeadCell>Boat</Table.HeadCell>
-                            <Table.HeadCell>Comment</Table.HeadCell>
-                            <Table.HeadCell>Date</Table.HeadCell>
-                            <Table.HeadCell>User</Table.HeadCell>
+                                
+                            <Table.HeadCell>BOAT</Table.HeadCell>
+                            <Table.HeadCell>COMMENT</Table.HeadCell>
+                            <Table.HeadCell>DATE</Table.HeadCell>
+                            <Table.HeadCell>USER</Table.HeadCell>
                             <Table.HeadCell>
-                                <span className="sr-only">Supprimer</span>
+                                <span className="sr-only">DELETE</span>
                             </Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y overflow-y-scroll w-full" style={{height: '50px'}}>

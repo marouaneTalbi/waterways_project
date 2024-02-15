@@ -31,6 +31,7 @@ use App\Controller\UserGetController;
 use App\Controller\UserBoatEstablishmentController;
 use App\Controller\UserGetSatisfaction;
 use App\Controller\UserSearchController;
+use App\Controller\UserGetInfo;
 
 #[ApiResource(
     operations: [
@@ -58,9 +59,9 @@ use App\Controller\UserSearchController;
             normalizationContext: ['groups' => ['user:read']],
         ),
         new Put(
-            processor: UserPasswordHasher::class,
-            normalizationContext: ['groups' => ['user:read']],
-            securityMessage: "Only authenticated users can modify users."
+            name: 'getUserInfo',
+            uriTemplate: '/user/{id}',
+            controller: UserGetInfo::class
         ),
         new Patch(
             processor: UserPasswordHasher::class,
@@ -146,7 +147,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['user:create', 'user:update','user:read','media_object:read'])]
+    #[Groups(['user:create','user:read','media_object:read'])]
     private ?bool $isVerified = false;
 
     #[ORM\Column(nullable: true)]

@@ -1,0 +1,130 @@
+requests: "Postuler"
+provider: "Prestatire"
+menu: "Accueil"
+search: "Rechercher"
+request_provider: "Demandes de Prestatire"
+login: "Se connecter"
+register: "S'inscrire"
+follow_my_request: "Suivre ma demande"
+profile: "profile"
+logout: "Se deonnecter"
+languange_change: "Changer la langue"
+frensh: "Français"
+english: "Anglais"
+email: Mail
+lastname: Nom
+firstname: prenom
+createdat: Date de cration
+verified: verifié
+delete: Supprimer
+boat: Bateau
+comment: Commentaire
+date: Date
+user: Utiisateur
+confirm: Validé
+additional_info: Demander des informations supplémentaires
+refused_request: Demande Refusée
+wating_valiation: En attente de validation
+request_error: Erreur lors de la récupération des demandes
+status_success: Statut Mis à Jour
+status_error: Erreur lors de la mise à jour du statut
+failed_update: Échec de la mise à jour
+additional_info_error: Erreur lors de la demande d'informations supplémentaires
+list_provider_request: Liste des demandes pour devenir prestataire
+filter_status: Filtrer par statut
+all: Tous
+validated: Validé
+aditional_compliment: Demander des compliment
+refused: Refusé
+accept: Accepter
+refuse: Refuser
+wating: En attente
+downlod_kbis: Télécharger KABIS
+send: Envoyer
+aditional_compliment_message: Message de demande de compliment
+compliment_request: Demande de compliment
+localisation: Localisation
+nbpersonne: Nombre de personne
+boatname: Nom du bateau
+houre: l'heure
+book: Reserver
+name: Nom
+address: Adresse
+city: Ville
+start_date: Date de debut
+end_date: Date de fin
+action: Gerer
+establishments: Etablissements
+establishment_found: etablissements trouvé
+establishments_found: etablissements trouvés
+boat_found: bateaux trouvé
+boats_found: bateaux trouvés
+establishment: Etablissement
+model: Modele
+places: Places
+boats: Bateaux
+info: Informations
+add: Ajouter
+update: Modifier
+file_max_size_message: Le fichier est trop volumineux. La taille maximale est de 10 Mo.
+select_file_message: Veuillez d'abord sélectionner un fichier !
+file_success_message: Fichier téléchargé avec succès
+file_error_message: Erreur de téléchargement
+become_provider: Devenir prestataire
+add_kbis_demande: Vous devez nous fournir un Kbis, afin que nous puissions traiter votre demande.
+click_upload: Cliquez pour télécharger
+drag_drop: ou glissez et déposez
+folow_request: Suivre votre demande
+uploading: Uploader
+description: Description
+capacity: Capacité
+min_time_book: Temps minimum de réservaion
+start_hour: Date de debut
+end_hour: Date de fin
+chose_establishment: Choisir un etablissement
+only_alow_files: Only JPEG & PNG are allowed
+file_havy: The file is filr_havy
+check_date_hour: Please check date and hour
+update_error_message: Error while modifing
+size: Taille
+price: Prix
+avaliable_date: Date de disponibilité
+person: Persone
+delete_favorites: Supprimer des favoris
+add_favorites: Ajouter aux fvories
+comments: Commentaires
+add_note: Ajouter une note
+hour: Heure
+your_comment: Ton Commentaire
+check_planing: Consulter le planning<
+see_boats: Voir la page du bateau
+favorites: Favorites
+notes: Notes
+avrege_category: Averege per category
+cleaning: Cleaning
+confort: confort
+performence: Performence
+equipement: Équipement
+people_satisfaing: des gens sont satisfait
+note_add_success: Note ajoutée avec succès
+note_add_error: Erreur lors de l\'envoi de la note'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

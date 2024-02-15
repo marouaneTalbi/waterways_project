@@ -7,6 +7,7 @@ import EstablishmentListItem from './EstablishmentListItem';
 
 export default function EstablishmentList() {
     const {establishments} = useContext(EstablishmentContext);
+
     const navigate = useNavigate();
 
     return (
@@ -16,7 +17,7 @@ export default function EstablishmentList() {
                 establishments && establishments.length > 0 ? establishments.length : 0
             }
             {
-                establishments && establishments.length > 1 ? " etablissements trouvés" : " etablissement trouvé"
+                establishments && establishments.length > 1 ? ' ' + "ESTABLISHMENTS FOUND": "ESTABLISHMENT FOUND"
             }
         </span>
 
@@ -24,13 +25,13 @@ export default function EstablishmentList() {
              <div className='mt-4 h-[200px]'>
                  <Table hoverable>
                      <Table.Head>
-                         <Table.HeadCell>Nom</Table.HeadCell>
-                         <Table.HeadCell>Address</Table.HeadCell>
-                         <Table.HeadCell className='sm:table-cell hidden'>City</Table.HeadCell>
-                         <Table.HeadCell className='sm:table-cell hidden'>Start Date</Table.HeadCell>
-                         <Table.HeadCell className='sm:table-cell hidden'>Start End</Table.HeadCell>
+                         <Table.HeadCell>NAME</Table.HeadCell>
+                         <Table.HeadCell>ADDRESS</Table.HeadCell>
+                         <Table.HeadCell>CITY</Table.HeadCell>
+                         <Table.HeadCell> START DATE</Table.HeadCell>
+                         <Table.HeadCell> END DATE</Table.HeadCell>
                          <Table.HeadCell>
-                             <span className="sr-only">GERER</span>
+                             <span className="sr-only">ACTION</span>
                          </Table.HeadCell>
                      </Table.Head>
                      <Table.Body className="divide-y overflow-y-scroll w-full" style={{height: '50px'}}>

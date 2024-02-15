@@ -5,8 +5,8 @@ import BoatItem from './BoatItem'
 import { UserContext } from '../../contexts/userContext';
 
 export default function BoatList({showList}) {
-    const { user, getUser } = useContext(UserContext);
-    const { boatList, getBoatListUser } = useContext(BoatContext);
+    const { user, getUser} = useContext(UserContext);
+    const {boat, boatList, getBoatListUser } = React.useContext(BoatContext);
 
     useEffect(() => {
         getUser()
@@ -16,7 +16,7 @@ export default function BoatList({showList}) {
         if(user) {
             getBoatListUser(user.id)
         }
-    }, [user])
+    }, [user, boat])
 
     return (
         <>
@@ -25,19 +25,19 @@ export default function BoatList({showList}) {
                     boatList && boatList.length > 0 ? boatList.length : 0
                 }
                 {
-                    boatList && boatList.length > 1 ? " bateaux trouvés" : " bateau trouvé"
+                    boatList && boatList.length > 1 ? " BOATS FOUNDED" : " BOAT FOUNDED"
                 }
             </span>
             <div className="overflow-x-auto">
                 <div className='mt-4 h-[200px]'>
                     <Table hoverable>
                         <Table.Head>
-                            <Table.HeadCell>Nom</Table.HeadCell>
-                            <Table.HeadCell>Etablissement</Table.HeadCell>
-                            <Table.HeadCell className='sm:table-cell hidden'>Modèle</Table.HeadCell>
-                            <Table.HeadCell className='sm:table-cell hidden'>Places</Table.HeadCell>
+                            <Table.HeadCell>NAME</Table.HeadCell>
+                            <Table.HeadCell>ESTABLISHMENT</Table.HeadCell>
+                            <Table.HeadCell>MODEL</Table.HeadCell>
+                            <Table.HeadCell>PLACES</Table.HeadCell>
                             <Table.HeadCell>
-                                <span className="sr-only">GERER</span>
+                                <span className="sr-only">ACTION</span>
                             </Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y overflow-y-scroll w-full" style={{height: '50px'}}>

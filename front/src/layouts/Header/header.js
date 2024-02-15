@@ -6,6 +6,7 @@ import { isTokenExpired, checkIfRequestExists } from '../../services/axiosReques
 import NotificationIcon from './notif';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/authContext';
+import { UserContext } from '../../contexts/userContext';
 
 export default function Header() {
     const [userRole, setUserRole] = useState(null);
@@ -15,9 +16,10 @@ export default function Header() {
     const { token } = useContext(AuthContext);
     const [hasPendingRequest, setHasPendingRequest] = useState(false);
 
+
+
     useEffect(() => {
         if (token) {
-            console.log(token)
             const decoded = jwtDecode(token);
             setUserRole(decoded.roles[0])
             const provider =  decoded.roles.find(role => role === 'ROLE_PROVIDER')
@@ -34,7 +36,7 @@ export default function Header() {
         if (userRole && !isValidToken) {
           checkRequestStatus();
         }
-      }, [userRole, isValidToken]);
+    }, [userRole, isValidToken]);
 
     const logout = () => {
         localStorage.removeItem('refresh_token');
@@ -61,25 +63,24 @@ export default function Header() {
                     }
                 >
                 <Dropdown.Header>
-                    <span className="block text-sm">Bonnie Green</span>
-                    <span className="block truncate text-sm font-medium">name@flowbite.com</span>
+                        <span className="mr-3 h-6 sm:h-9 text-xl" >🇫🇷</span>
+                        <span className="mr-3 h-6 sm:h-9 text-xl" >🇬🇧</span>
                 </Dropdown.Header>
-                <Dropdown.Item href="/profile">Profile</Dropdown.Item>
+                <Dropdown.Item href="/profile">PROFILE</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={logout}>Log out</Dropdown.Item>
-                <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
+                <Dropdown.Item onClick={logout}>LOGOUT</Dropdown.Item>
                 </Dropdown>
                 <Navbar.Toggle />
             </div>
+     
             <Navbar.Collapse>
             {
                     (!token ) && (
 
                         <>
-                            <Navbar.Link href="/Login">Login</Navbar.Link>
-                            <Navbar.Link href="/Register">Register</Navbar.Link>
+                            <Navbar.Link href="/Login">LOGIN</Navbar.Link>
+                            <Navbar.Link href="/Register">SIGN IN</Navbar.Link>
                         </>
                     )
                 }
@@ -93,17 +94,17 @@ export default function Header() {
                 }
                 {
                     userProvider === 'ROLE_PROVIDER' && !isValidToken && (
-                        <Navbar.Link href="/provider">Provider</Navbar.Link>
+                        <Navbar.Link href="/provider"> PROVIDER</Navbar.Link>
                     )
                 }
                 {
                     userRole && !isValidToken && (
                         <>
-                            <Navbar.Link href="/">Accueil</Navbar.Link>
-                            <Navbar.Link href="/search">Rechercher</Navbar.Link>
+                            <Navbar.Link href="/">MENU</Navbar.Link>
+                            <Navbar.Link href="/search">SEARCH</Navbar.Link>
                             {
                             hasPendingRequest ?
-                            <Navbar.Link href="/myrequest">Suivre ma demande</Navbar.Link> :
+                            <Navbar.Link href="/myrequest">Follow my request</Navbar.Link> :
                             <Navbar.Link href="/requestProvider">Request Provider</Navbar.Link>
                             }
                         </>

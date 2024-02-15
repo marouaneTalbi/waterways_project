@@ -3,6 +3,7 @@ import boatModel from './models/boatModel';
 import {getUserRole} from '../services/axiosRequestFunction';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 export const BoatContext = createContext(null);
 
@@ -16,6 +17,7 @@ const BoatProvider = ({ children }) => {
     const [favorites, setFavorites] = useState(null);
     const [showSlots, setShowslots ] = useState(true);
     const [showEstablishment, setShowEstablishment ] = useState(true);
+    const navigate = useNavigate();
 
     const addBoat = async (formdata) => {
         if (isProvider) {
@@ -35,7 +37,9 @@ const BoatProvider = ({ children }) => {
         return boatModel.get(id).then(response => {
             setBoat(response);
         }).catch(error => {
-            console.error(error);
+            if(error.request.status === 404) {
+                navigate('/404')
+            }
         })
     }
 

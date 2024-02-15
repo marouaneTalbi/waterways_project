@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import {
     Scheduler,
     WeekView,
@@ -21,50 +21,22 @@ import 'moment/locale/fr';
 import { UserContext } from '../../contexts/userContext'
 
 const ReservationSlotList = () => {
-    const { slotsList, getSlotsList } = React.useContext(SlotsContext);
-    const { reservationList, getReservationList } = React.useContext(ReservationContext);
+    const { slotsList, getSlotsList, getOneSlots, slots } = useContext(SlotsContext);
+    const { reservationList, getReservationList, addReservation } = React.useContext(ReservationContext);
     const { id: idBoat } = useParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
     // const [selectedReservation, setSelectedReservation] = useState(null);
+    const { user, getUser } = useContext(UserContext);
 
     useEffect(() => {
         getSlotsList();
+    }, []);
+
+    useEffect(() => {
         getReservationList();
     }, []);
 
-    const Appointment = ({
-                             children,
-                             style,
-                             data,
-                             ...restProps
-                         }) => {
-        const { reservationList } = useContext(ReservationContext);
-        const isReserved = reservationList.some(reservation => reservation.slots === `/api/slots/${data.id}`);
-
-        const appointmentData = {
-            id: data.id,
-            isReserved: isReserved,
-        };
-
-        return (
-            <Appointments.Appointment
-                {...restProps}
-                data={appointmentData} // Passer les données de l'horaires
-                style={{
-                    ...style,
-                    backgroundColor: isReserved ? '#ccc' : '#FFC107',
-                    borderRadius: '8px',
-                }}
-            >
-                {children}
-            </Appointments.Appointment>
-        );
-    };
-
     const MyAppointmentTooltip = ({ children, appointmentData, ...restProps }) => {
-        const { addReservation } = useContext(ReservationContext);
-        const { id: idBoat } = useParams();
-        const { user, getUser } = useContext(UserContext);
         const handleClick = () => {
             getUser()
             if(user) {
@@ -79,7 +51,7 @@ const ReservationSlotList = () => {
                 <div style={{ backgroundColor: isReserved ? '#ccc' : 'transparent' }}>
                     {children}
                 </div>
-                {!isReserved && <button onClick={handleClick}>Réserver</button>}
+                {!isReserved && <button onClick={handleClick}>RÃ©server</button>}
             </AppointmentTooltip.Content>
         );
     };
@@ -133,6 +105,32 @@ const ReservationSlotList = () => {
         return dailyReservations;
     }) || [];
 
+    const Appointment = ({
+        children,
+        style,
+        data,
+        ...restProps
+    }) => {
+        const isReserved = reservationList.some(reservation => reservation.slots.id === data.id);
+        const appointmentData = {
+            id: data.id,
+            isReserved: isReserved,
+        };
+
+        return (
+            <Appointments.Appointment
+                {...restProps}
+                data={appointmentData}
+                style={{
+                    ...style,
+                    backgroundColor: isReserved ? '#ccc' : '#FFC107',
+                    borderRadius: '8px',
+                }}
+            >
+                {children}
+            </Appointments.Appointment>
+        );
+    };
     // const openModal = (reservation) => {
     //     setSelectedReservation(reservation);
     //     setIsModalOpen(true);
@@ -176,5 +174,6 @@ const ReservationSlotList = () => {
         </div>
     );
 };
+
 
 export default ReservationSlotList;
