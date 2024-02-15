@@ -39,9 +39,10 @@ const CommentProvider = ({ children }) => {
 
     const deleteComment = async (id) => {
         return commentApi.delete(id).then(response => {
-            return response
+            toast.success(`Commentaire supprimé`);
+            setComments(prevComments => prevComments.filter(comment => comment.id !== id));
         }).catch(error => {
-            toast.success(`Nous n'avons pas pu récupérer les commentaires`);
+            toast.error(`Nous n'avons pas pu récupérer les commentaires`);
         })
     }
 

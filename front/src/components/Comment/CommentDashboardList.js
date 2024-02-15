@@ -13,76 +13,60 @@ const CommentsDashboardList = () => {
     const [boats, setBoats] = useState({});
 
     const deleteCurrentComment = (id) => {
-        deleteComment(id).then((res) => {
-            console.log(res)
-            return res;
-        })
+        deleteComment(id);
     }
 
     useEffect(() => {
         getAllComments()
     }, [])
 
-    useEffect(() => {
-        if(allComments) {
-            getAllComments().then(() => {
-                const userIds = allComments.map(comment => comment.createdby.split('/').pop());
-                const boatIds = allComments.map(comment => comment.boat.split('/').pop());
-                const uniqueUserIds = [...new Set(userIds)];
-                const uniqueBoatIds = [...new Set(boatIds)];
-                uniqueUserIds.forEach(id => {
-                    getUserById(id).then(user => {
-                        setUsers(prevUsers => ({ ...prevUsers, [id]: user.firstname + ' ' + user.lastname }));
-                    });
-                });
-                uniqueBoatIds.forEach(id => {
-                    getCurrentBoat(id).then(boat => {
-                        setBoats(prevBoats => ({ ...prevBoats, [id]: boat.name }));
-                    });
-                });
-            });
-        }
-        
-    }, [allComments]);
-
     return (
-        <div className='flex flex-col gap-4 h-[590px] overflow-y-scroll overflow-x-hidden'>
+        <div className=''>
             <div className="overflow-x-auto">
                 <div className='mt-4 h-[200px]'>
-                    <Table hoverable>
-                        <Table.Head>
-                                
-                            <Table.HeadCell>BOAT</Table.HeadCell>
-                            <Table.HeadCell>COMMENT</Table.HeadCell>
-                            <Table.HeadCell>DATE</Table.HeadCell>
-                            <Table.HeadCell>USER</Table.HeadCell>
-                            <Table.HeadCell>
-                                <span className="sr-only">DELETE</span>
-                            </Table.HeadCell>
-                        </Table.Head>
-                        <Table.Body className="divide-y overflow-y-scroll w-full" style={{height: '50px'}}>
+                    <table className="min-w-full leading-normal">
+                        <thead>
+                            <tr>
+                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Bateau
+                                </th>
+                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Commentaire
+                                </th>
+                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Date
+                                </th>
+                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Utilisateur
+                                </th>
+                                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         {
                             allComments && allComments.map((comment) => (
-                                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                        {comment && boats[comment.boat.split('/').pop()] || 'Chargement...'}
-                                    </Table.Cell>
-                                    <Table.Cell>{comment.comment}</Table.Cell>
-                                    <Table.Cell>{comment.createdAt && new Date(comment.createdAt).toLocaleString()}</Table.Cell>
-                                    <Table.Cell>{comment && users[comment.createdby.split('/').pop()] || 'Chargement...'}</Table.Cell>
-                                    <Table.Cell>
+                                <tr>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                        {comment && comment.boat.name}
+                                    </td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{comment.comment}</td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{comment.createdAt && new Date(comment.createdAt).toLocaleString()}</td>
+                                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{comment.createdby.firstname}</td>
+                                    <td  className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <div 
                                         // to={`//comments/${boat.id}`}
                                         onClick={()=>deleteCurrentComment(comment.id)} 
                                         className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
                                             Supprimer
                                         </div>
-                                    </Table.Cell>
-                                </Table.Row>
+                                    </td>
+                                </tr>
                             ))
                         }
-                        </Table.Body>
-                    </Table>
+                        </tbody>
+                    </table>
                 </div>
             </div> 
         </div>
