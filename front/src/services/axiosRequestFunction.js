@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 import { useNavigate, Params } from 'react-router';
-const API_BASE_URL = process.env.REACT_APP_SERVER_API
+const API_BASE_URL = process.env.REACT_APP_SERVER
 
 console.log('======>',API_BASE_URL, process.env)
 
