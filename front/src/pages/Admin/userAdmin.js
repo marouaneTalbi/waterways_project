@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import sendRequest from "../../services/axiosRequestFunction";
 import CommentProvider from "../../contexts/commentContext";
 import CommentsDashboardList from "../../components/Comment/CommentDashboardList";
 import BoatProvider from "../../contexts/boatContext";
+import { TranslationContext } from "../../contexts/translationContext";
 
 export default function UserAdmin() {
     const [users, setUsers] = useState([]);
+    const { translations  } = useContext(TranslationContext);
 
     useEffect(() => {
         sendRequest(
@@ -26,19 +28,19 @@ export default function UserAdmin() {
                         <thead>
                         <tr>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Email
+                                {translations.email}
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Last name
+                                {translations.lastname}
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                First name
+                                {translations.firstname}
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Created At
+                               {translations.createdat}
                             </th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                Verified
+                                {translations.verified}
                             </th>
                         </tr>
                         </thead>
