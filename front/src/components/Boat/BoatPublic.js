@@ -9,7 +9,7 @@ import GenericModal from '../GenericModal/GenericModal';
 import { NoteContext } from '../../contexts/noteContext';
 import AddNote from '../notes/Addnotes';
 import BoatRatingsSummary from '../notes/Shownotes';
-
+import { Link } from 'react-router-dom';
 
 export default function BoatPublic() {
     const { id } = useParams();
@@ -127,7 +127,7 @@ export default function BoatPublic() {
 
                     <div className='mt-8 px-4 flex sm:flex-row flex-col sm:justify-between sm:items-center items-start gap-10 sm:gap-0'>
                         <div className='flex flex-row gap-6'>
-                            <Button className='bg-dark-orange'>BOOK</Button>
+                            <Button className='bg-dark-orange'><Link to={`/reservation/${id}`}>Réserver</Link></Button>
                             {
                                 (boat && favorites) && favorites.some(favorite => favorite.id === boat.id) ? (
                                     <Button onClick={removeBoatFromFavorite} className='border-red-500 text-red-500'>

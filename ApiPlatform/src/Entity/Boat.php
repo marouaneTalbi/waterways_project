@@ -57,7 +57,6 @@ use App\Controller\RemoveFavoriteController;
         ),
         new Get(
             uriTemplate: '/boat/{id}',
-            security: "is_granted('ROLE_PROVIDER')",
             normalizationContext: ['groups' => ['boat:read', 'user:read']],
         ),
         new Post(
@@ -101,7 +100,7 @@ class Boat
     private ?int $capacity = null;
 
     #[ORM\ManyToOne(inversedBy: 'boats')]
-    #[Groups(['boat:read', 'boat:create', 'boat:update', 'media_object:read', 'establishment:read'])]
+    #[Groups(['boat:read', 'boat:create', 'boat:update', 'media_object:read', 'establishment:read', 'reservation:read','slots:read'])]
     private ?Establishment $establishment = null;
 
     #[ORM\Column]
