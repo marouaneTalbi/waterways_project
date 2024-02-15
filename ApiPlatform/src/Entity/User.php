@@ -83,7 +83,7 @@ use App\Controller\UserSearchController;
             normalizationContext: ['groups' => ['user:read']]
         ),
     ],
-    normalizationContext: ['groups' => ['user:read', 'establishment:read']],
+    normalizationContext: ['groups' => ['user:read', 'establishment:read', 'reservation:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -95,7 +95,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'reservation:read'])]
     private ?int $id = null;
 
     #[Assert\NotBlank]

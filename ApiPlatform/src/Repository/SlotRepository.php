@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Slot;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\Reservation;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Slot>
@@ -19,6 +20,30 @@ class SlotRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Slot::class);
+    }
+
+    public function findSlotsForReservation(Reservation $reservation, \DateTimeInterface $date): array
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.reservations', 'r')
+            ->where('s.startBookingDate >= :date')
+            ->andWhere('r = :reservation')
+            ->setParameter('date', $date)
+            ->setParameter('reservation', $reservation)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findSlotsForHistory(Reservation $reservation, \DateTimeInterface $date): array
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.reservations', 'r')
+            ->where('s.startBookingDate < :date')
+            ->andWhere('r = :reservation')
+            ->setParameter('date', $date)
+            ->setParameter('reservation', $reservation)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**
