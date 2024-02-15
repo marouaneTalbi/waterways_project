@@ -22,7 +22,7 @@ const ReservationsItem = React.memo(({ reservation}) => {
 
     return (
         <div className='bg-[#45839D] w-full p-4 rounded-lg flex flex-col items-center'>
-            <time className='text-white text-center font-semibold'>{new Date(reservation.reservationDate).toLocaleDateString()}</time>
+            <time className='text-white text-center font-semibold'>{new Date(reservation.slots?.startBookingDate).toLocaleDateString()}</time>
             <div className='w-full'>
                 <div className='flex flex-row justify-between text-white font-semibold'>
                     <span>{new Date(reservation.slots?.startTime).getHours() + 'h' + new Date(reservation.slots?.startTime).getMinutes()}</span>
