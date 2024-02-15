@@ -8,31 +8,33 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(localStorage.getItem('user'))
 
     const login = async (email, password) => {
-        try {
-            return sendRequest(
-                '/auth',
-                'post',
-                {
-                    email: email,
-                    password: password,
-                },
-                 false
-            ).then((response) => {
-                console.log(response)
-                if(response) {
-                    setToken(response.token)
-                    setUser(response);
-                    localStorage.setItem('token', response.token);
-                    localStorage.setItem('refresh_token', response.refresh_token);
-                    localStorage.setItem('user', JSON.stringify(response));
-                    return true;
-                } else {
-                    return false;
-                }
-            })
-        } catch (error) {
-            console.log(error)
-        }
+
+        console.log('test')
+        // try {
+        //     return sendRequest(
+        //         '/auth',
+        //         'post',
+        //         {
+        //             email: email,
+        //             password: password,
+        //         },
+        //          false
+        //     ).then((response) => {
+        //         console.log('======>>>',response)
+        //         if(response) {
+        //             setToken(response.token)
+        //             setUser(response);
+        //             localStorage.setItem('token', response.token);
+        //             localStorage.setItem('refresh_token', response.refresh_token);
+        //             localStorage.setItem('user', JSON.stringify(response));
+        //             return true;
+        //         } else {
+        //             return false;
+        //         }
+        //     })
+        // } catch (error) {
+        //     console.log(error)
+        // }
     };
 
 
