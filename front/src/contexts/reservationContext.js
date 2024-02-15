@@ -9,7 +9,7 @@ const ReservationProvider = ({ children }) => {
     const [reservationList, setReservationList] = useState([]);
     const [reservation, setReservation] = useState({});
     const [boatList, setBoat] = useState([]);
-    const [slotsList, setSlots] = useState([]);
+    const [reservationSlotsList, setReservationSlotsList] = useState([]);
     const currentUser = getUserRole();
     const isProvider = currentUser.roles.find(role => role === 'ROLE_PROVIDER');
 
@@ -72,18 +72,26 @@ const ReservationProvider = ({ children }) => {
     }
 
     const getSlotsFromReservation = async (id) => {
+
+        return ReservationApi.getSlots(id).then(response => {
+            setReservationSlotsList(response);
+            console.log(reservationSlotsList);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    const getHistoryReservation = async (id) => {
         try {
-            const response = await ReservationApi.getSlots(id);
-            setSlots(prevSlotsList => [...prevSlotsList, response]);
+            const response = await ReservationApi.getHistory(id);
+            setReservationSlotsList(prevSlotsList => [...prevSlotsList, response]);
         } catch (error) {
             console.error("Error fetching slots:", error);
         }
     }
 
-
-
     return (
-        <ReservationContext.Provider value={{ getReservationList, reservationList, reservation, setReservation, addReservation, deleteReservation, getBoatFromReservation, getSlotsFromReservation, boatList, slotsList }}>
+        <ReservationContext.Provider value={{ getReservationList, reservationList, reservation, setReservation, addReservation, deleteReservation, getBoatFromReservation, getSlotsFromReservation, boatList, reservationSlotsList, getHistoryReservation, setReservationSlotsList }}>
             {children}
         </ReservationContext.Provider>
     );
