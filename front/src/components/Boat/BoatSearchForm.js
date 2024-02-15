@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { TextInput } from 'flowbite-react';
 import { HiSearch, HiLocationMarker, HiUser } from 'react-icons/hi';
 import { BoatContext } from '../../contexts/boatContext';
@@ -9,14 +9,19 @@ import { TranslationContext } from '../../contexts/translationContext';
 export default function BoatSearchForm({ initialValues = { search: '', location: '', people: '' } }) {
     const { searchBoat } = useContext(BoatContext);
     const { translations  } = useContext(TranslationContext);
+    const [isLoading, setIsLoading] = useState(false);
 
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true); 
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
-        searchBoat(data);    
-    }
+        try {
+            await searchBoat(data);    
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <form onSubmit={handleSubmit} className='w-full flex flex-row gap-2'>
@@ -30,8 +35,8 @@ export default function BoatSearchForm({ initialValues = { search: '', location:
                 <TextInput defaultValue={initialValues.search} name='search' size="sm" id="search" type="text" icon={HiSearch} placeholder={translations.boatname}/>
             </div>
             <div>
-                <Button type='submit' color='blue' size="sm">
-                    <HiSearch className="h-6 w-6" />
+                <Button type='submit' color='blue' size="sm" disabled={isLoading}>
+                    {isLoading ? 'Chargement...' : <HiSearch className="h-6 w-6" />}
                 </Button>
             </div>
         </form>
