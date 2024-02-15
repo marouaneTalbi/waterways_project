@@ -17,7 +17,6 @@ use App\Controller\ReservationSlotController;
 #[ApiResource(
     operations: [
         new GetCollection(
-            security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['reservation:read']],
             paginationEnabled: false,
         /*paginationItemsPerPage: 100,*/
@@ -29,7 +28,6 @@ use App\Controller\ReservationSlotController;
 
         ),
         new Get(
-            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
             normalizationContext: ['groups' => ['reservation:read']],
         ),
         new GetCollection(

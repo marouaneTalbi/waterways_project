@@ -19,8 +19,9 @@ export default function BoatForm({ onCloseModal }) {
     const [endTime, setEndTime] = useState(slots && slots.endTime ? slots.endTime : '');
     const { user } = useContext(UserContext);
     const [slotDuration, setSlotDuration] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const { translations  } = useContext(TranslationContext);
-    
+  
     useEffect(() => {
         getEstablishmentList();
     }, [user]);
@@ -54,7 +55,7 @@ export default function BoatForm({ onCloseModal }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        setIsLoading(true);
         const formData = new FormData();
         formData.append('name', boat.name);
         formData.append('modele', boat.modele);
@@ -323,13 +324,18 @@ export default function BoatForm({ onCloseModal }) {
                 )
             }
 
-            <div className="w-full mt-4">
-                {boat && boat?.id ? (
-                    <Button color='red' type='submit'>Modifier</Button>
-                ) : (
-                    <Button color='red' type='submit'>Ajouter</Button>
-                )}
-            </div>
+<div className="w-full mt-4">
+    {boat && boat.id ? (
+        <Button color='red' type='submit' disabled={isLoading}>
+            {isLoading ? "Chargement..." : "Modifier"}
+        </Button>
+    ) : (
+        <Button color='red' type='submit' disabled={isLoading}>
+            {isLoading ? "Chargement..." : "Ajouter"}
+        </Button>
+    )}
+</div>
+
         </form>
     )
 }

@@ -24,7 +24,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new GetCollection(
-            security: "is_granted('ROLE_ADMIN')",
             normalizationContext: ['groups' => ['slots:read']],
             paginationEnabled: false,
             /*paginationItemsPerPage: 100,*/
@@ -36,7 +35,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
         ),
         new Get(
-            security: "is_granted('ROLE_ADMIN') or is_granted('ROLE_PROVIDER')",
             normalizationContext: ['groups' => ['slots:read']],
         ),
         new Get(
