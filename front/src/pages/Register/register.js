@@ -11,6 +11,7 @@ const Register = () => {
   const [lastname, setLastname] = useState('');
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [showErrorMessage, SetShowErrorMessage] = useState(false);
 
   const handleSubmit = async (e) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -35,6 +36,7 @@ const Register = () => {
   }
 
     if (!passwordRegex.test(password)) {
+      SetShowErrorMessage(true)
       setIsLoading(false);
       toast.error('Veuillez mettre un mot de passe valide', {
           position: toast.POSITION.TOP_RIGHT,
@@ -99,6 +101,7 @@ const Register = () => {
                             <Label htmlFor="password" value="Votre mot de passe" />
                         </div>
                         <TextInput id="password" placeholder='Mot de passe' type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                      {showErrorMessage && <span className='text-red-500 mt-9'>Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).</span>}
                     </div>
                     <Button type="submit" color="blue" disabled={isLoading}>{isLoading ? 'Inscription...' : 'Inscription'}</Button>
                 </form>

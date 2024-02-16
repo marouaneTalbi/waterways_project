@@ -16,7 +16,6 @@ const ReservationProvider = ({ children }) => {
 
 
     const addReservation = async (idBoat, idSlot, idUser) => {
-        if (isProvider) {
             const getBoat = `/api/boat/${idBoat}`;
             const getSlot = `/api/slots/${idSlot}`;
             const getUser = `/api/users/${idUser}`;
@@ -28,7 +27,6 @@ const ReservationProvider = ({ children }) => {
             }).catch(error => {
                 console.log(error);
             });
-        }
     };
     
 

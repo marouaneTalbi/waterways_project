@@ -71,11 +71,19 @@ const ReservationSlotList = () => {
         const { addReservation } = useContext(ReservationContext);
         const { id: idBoat } = useParams();
         const { user, getUser, getRoleLabel, highestRole } = useContext(UserContext);
+        const [isLoading, setIsLoading] = useState(false);
+
         const handleClick = () => {
+            setIsLoading(true); 
             getUser()
-            if(user) {
-                addReservation(idBoat, appointmentData.id, user.id);
+            try {
+                if(user) {
+                    addReservation(idBoat, appointmentData.id, user.id);
+                }
+            } finally {
+                setIsLoading(false);
             }
+           
         };
 
         const isReserved = appointmentData.isReserved;
@@ -85,7 +93,14 @@ const ReservationSlotList = () => {
                 <div style={{ backgroundColor: isReserved ? '#ccc' : 'transparent' }}>
                     {children}
                 </div>
-                {!isReserved && <button onClick={handleClick}>Réserver</button>}
+
+                
+                {!isReserved && <button onClick={handleClick} disabled={isLoading}>
+                {
+                    isLoading ? 'Chargement...' : 
+                    'Réserver'
+                }
+                </button>}
             </AppointmentTooltip.Content>
         );
     };
@@ -100,7 +115,6 @@ const ReservationSlotList = () => {
         const dailyReservations = [];
         const slotBoat = slot.boat.id;
         const slotId = slot.id;
-        console.log(slot);
 
         if (`/api/boat/${slotBoat}` === `/api/boat/${idBoat}`) {
             const startDate = new Date(slot.startBookingDate);
