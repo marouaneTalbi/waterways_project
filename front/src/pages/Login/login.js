@@ -9,18 +9,22 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const { login } = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         try {
             const success = await login(email, password);
             if (success) {
                 toast.success('Vous êtes Connecté !', {
                     position: toast.POSITION.TOP_RIGHT
                 });
+                setIsLoading(false);
                 navigate("/");
             }
         } catch (error) {
+            setIsLoading(false);
             toast.error("Username ou mot de passe incorrect", {
                 position: toast.POSITION.TOP_RIGHT
             });
@@ -46,7 +50,7 @@ export default function Login() {
                         <TextInput id="password" type="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
                     {/* <a href="/mdpResetEmail" onClick={() => navigate(('/mdpResetEmail'))}>Mot de passe oublié</a> */}
-                    <Button type="submit" color="blue">Connexion</Button>
+                    <Button type="submit" color="blue" disabled={isLoading}>{isLoading ? 'Connexion...' : 'Connexion'}</Button>
                 </form>
             </Card>
         </div>
