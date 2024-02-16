@@ -10,14 +10,16 @@ const Register = () => {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     const EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     e.preventDefault();
-    
+    setIsLoading(true);
     if (email === '' || password === '' || firstname === '' || lastname === '') {
+        setIsLoading(false);
         toast.error('Veuillez remplir tous les champs', {
             position: toast.POSITION.TOP_RIGHT,
         });
@@ -25,6 +27,7 @@ const Register = () => {
     }
 
     if (!EmailRegex.test(email)) {
+      setIsLoading(false);
       toast.error('Veuillez mettre un email valide', {
           position: toast.POSITION.TOP_RIGHT,
       });
@@ -32,6 +35,7 @@ const Register = () => {
   }
 
     if (!passwordRegex.test(password)) {
+      setIsLoading(false);
       toast.error('Veuillez mettre un mot de passe valide', {
           position: toast.POSITION.TOP_RIGHT,
       });
@@ -39,6 +43,7 @@ const Register = () => {
     }
    
     try {
+      setIsLoading(true);
       sendRequest(
         '/api/users',
         'post',
@@ -49,10 +54,16 @@ const Register = () => {
           lastname: lastname
         },
         false
-      ).then(response =>
-          navigate("/Login"))
-        .catch(error => console.error("Erreur lors de l'inscription:", error));
+      ).then(response => {
+        navigate("/Login");
+        setIsLoading(false);
+     })
+     .catch(error => {
+        console.error("Erreur lors de l'inscription:", error);
+        setIsLoading(false); 
+    });
     } catch (error) {
+      setIsLoading(false);
       toast.error("Username ou mot de passe incorrect",  {
           position: toast.POSITION.TOP_RIGHT
       });
@@ -89,7 +100,7 @@ const Register = () => {
                         </div>
                         <TextInput id="password" placeholder='Mot de passe' type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
-                    <Button type="submit" color="blue">Inscription</Button>
+                    <Button type="submit" color="blue" disabled={isLoading}>{isLoading ? 'Inscription...' : 'Inscription'}</Button>
                 </form>
             </Card>
         </div>
