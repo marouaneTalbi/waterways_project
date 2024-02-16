@@ -7,18 +7,21 @@ import DataCard from '../DataCard/DataCard';
 import { faHouse, faMoneyBill, faUser, faFileLines, faGears, faWandMagicSparkles, faWrench, faBath, faRocket } from '@fortawesome/free-solid-svg-icons';
 import GenericModal from '../GenericModal/GenericModal';
 import BoatForm from './BoatForm';
+import SlotForm from './SlotForm';
 import EstablishmentProvider from '../../contexts/establishmentContext';
 import SlotsProvider from '../../contexts/slotsContext';
 import GoogleMapComponent from '../GoogleMap/GoogleMap';
 import { CommentContext } from '../../contexts/commentContext';
 import NoteCard from '../notes/NoteCard';
 import { NoteContext } from '../../contexts/noteContext';
+import BoatProvider from '../../contexts/boatContext'
 
 export default function BoatInfo() {
     const { id } = useParams()
     const { getBoat, boat } = useContext(BoatContext);
     const { getBoatComments, boatComments } = useContext(CommentContext);
     const { getBoatNotes, getPercentage, ratings } = useContext(NoteContext);
+    const [isBoatModalOpen, setBoatModalOpen] = useState(false);
 
     const [isModalOpen, setModalOpen] = useState(false);
 
@@ -41,6 +44,14 @@ export default function BoatInfo() {
     useEffect(() => {
         getBoat(id)
     }, [id])
+
+    const handleCloseSlotModal = () => {
+        setBoatModalOpen(false);
+    };
+
+    const handleOpenBoatModal = () => {
+        setBoatModalOpen(true);
+    }
 
     return (
         <div className="grid md:grid-cols-4 grid-cols-2 md:grid-rows-4 grid-rows-full gap-4 w-full">
@@ -87,6 +98,16 @@ export default function BoatInfo() {
                 </div>
                 <div className="py-6 border-t border-gray-100 absolute bottom-0 w-[calc(100%_-_2rem)] flex flex-row justify-between">
                     <a href={`/reservation/${id}`} className="text-dark-orange p-3 bg-light-orange rounded-lg text-center">CHECK PLANING</a>
+                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenBoatModal}>Add Slots</button>
+                    <GenericModal title="Ajouter un slot" onClose={handleCloseSlotModal} isOpen={isBoatModalOpen}>
+                    <EstablishmentProvider>
+                        <BoatProvider>
+                            <SlotsProvider>
+                                <SlotForm onCloseModal={handleCloseSlotModal} />
+                            </SlotsProvider>
+                        </BoatProvider>
+                    </EstablishmentProvider>
+                    </GenericModal>
                     <Link to={`/boat/${id}`} className="font-semibold p-3 text-center">SEE BOATS</Link>
                 </div>
             </div>

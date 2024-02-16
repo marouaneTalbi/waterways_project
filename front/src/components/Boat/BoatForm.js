@@ -179,18 +179,6 @@ export default function BoatForm({ onCloseModal }) {
                 required
             />
 
-            <div className="mt-5 block">
-                <Label htmlFor="timeNumber" value="Min time for booking" />
-            </div>
-
-            <TextInput
-                id="minTime"
-                value={boat && boat.minTime ? boat.minTime : ''}
-                onChange={(event) => setBoat((prevBoat) => ({ ...prevBoat, minTime: Number(event.target.value) }))}
-                type="integer"
-                required
-            />
-
             <div className="mb-2 block">
             <Label htmlFor="description" value="DESCRIPTION" />
             </div>
@@ -226,51 +214,62 @@ export default function BoatForm({ onCloseModal }) {
                (boat && !boat?.id )|| showSlots ? 
                
                <>
-               <div className="mb-2 block">
-                   <Label htmlFor="startBookingDate" value="Start Date"/>
-               </div>
-               <DatePicker
-                   locale={fr}
-                   selected={slots && slots.startBookingDate ? slots.startBookingDate : ''}
-                   onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, startBookingDate: date }))}
-                   dateFormat="dd/MM/yyyy"
-               />
+               <div className="flex flex-wrap -mx-2">
+    <div className="w-1/2 px-2 mb-4">
+        <div className="mb-2 block">
+            <Label htmlFor="startBookingDate" value="Start Date"/>
+        </div>
+        <DatePicker
+            locale={fr}
+            selected={slots && slots.startBookingDate ? slots.startBookingDate : ''}
+            onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, startBookingDate: date }))}
+            dateFormat="dd/MM/yyyy"
+        />
+    </div>
 
-               <div className="mb-2 block">
-                   <Label htmlFor="endBookingDate" value="End Date"/>
-               </div>
-               <DatePicker
-                   locale={fr}
-                   selected={slots && slots.endBookingDate ? slots.endBookingDate : ''}
-                   onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, endBookingDate: date }))}
-                   dateFormat="dd/MM/yyyy"
-               />
+    <div className="w-1/2 px-2 mb-4">
+        <div className="mb-2 block">
+            <Label htmlFor="endBookingDate" value="End Date"/>
+        </div>
+        <DatePicker
+            locale={fr}
+            selected={slots && slots.endBookingDate ? slots.endBookingDate : ''}
+            onChange={(date) => setSlots((prevSlots) => ({ ...prevSlots, endBookingDate: date }))}
+            dateFormat="dd/MM/yyyy"
+        />
+    </div>
 
-               <div className="mb-2 block">
-                   <Label htmlFor="startTime" value="START HOUR"/>
-               </div>
-               <input
-                   id="startTime"
-                   type="text"
-                   value={startTime}
-                   onChange={(event) => setStartTime(event.target.value)}
-                   pattern="[0-9]{2}:[0-9]{2}"
-                   placeholder="HH:mm"
-                   required
-               />
+    <div className="w-1/2 px-2 mb-4">
+        <div className="mb-2 block">
+            <Label htmlFor="startTime" value="START HOUR"/>
+        </div>
+        <input
+            id="startTime"
+            type="text"
+            value={startTime}
+            onChange={(event) => setStartTime(event.target.value)}
+            pattern="[0-9]{2}:[0-9]{2}"
+            placeholder="HH:mm"
+            required
+        />
+    </div>
 
-               <div className="mb-2 block">
-                   <Label htmlFor="endTime" value="END HOUR" />
-               </div>
-               <input
-                   id="endTime"
-                   type="text"
-                   value={endTime}
-                   onChange={(event) => setEndTime(event.target.value)}
-                   pattern="[0-9]{2}:[0-9]{2}"
-                   placeholder="HH:mm"
-                   required
-               />
+    <div className="w-1/2 px-2 mb-4">
+        <div className="mb-2 block">
+            <Label htmlFor="endTime" value="END HOUR" />
+        </div>
+        <input
+            id="endTime"
+            type="text"
+            value={endTime}
+            onChange={(event) => setEndTime(event.target.value)}
+            pattern="[0-9]{2}:[0-9]{2}"
+            placeholder="HH:mm"
+            required
+        />
+    </div>
+</div>
+
                <div className="mb-2 block">
                    <Label htmlFor="endTime" value="Découpage" />
                </div>
@@ -302,7 +301,8 @@ export default function BoatForm({ onCloseModal }) {
                             }}
                             required
                         >
-                            <h3 className="flex items-center justify-center mt-10">Avaliable date</h3>
+                            
+                            {/* <span className="flex items-center justify-center mt-10">Avaliable date</span> 
             
                             <div>
                                 <div className="mb-2 block">
@@ -310,8 +310,8 @@ export default function BoatForm({ onCloseModal }) {
                                 </div>
             
                             </div>
-            
-                            <option value="" disabled>CHOSE Establishment</option>
+                            */}
+                            <option value="" disabled>Chose Establishment</option>
                             {establishmentList.map((establishment) => (
                                 <option key={establishment.id} value={establishment.id}>
                                     {establishment.name}
