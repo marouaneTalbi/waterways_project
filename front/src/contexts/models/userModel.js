@@ -6,7 +6,6 @@ const userApi = {
     },
     update: async function (userId, user) {
         const userJson = JSON.stringify(user);
-        console.log(userJson)
         return sendRequest(`/api/user/${userId}`, 'put', userJson, true);
     },
     get: async function () {

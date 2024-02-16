@@ -22,7 +22,6 @@ const CommentProvider = ({ children }) => {
 
     const getBoatComments = async (boatId) => {
         return commentApi.getList(boatId).then(response => {
-            console.log(response)
             setBoatComments(response);
         }).catch(error => {
             toast.success(`Nous n'avons pas pu récupérer les commentaires`);

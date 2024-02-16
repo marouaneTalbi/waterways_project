@@ -85,7 +85,6 @@ const EstablishmentProvider = ({ children }) => {
     const editEstablishment = async ({name, address, city, startDate, endDate}, id) => {
         if (isProvider) {
             return EstablishmentApi.edit({name, address, city, startDate, endDate}, id).then(response => {
-                console.log(response)
             })
         } else {
             throw new Error('You are not a provider');  

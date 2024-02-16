@@ -23,7 +23,6 @@ const BoatRatingsSummary = ({ boatId }) => {
               acc.equipement += note.equipement;
               return acc;
             }, { proprete: 0, confort: 0, performance: 0, equipement: 0 });
-            console.log(averages)
             const numNotes = filteredNotes.length;
             let totalGeneralAverage = 0;
 
@@ -38,7 +37,6 @@ const BoatRatingsSummary = ({ boatId }) => {
                 return acc + note.proprete + note.confort + note.performance + note.equipement;
             }, 0);
             totalGeneralAverage = sum / (numNotes * 4);
-            console.log(totalGeneralAverage)
             }
         } catch (error) {
             console.error("Erreur lors de la récupération des notes :", error);

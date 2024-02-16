@@ -103,7 +103,6 @@ const ReservationSlotList = () => {
         const dailyReservations = [];
         const slotBoat = slot.boat.id;
         const slotId = slot.id;
-        console.log(slot);
 
         if (`/api/boat/${slotBoat}` === `/api/boat/${idBoat}`) {
             const startDate = new Date(slot.startBookingDate);

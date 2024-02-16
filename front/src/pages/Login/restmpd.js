@@ -22,7 +22,6 @@ export default function ResetMdp() {
                 false
             ).then((response) => {
                 navigate('/login');
-                console.log(response)
             })
         }
     };

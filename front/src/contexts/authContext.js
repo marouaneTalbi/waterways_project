@@ -9,15 +9,6 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(localStorage.getItem('user'))
 
     const login = async (email, password) => {
-
-        // console.log('test')
-        // const response = await axios.post('/auth', {
-        //     email: email,
-        //     password: password,
-        //   });
-        //   console.log('========> ',response);
-
-
         try {
             return sendRequest(
                 '/auth',
@@ -28,7 +19,6 @@ export const AuthProvider = ({ children }) => {
                 },
                  false
             ).then((response) => {
-                console.log('======>>>',response)
                 if(response) {
                     setToken(response.token)
                     setUser(response);

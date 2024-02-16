@@ -100,7 +100,6 @@ const BoatProvider = ({ children }) => {
     const editBoat = async (boat, id) => {
         if (isProvider) {
             return boatModel.edit(boat, id).then(response => {
-                console.log(response)
             })
         } else {
             throw new Error('You are not a provider');  

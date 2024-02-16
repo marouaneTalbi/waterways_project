@@ -126,7 +126,6 @@ const SlotsProvider = ({ children }) => {
     const getSlotsList = async () => {
         return slotsApi.getList().then(response => {
             setSlotsList(response);
-            console.log(response);
         }).catch(error => {
             console.log(error)
         })

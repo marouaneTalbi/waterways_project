@@ -59,9 +59,6 @@ export default function Boats(progps) {
                 true
             ).then((response) => {
                 const boatId = response.data.id;
-                console.log("passe ici");
-                console.log(startDate);
-                console.log(endDate);
                 /*sendRequest(
                     '/api/slots',
                     'post',

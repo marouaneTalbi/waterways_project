@@ -40,7 +40,6 @@ const NoteProvider = ({ children }) => {
     }
 
     function getPercentage(ratings) {
-        console.log(ratings);
         const maxRating = 5;
         const percent = (ratings / maxRating) * 100;
         return percent.toFixed(2);
