@@ -21,7 +21,6 @@ const ReservationsItem = React.memo(({ reservation}) => {
         setConfirmModalOpen(false);
     };
 
-
     return (
         <>
         {reservation.slots ? (
@@ -52,7 +51,7 @@ const ReservationsItem = React.memo(({ reservation}) => {
                         <span className='text-white font-semibold'>{reservation.slots.boat?.address + ', ' + reservation.slots.boat?.city}</span>
                     </div>
                 </div>
-                <Button size="xs" color='failure' className='self-start mt-2' onClick={() => handleDelete(reservation.reservation)}>Annuler</Button>
+                <Button size="xs" color='failure' className='self-start mt-2' onClick={() => handleConfirmDelete(reservation.reservation)}>Annuler</Button>
                 <ConfirmModal
                     isOpen={isConfirmModalOpen}
                     onRequestClose={handleCancelDelete}
