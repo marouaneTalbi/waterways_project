@@ -148,7 +148,7 @@ class Boat
     private Collection $comments;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update', 'user:read', 'reservation:read'])]
+    #[Groups(['media_object:read','boat:read', 'boat:create', 'boat:update', 'user:read', 'reservation:read','slots:read'])]
     private ?float $price = 0;
 
     #[ORM\OneToMany(mappedBy: 'boat', targetEntity: Note::class)]

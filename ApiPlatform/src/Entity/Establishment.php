@@ -21,7 +21,6 @@ use App\Controller\UserBoatEstablishmentController;
 use App\Controller\UserEstablishmentController;
 use App\Controller\EstablishmentSearchController;
 
-
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
 #[ApiResource(
     operations: [

@@ -18,6 +18,15 @@ const userApi = {
     },
     satisfaction: async function (userId) {
         return sendRequest(`api/user/${userId}/satisfaction`, 'get', {}, true)
+    },
+    reservation: async function (userId) {
+        return sendRequest(`api/user/${userId}/reservation`, 'get', {}, true)
+    },
+    reservationPassed: async function (userId) {
+        return sendRequest(`api/user/${userId}/reservationPassed`, 'get', {}, true)
+    },
+    gain: async function (userId) {
+        return sendRequest(`api/user/${userId}/gain`, 'get', {}, true)
     }
 };
 

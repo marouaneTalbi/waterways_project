@@ -1,6 +1,7 @@
 import React, { useState, createContext } from 'react';
 import userModel from './models/userModel';
 import { useNavigate } from 'react-router-dom';
+import ReservationApi from './models/reservationModel';
 
 export const UserContext = createContext(null);
 
@@ -10,6 +11,9 @@ const UserProvider = ({ children }) => {
     const [userResults, setUserResults] = useState(null);
     const [satisfaction, setSatisfaction] = useState(null);
     const [users, setUsers] = useState(null);
+    const [reservations, setReservations] = useState(null);
+    const [reservationsPassed, setReservationsPassed] = useState(null);
+    const [gain, setGain] = useState(null);
     const navigate = useNavigate();
 
     const getUser = async () => {
@@ -88,8 +92,36 @@ const UserProvider = ({ children }) => {
         })
     }
 
+    const getProviderReservation = async (userId) => {
+        return userModel.reservation(userId).then(response => {
+            setReservations(response)
+        }).catch(error => {
+            if(error.request.status === 403) {
+                navigate('/403')
+            }
+        })
+    }
+
+    const getSlotsFromHistory = async (id) => {
+        return ReservationApi.getHistory(id).then(response => {
+            setReservationsPassed(response.length);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    const getProviderGain = async (userId) => {
+        return userModel.gain(userId).then(response => {
+            setGain(response)
+        }).catch(error => {
+            if(error.request.status === 403) {
+                navigate('/403')
+            }
+        })
+    }
+
     return (
-        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById, searchUser, userResults, getProviderSatisfaction, satisfaction, users, getUsers }}>
+        <UserContext.Provider value={{ user, setUser, getUser, updateUser, getRoleLabel, highestRole, getUserById, searchUser, userResults, getProviderSatisfaction, satisfaction, users, getUsers, getProviderReservation, reservations, getSlotsFromHistory, reservationsPassed, getProviderGain, gain }}>
             {children}
         </UserContext.Provider>
     );
