@@ -8,6 +8,8 @@ import GenericModal from '../components/GenericModal/GenericModal'
 import Establishments from '../components/Establishment/establishments'
 import { UserContext } from '../contexts/userContext'
 import Loader from '../components/Loader/Loader'
+import ReservationProvider from "../contexts/reservationContext";
+import ReservationProviderList from "../components/ProviderReservation/ReservationProviderList";
 
 export default function ProviderDashboard() {
     const [isBoatModalOpen, setBoatModalOpen] = useState(false);
@@ -126,7 +128,15 @@ export default function ProviderDashboard() {
                 </BoatProvider>
             </div> 
             <div className="md:col-span-2 row-span-2 md:row-start-4 bg-white rounded border-2 border-gray-100 p-4">
-                {/* RESERVATION LIST */}
+                <header className="flex flex-row justify-between">
+                    <div className="flex flex-col gap-2">
+                        <h4 className="text-xl font-medium">HISTORIQUE</h4>
+                    </div>
+                    <button className="text-base text-dark-orange underline cursor-pointer" onClick={handleOpenBoatModal}>AJOUTER</button>
+                </header>
+                <ReservationProvider>
+                    <ReservationProviderList showList={true}/>
+                </ReservationProvider>
             </div>
             <div className="md:col-span-2 row-span-2 md:col-start-3 md:row-start-4 bg-white rounded border-2 border-gray-100 p-4">
                 {/* I DON'T KNOW */}
