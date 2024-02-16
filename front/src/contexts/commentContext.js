@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export const CommentContext = createContext(null);
 
 const CommentProvider = ({ children }) => {
-    const [boatComments, setBoatComments] = useState(null);
+    const [boatComments, setBoatComments] = useState([]);
     const [allComments, setComments] = useState(null);
 
 
@@ -21,16 +21,16 @@ const CommentProvider = ({ children }) => {
     };
 
     const getBoatComments = async (boatId) => {
-        return commentApi.getList().then(response => {
-            const filteredComments = response.filter(comment => comment.boat === '/api/boat/'+boatId);
-            setBoatComments(filteredComments);
+        return commentApi.getList(boatId).then(response => {
+            console.log(response)
+            setBoatComments(response);
         }).catch(error => {
             toast.success(`Nous n'avons pas pu récupérer les commentaires`);
         })
     }
 
     const getAllComments = async () => {
-        return commentApi.getList().then(response => {
+        return commentApi.getAll().then(response => {
             setComments(response);
         }).catch(error => {
             toast.success(`Nous n'avons pas pu récupérer les commentaires`);

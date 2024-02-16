@@ -16,10 +16,8 @@ const CommentsList = ({ boatId }) => {
                 boatComments == null ? (
                     <Loader />
                 ) : (
-                    boatComments.map((comment) => {
-                        return (  
-                            <CommentItem key={comment.id} comment={comment} />
-                        )
+                    boatComments.map((comment, index) => {
+                        return (<CommentItem key={comment.id} comment={comment} />)
                     })
                 )
             }

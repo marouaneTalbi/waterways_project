@@ -22,7 +22,7 @@ const AddCommentForm = ({ boatId }) => {
     } else {
       setCommentData(prevData => ({
         ...prevData,
-        // createdby: `/api/users/${user.id}`,
+        createdby: `/api/users/${user.id}`,
       }));
     }
   }, [user, getUser, boatId]); 
