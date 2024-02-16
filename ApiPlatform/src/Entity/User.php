@@ -29,6 +29,9 @@ use Symfony\Config\ApiPlatform\SwaggerConfig;
 use App\Controller\GetFavoriteController;
 use App\Controller\UserGetController;
 use App\Controller\UserBoatEstablishmentController;
+use App\Controller\UserGetReservationController;
+use App\Controller\UserGetGainController;
+use App\Controller\UserGetReservationPassedController;
 use App\Controller\UserGetSatisfaction;
 use App\Controller\UserSearchController;
 use App\Controller\UserGetInfo;
@@ -45,6 +48,24 @@ use App\Controller\UserGetInfo;
             uriTemplate: '/user/{id}/satisfaction',
             security: "is_granted('ROLE_PROVIDER')",
             controller: UserGetSatisfaction::class
+        ),
+        new Get(
+            name: 'getProviderReservationPassed',
+            uriTemplate: '/user/{id}/reservationPassed',
+            security: "is_granted('ROLE_PROVIDER')",
+            controller: UserGetReservationPassedController::class,
+        ),
+        new Get(
+            name: 'getProviderGain',
+            uriTemplate: '/user/{id}/gain',
+            security: "is_granted('ROLE_PROVIDER')",
+            controller: UserGetGainController::class,
+        ),
+        new Get(
+            name: 'getProviderReservation',
+            uriTemplate: '/user/{id}/reservation',
+            security: "is_granted('ROLE_PROVIDER')",
+            controller: UserGetReservationController::class
         ),
         new GetCollection(
             security: "is_granted('ROLE_ADMIN')",
