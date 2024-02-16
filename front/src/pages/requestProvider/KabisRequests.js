@@ -91,6 +91,7 @@ const KabisRequests = () => {
         try {
           //await sendComplementEmail(activeRequestId, complementText);
           await sendRequest('/api/notifications', 'POST', {title:"Demande de complement", message:complementText});
+          notify("Request additional information", 'success');
         } catch (error) {
           console.error("Erreur lors de l'envoi du complément :", error);
           notify("Error while Request additional information", 'error');
@@ -142,8 +143,7 @@ const KabisRequests = () => {
                                     <button onClick={() => {
                                      setShowInput(true);
                                      setActiveRequestId(request.id);
-                                     handleStatusChange(request.id, 2);
-                                    }} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2"> Compliment request2</button>
+                                    }} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2"> Compliment request</button>
                                    
                                     <button onClick={() => handleStatusChange(request.id, 3)} className="text-white bg-red-500 hover:bg-red-700 transition duration-200 rounded px-4 py-2">REFUSE</button>
                                 </div>
@@ -165,8 +165,11 @@ const KabisRequests = () => {
                      onChange={(e) => setComplementText(e.target.value)}
                      className="border rounded p-2"
                    />
-                   <button onClick={handleSubmitComplement} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    SEND
+                   <button onClick={() => {
+                           handleSubmitComplement(); 
+                           handleStatusChange(request.id, 2);
+                           }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        SEND
                    </button>
                 </div>
                 )}
