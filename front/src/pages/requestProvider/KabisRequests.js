@@ -137,10 +137,7 @@ const KabisRequests = () => {
                             {request.status === 0  && (
                                 <div className="mt-2">
                                     <button onClick={() => handleStatusChange(request.id, 1)} className="text-white bg-green-500 hover:bg-green-700 transition duration-200 rounded px-4 py-2 mr-2">Valider</button>
-                                    <button onClick={async () => {
-                                      await handleStatusChange(request.id, 2);
-                                      sendEmailToUser(request.createdby.email);
-                                    }} className="text-white bg-yellow-500 hover:bg-yellow-700 transition duration-200 rounded px-4 py-2 mr-2">Compliment request</button> 
+                            
                                     
                                     <button onClick={() => {
                                      setShowInput(true);
