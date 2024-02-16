@@ -30,12 +30,12 @@ export default function ReservationList() {
 
     return (
         <>
-            <span className='text-gray-500 text-sm mb-4'>
+            {/* <span className='text-gray-500 text-sm mb-4'>
                 {reservationSlotsList && reservationSlotsList.length > 0 ? reservationSlotsList.length : 0}
                 {reservationSlotsList && reservationSlotsList.length > 1 ? " horaires trouvés" : " horaire trouvé"}
-            </span>
-            <div className="overflow-x-auto">
-                <div className='mt-4 h-[200px]'>
+            </span> */}
+            <div className="overflow-x-auto w-full">
+                <div className='mt-4 h-[300px] flex flex-col gap-4'>
                     {reservationSlotsList && reservationSlotsList.map((reservation, index) => (
                         <ReservationItem key={index} reservation={reservation} />
                     ))}

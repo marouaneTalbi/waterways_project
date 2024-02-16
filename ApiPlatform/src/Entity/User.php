@@ -152,7 +152,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['user:create','user:read','media_object:read'])]
+    #[Groups(['user:read','media_object:read'])]
     private ?bool $isVerified = false;
 
     #[ORM\Column(nullable: true)]

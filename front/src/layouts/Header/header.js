@@ -62,10 +62,10 @@ export default function Header() {
                         <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
                     }
                 >
-                <Dropdown.Header>
+                {/* <Dropdown.Header>
                         <span className="mr-3 h-6 sm:h-9 text-xl" >🇫🇷</span>
                         <span className="mr-3 h-6 sm:h-9 text-xl" >🇬🇧</span>
-                </Dropdown.Header>
+                </Dropdown.Header> */}
                 <Dropdown.Item href="/profile">PROFILE</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item href="/notifications">Notifications&nbsp;<NotificationIcon /></Dropdown.Item>
