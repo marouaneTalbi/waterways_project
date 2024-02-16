@@ -2,8 +2,8 @@
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 import { useNavigate, Params } from 'react-router';
-// const API_BASE_URL = process.env.REAT_APP_API_BASE_URL
-const API_BASE_URL = 'http://localhost:8888'
+const API_BASE_URL = process.env.REAT_APP_API_BASE_URL
+//const API_BASE_URL = 'http://localhost:8888'
 
 
 
@@ -45,20 +45,6 @@ const sendRequest = async (endpoint, method = 'GET', data = {}, requireAuth = tr
       });
       return response.data;
     } catch (error) {
-      console.error('Error with the request:', error.response?.data || error.message);
-      throw error;
-    }
-  } else {
-    try {
-      const response = await axiosInstance({
-        url: endpoint,
-        method,
-        data,
-        params,
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error with the request:', error.response?.data || error.message);
       throw error;
     }
   }
