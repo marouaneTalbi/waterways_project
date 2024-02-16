@@ -40,7 +40,6 @@ const ReservationSlotList = () => {
         getReservationList();
     }, []);
 
-
     const Appointment = ({
                              children,
                              style,
@@ -102,10 +101,11 @@ const ReservationSlotList = () => {
 
     const reservations = slotsList?.flatMap(function (slot) {
         const dailyReservations = [];
-        const slotBoat = slot.boat;
+        const slotBoat = slot.boat.id;
         const slotId = slot.id;
+        console.log(slot);
 
-        if (slotBoat === `/api/boat/${idBoat}`) {
+        if (`/api/boat/${slotBoat}` === `/api/boat/${idBoat}`) {
             const startDate = new Date(slot.startBookingDate);
             const endDate = new Date(slot.endBookingDate);
             const startTime = new Date(slot.startTime);
@@ -154,13 +154,12 @@ const ReservationSlotList = () => {
         <div>
             {(user && slotsList.length > 0) && (slotsList[0].boat?.establishment?.createdby?.id === user.id) ? (
                 <Button onClick={() => setIsModalOpen(true)}>CRENEAUX HORAIRES</Button>
-    
             ) : (<></>)}
-                {isModalOpen && (
-                    <div>
-                        <SlotsList></SlotsList>
-                    </div>
-                )}
+            {isModalOpen && (
+                <div>
+                    <SlotsList></SlotsList>
+                </div>
+            )}
             <Scheduler
                 data={reservations}
                 height={660}

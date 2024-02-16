@@ -80,7 +80,7 @@ class Boat
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['boat:read', 'boat:create', 'media_object:read', 'user:favorite', 'establishment:read', 'reservation:read', 'comment:read'])]
+    #[Groups(['boat:read', 'boat:create', 'media_object:read', 'user:favorite', 'establishment:read', 'reservation:read', 'comment:read', 'slots:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
