@@ -82,7 +82,7 @@ export default function BoatPublic() {
                             <p className='text-gray-600'>{boat && boat.address + ' ' + boat.city}</p>
                         </div>
                         {/** FAUSSE DATA **/}
-                        <span className='font-bold text-2xl'>€{boat && boat.price ? boat.price : '500'}/HOUR</span>
+                        <span className='font-bold text-2xl'>€{boat && boat.price ? boat.price : '500'}</span>
                     </div>
                     <div className='flex gap-12 mt-8 px-4 flex-wrap'>
                         <div className='flex flex-row items-center gap-2'>
@@ -95,28 +95,6 @@ export default function BoatPublic() {
                                 </svg>
                             </div>
                             <span className='font-bold'>{boat && boat.capacity} PERSON</span>
-                        </div>
-                        <div className='flex flex-row items-center gap-2'>
-                            <div className='rounded-full w-16 h-16 bg-light-orange flex items-center justify-center'>
-                                <svg width="34" height="34" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10.304" cy="10.3037" r="4.43881" stroke="#FE7768" strokeWidth="1.33164" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M18.0715 21.4008C18.0715 17.7235 14.5937 14.7426 10.3036 14.7426C6.01346 14.7426 2.53564 17.7235 2.53564 21.4008" stroke="#FE7768" strokeWidth="1.33164" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M16.9619 14.7425C19.4134 14.7425 21.4007 12.7552 21.4007 10.3037C21.4007 7.85225 19.4134 5.86493 16.9619 5.86493C15.6362 5.86493 14.4462 6.44614 13.6328 7.36766" stroke="#FE7768" strokeWidth="1.33164" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M24.7298 21.4008C24.7298 17.7236 21.252 14.7426 16.9619 14.7426C16.0662 14.7426 14.6282 14.4172 13.6328 13.3726" stroke="#FE7768" strokeWidth="1.33164" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                            </div>
-                            <span className='font-bold'>{boat && boat.capacity} PERSON</span>
-                        </div>
-                        <div className='flex flex-row items-center gap-2'>
-                            <div className='rounded-full w-16 h-16 bg-light-orange flex items-center justify-center'>
-                                <svg width="34" height="34" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10.304" cy="10.3037" r="4.43881" stroke="#FE7768" strokeWidth="1.33164" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M18.0715 21.4008C18.0715 17.7235 14.5937 14.7426 10.3036 14.7426C6.01346 14.7426 2.53564 17.7235 2.53564 21.4008" stroke="#FE7768" strokeWidth="1.33164" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M16.9619 14.7425C19.4134 14.7425 21.4007 12.7552 21.4007 10.3037C21.4007 7.85225 19.4134 5.86493 16.9619 5.86493C15.6362 5.86493 14.4462 6.44614 13.6328 7.36766" stroke="#FE7768" strokeWidth="1.33164" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M24.7298 21.4008C24.7298 17.7236 21.252 14.7426 16.9619 14.7426C16.0662 14.7426 14.6282 14.4172 13.6328 13.3726" stroke="#FE7768" strokeWidth="1.33164" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                            </div>
-                            <span className='font-bold'>{boat && boat.capacity}PERSON</span>
                         </div>
                     </div>
 

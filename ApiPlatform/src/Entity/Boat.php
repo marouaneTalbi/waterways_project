@@ -23,6 +23,7 @@ use App\Controller\BoatController;
 use App\Controller\BoatSearchController;
 use App\Controller\GetFavoriteController;
 use App\State\SearchStateProvider;
+use App\Controller\GetBoatCommentsController;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Controller\RemoveFavoriteController;
 
@@ -69,6 +70,11 @@ use App\Controller\RemoveFavoriteController;
             security: "is_granted('ROLE_ADMIN')",
             controller: BoatController::class,
             deserialize: false, 
+        ),
+        new Get(
+            uriTemplate: '/boat/{id}/comments',
+            controller: GetBoatCommentsController::class,
+            normalizationContext: ['groups' => ['comment:read']],
         )
     ],
     normalizationContext: ['groups' => ['boat:read', 'media_object:read']],
@@ -80,7 +86,7 @@ class Boat
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['boat:read', 'boat:create', 'media_object:read', 'user:favorite', 'establishment:read', 'reservation:read', 'comment:read', 'slots:read'])]
+    #[Groups(['boat:read', 'boat:create', 'media_object:read', 'user:favorite', 'establishment:read', 'reservation:read', 'comment:read', 'comment:create', 'slots:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]

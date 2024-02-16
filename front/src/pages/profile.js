@@ -21,7 +21,7 @@ export default function Profile() {
     };
 
     return (
-        <div className="grid grid-cols-2 grid-rows-full md:grid-cols-4 md:grid-rows-4 gap-4 flex-1">
+        <div className="grid grid-cols-2 grid-rows-full md:grid-cols-4 md:grid-rows-4 gap-4 flex-1 h-[1950px] md:h-auto">
             <GenericModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
