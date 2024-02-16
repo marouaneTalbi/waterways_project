@@ -63,7 +63,7 @@ export default function Profile() {
                         <h4 className="text-xl font-medium">Historique de réservations</h4>
                     </div>
                 </header>
-                <div className="flex flex-wrap py-6 gap-20 gap-y-10">
+                <div className="flex flex-wrap">
                     <BoatProvider>
                         <HistoryProvider>
                             <HistoryClientList />
