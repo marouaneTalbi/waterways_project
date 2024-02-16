@@ -5,7 +5,9 @@ const userApi = {
         return sendRequest(`/api/user/${id}`, 'get', {}, true);
     },
     update: async function (userId, user) {
-        return sendRequest(`/api/user/${userId}`, 'put', user, true);
+        const userJson = JSON.stringify(user);
+        console.log(userJson)
+        return sendRequest(`/api/user/${userId}`, 'put', userJson, true);
     },
     get: async function () {
         return sendRequest(`/api/user`, 'get', {}, true);
